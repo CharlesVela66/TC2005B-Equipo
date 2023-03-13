@@ -422,14 +422,14 @@ INSERT INTO Cliente VALUES
 -- Table structure for table Bitacora
 --
 
-CREATE TABLE Bitacora (
+CREATE TABLE Bitacora ( -- Por ahora existen 20 clientes y 10 rutinas 
   id_cliente int(11) NOT NULL,
   id_rutina int(11) NOT NULL AUTO_INCREMENT,
 
   -- -----------------------------------
 
   fecha date NOT NULL,
-  nivel_satisf int(2) DEFAULT NULL,
+  nivel_satisf int(2) DEFAULT NULL, -- Del 1 al 5 por mientras
   descripcion_sesion varchar(500) NOT NULL,
   comentarios varchar(500) DEFAULT NULL,
 
@@ -439,13 +439,16 @@ CREATE TABLE Bitacora (
   FOREIGN KEY(id_rutina) REFERENCES Rutina(id_rutina)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
+INSERT INTO Bitacora VALUES --Formato de fecha en 'YYYY/MM/DD'
+(1,1,'2023/02/13',5,'10 lagartijas con 5 press','Hoy me sentí súper, pude hacer todos los ejercicios de manera increíble, me sentí muy motivado.'),
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table DietasAlimentos
 --
 
-CREATE TABLE DietasAlimentos (
+CREATE TABLE DietasAlimentos ( -- Actualmente hay 36 alimentos y 10 dietas
   id_dieta int(11) NOT NULL AUTO_INCREMENT,
   id_alimento int(11) NOT NULL AUTO_INCREMENT,
 
@@ -460,16 +463,67 @@ CREATE TABLE DietasAlimentos (
 
 INSERT INTO DietasAlimentos VALUES
 (1,3,4.1),
-(2,10,3),
-(3,4,2.1),
-(4,2,50000),
-(5,9,60),
-(6,3,5),
-(7,20,200),
-(8,5,30),
-(9,6,3),
-(10,9,4),
+(1,5,3244.23),
+(1,23,432.23),
+(1,21,244.2),
+(1,12,34.23),
+(1,36,443.9),
 
+(2,10,3),
+(2,19,3.2),
+(2,28,324.53),
+(2,33,432.3),
+(2,7,43.9),
+
+(3,4,2.1),
+(3,1,534.3),
+(3,11,432.3),
+(3,34,234.22),
+(3,22,2323.3),
+
+(4,2,50000),
+(4,20,534.6),
+(4,32,545.3),
+(4,25,654.23),
+(4,33,452.4),
+(4,14,653.3),
+
+(5,9,234.2),
+(5,2,234),
+(5,33,242.23),
+(5,8,234.2),
+(5,7,242.2),
+
+(6,3,5),
+(6,22,422.43),
+(6,19,4332.4),
+(6,23,4244),
+(6,11,424.2),
+
+(7,20,200),
+(7,21,224.4),
+(7,4,43.2),
+(7,16,543.2),
+(7,29,324),
+
+(8,5,30),
+(8,1,3),
+(8,7,43.2),
+(8,9,234.2),
+(8,35,35.3),
+
+(9,6,3),
+(9,16,23.4),
+(9,26,42.09),
+(9,36,34.2),
+(9,4,23.4),
+(9,14,23.2),
+
+(10,9,4),
+(10,11,23.4),
+(10,28,534.24),
+(10,10,242.2),
+(10,3,23.2);
 
 -- --------------------------------------------------------
 
@@ -477,7 +531,7 @@ INSERT INTO DietasAlimentos VALUES
 -- Table structure for table DietasFavoritas
 --
 
-CREATE TABLE DietasFavoritas (
+CREATE TABLE DietasFavoritas ( -- Existen por el momento 10 dietas y 20 clientes
   id_cliente int(11) NOT NULL AUTO_INCREMENT,
   id_dieta int(11) NOT NULL AUTO_INCREMENT,
 
@@ -495,7 +549,7 @@ INSERT INTO DietasFavoritas VALUES
 (5,9),
 (6,3),
 (7,20),
-(8,5)
+(8,5),
 (9,6),
 (10,9);
 
@@ -506,12 +560,12 @@ INSERT INTO DietasFavoritas VALUES
 -- Table structure for table RutinaEjercicio
 --
 
-CREATE TABLE RutinaEjercicio (
+CREATE TABLE RutinaEjercicio ( -- Existen 10 rutinas y 20 ejercicios
   id_rutina int(11) NOT NULL AUTO_INCREMENT,
   id_ejercicio int(11) NOT NULL AUTO_INCREMENT,
   -- -----------------------------------
 
-  series int(4) NOT NULL,
+  series int(3) NOT NULL,
   repeticiones int(4) NOT NULL,
   dia varchar(3) NOT NULL,
 
@@ -523,15 +577,45 @@ CREATE TABLE RutinaEjercicio (
 
 INSERT INTO RutinaEjercicio VALUES
 (1,3,5,12,'LUN'),
+(1,4,2,20,'LUN'),
+(1,2,3,10,'LUN'),
+(1,5,1,15,'LUN'),
+(1,7,2,15,'LUN'),
+(1,2,2,10,'LUN'),
+
 (2,10,2,10,'JUE'),
+(2,5,1,10,'JUE'),
+(2,3,5,10,'JUE'),
+
 (3,4,5,15,'VIE'),
-(4,2,1,20,'SAB'),
-(5,9,5,2,'MAR'),
-(6,3,6,5,'MIE'),
-(7,20,18,3,'SAB'),
+(3,2,5,15,'VIE'),
+(3,3,5,15,'VIE'),
+(3,1,5,15,'VIE'),
+
+(4,2,5,20,'SAB'),
+(4,5,4,20,'SAB'),
+
+(5,9,5,20,'MAR'),
+(5,7,5,10,'MAR'),
+
+(6,3,2,6,'MIE'),
+(6,5,2,3,'MIE'),
+(6,7,2,1,'MIE'),
+
+(7,20,3,20,'SAB'),
+(7,13,4,10,'SAB'),
+(7,15,2,15,'SAB'),
+
 (8,5,5,8,'VIE')
+(8,2,2,10,'VIE')
+(8,4,1,10,'VIE')
+
 (9,6,5,9,'LUN'),
-(10,9,10,12,'MAR');
+(9,3,3,10,'LUN'),
+
+(10,9,10,5,'MAR');
+(10,2,2,12,'MAR');
+(10,5,5,8,'MAR');
 
 
 -- --------------------------------------------------------
@@ -540,7 +624,7 @@ INSERT INTO RutinaEjercicio VALUES
 -- Table structure for table RutinasFavoritas
 --
 
-CREATE TABLE RutinasFavoritas (
+CREATE TABLE RutinasFavoritas ( -- Existen por el momento 20 clientes y 10 rutinas
   id_cLiente int(11) NOT NULL AUTO_INCREMENT,
   id_rutina int(11) NOT NULL AUTO_INCREMENT,
 
@@ -578,11 +662,12 @@ INSERT INTO RutinasFavoritas VALUES
 -- Table structure for table UsuarioRol
 --
 
-CREATE TABLE UsuarioRol (
+CREATE TABLE UsuarioRol ( -- No se pueden hacer más registros puesto que sólo hay 20 clientes y dos roles
   id_cliente int(11) NOT NULL AUTO_INCREMENT,
   id_rol int(11) NOT NULL AUTO_INCREMENT,
 
   PRIMARY KEY(id_cliente,id_rol),
+
   FOREIGN key(id_cliente)REFERENCES Cliente(id_cliente),
   FOREIGN key(id_rol)REFERENCES Rol(id_rol)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
@@ -614,20 +699,22 @@ INSERT INTO UsuarioRol VALUES
 -- Table structure for table MedicionUsuario
 --
 
-CREATE TABLE ClienteMedicion (
+CREATE TABLE ClienteMedicion ( -- Por el momento tenemos 20 clientes y 10 mediciones
   id_cliente int(11) NOT NULL AUTO_INCREMENT,
-  id_rol int(11) NOT NULL AUTO_INCREMENT,
-
+  id_medicion int(11) NOT NULL AUTO_INCREMENT,
   -- -----------------------------------
 
   fecha date NOT NULL,
   medida float(4,1) DEFAULT NULL,
 
-  PRIMARY KEY(id_usuarioRol),
+  PRIMARY KEY(id_cliente,id_medicion,fecha),
+
   FOREIGN key(id_cliente)REFERENCES Cliente(id_cliente),
-  FOREIGN key(id_rol)REFERENCES Rol(id_rol)
+  FOREIGN key(id_medicion)REFERENCES Medicion(id_medicion)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
-
+INSERT INTO ClienteMedicion VALUES --Formato de fecha en 'YYYY/MM/DD'
+(1,5,'2023/01/23',13.3),
+(2,4,'2023/01/23',23.4),
 
 -- --------------------------------------------------------
