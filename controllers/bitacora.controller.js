@@ -1,6 +1,16 @@
 const Bitacora = require("../models/bitacora.model");
 
 exports.get_bitacora = (request, response, next) => {
+    let cookies = request.get('Cookie') || '';
+    console.log(cookies);
+
+    let consultas = cookies.split(';')[0].split('=')[1] || 0;
+    console.log(consultas);
+
+    consultas++;
+
+    response.setHeader('Set-Cookie', 'consultas=' + consultas + '; HttpOnly');
+
     response.render("bitacora/bitacora", {registros: Bitacora.fetchAll()});
 }
 

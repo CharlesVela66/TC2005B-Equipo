@@ -1,4 +1,5 @@
 exports.inicio = (request, response, next) => {
+    response.clearCookie("consultas");
     response.render('home/inicio');
 }
 
