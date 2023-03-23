@@ -12,8 +12,10 @@ exports.get_bitacora = (request, response, next) => {
 
     response.setHeader('Set-Cookie', 'consultas=' + consultas + '; HttpOnly');*/
 
+    // Obtenemos todos los registros de bitacora de un usuario
     Bitacora.fetchAll(request.session.nombre_usuario)
     .then((rows, fieldData) => {
+        // Renderizamos (cargamos la vista) de la pagina bitacora y le pasamos como argumentos los registros de la bitacora, el estado de su sesion, el nombre de usuario del cliente y su rol (el rol se lo pasamos en todos los renders para que la navbar muestre los apartados correctos)
         response.render('bitacora/bitacora', {
             registros: rows[0],
             isLoggedIn: request.session.isLoggedIn || false,
@@ -25,16 +27,28 @@ exports.get_bitacora = (request, response, next) => {
 }
 
 exports.post_bitacora = (request,response,next) => {
+    // Obtenemos todos los datos del cliente pasandole como argumento su nombre de usuario
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
-        const registro = new Bitacora({
-            id_cliente: rows[0].id_cliente,
-            descr_sesion: request.body.descr_sesion,
-            nivel_satisf: request.body.nivel_satisf,
-            comentarios: request.body.comentarios,
-        });
-        registro.save();
-        response.redirect('/home');
+        // Si el usuario no ha seleccionado una rutina no puede guardarse el registro
+        if (!rows[0].id_rutina){
+            response.redirect('/home');
+        }
+        // Si tiene una rutina, se puede guardar el registro
+        else {
+            // Se crea un nuevo registro de bitacora
+            const registro = new Bitacora({
+                id_cliente: rows[0].id_cliente,
+                id_rutina: rows[0].id_rutina,
+                descr_sesion: request.body.descr_sesion,
+                nivel_satisf: request.body.nivel_satisf,
+                comentarios: request.body.comentarios,
+            });
+            // Se guarda en la base de datos
+            registro.save();
+            //Redericciona al usuario a la bitacora
+            response.redirect('/home');
+        }
         
     })
     .catch((error) => {console.log(error)});

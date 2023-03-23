@@ -5,6 +5,7 @@ module.exports = class Bitacora {
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nuevo_registro) {
         this.id_cliente = nuevo_registro.id_cliente;
+        this.id_rutina = nuevo_registro.id_rutina;
         this.descr_sesion = nuevo_registro.descr_sesion || null;
         this.nivel_satisf = nuevo_registro.nivel_satisf || 1;
         this.comentarios = nuevo_registro.comentarios || "No agregó comentarios";
