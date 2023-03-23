@@ -7,7 +7,7 @@ exports.explorar_rutinas = (request, response, next) => {
         response.render('rutinas/rutinas', {
             rutinas: rows,
             isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre || '',
+            nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
         });
     })
@@ -21,7 +21,7 @@ exports.explorar_rutinas_favoritas = (request, response, next) => {
         response.render('rutinas/rutinas_favoritas', {
             rutinas: rows[0],
             isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre || '',
+            nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
         });
     })

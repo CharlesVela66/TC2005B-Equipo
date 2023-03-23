@@ -1,12 +1,11 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require('bcryptjs');
-const { response } = require('express');
 
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
     response.render('home/inicio', {
         isLoggedIn: request.session.isLoggedIn,
-        nombre: request.session.nombre || '',
+        nombre: request.session.nombre_usuario || '',
         rol: request.session.rol || '',
     });
 }
@@ -21,7 +20,7 @@ exports.iniciar_sesion = (request,response,next) => {
     response.render('home/iniciar_sesion', {
         mensaje: mensaje,
         isLoggedIn: request.session.isLoggedIn || false,
-        nombre: request.session.nombre || '',
+        nombre: request.session.nombre_usuario || '',
     });
 }
 
@@ -33,7 +32,7 @@ exports.post_iniciar_sesion = (request, response, next) => {
             .then((doMatch) => {
                 if(doMatch) {
                     request.session.isLoggedIn = true;
-                    request.session.nombre = rows[0].nombre;
+                    request.session.nombre_usuario = rows[0].nombre_usuario;
                     Usuario.fetchRol(rows[0].nombre_usuario)
                     .then(([consultaRol, fieldData]) => 
                     {
@@ -65,7 +64,7 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 exports.registrarse = (request, response, next) => {
     response.render('home/registrarse', {isLoggedIn: request.session.isLoggedIn || false,
-    nombre: request.session.nombre || '',
+    nombre: request.session.nombre_usuario || '',
     rol: request.session.rol || '',
     });
 };

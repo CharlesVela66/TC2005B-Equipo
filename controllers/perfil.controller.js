@@ -13,7 +13,7 @@ exports.ver_perfil = (request, response, next) => {
             response.render('perfil/perfil', {
                 dieta: dietasRows[0], rutina: rutinasRows[0],
                 isLoggedIn: request.session.isLoggedIn || false,
-                nombre: request.session.nombre || '',
+                nombre: request.session.nombre_usuario || '',
                 rol: request.session.rol,
             })
         })

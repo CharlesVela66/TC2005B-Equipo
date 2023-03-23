@@ -7,7 +7,7 @@ exports.explorar_dietas = (request, response, next) => {
         response.render('dietas/dietas', {
             dietas: rows,
             isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre || '',
+            nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
         });
     })
@@ -21,7 +21,7 @@ exports.explorar_dietas_favoritas = (request, response, next) => {
         response.render('dietas/dietas_favoritas', {
             dietas: rows[0],
             isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre || '',
+            nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
         });
     })
@@ -34,7 +34,7 @@ exports.get_nueva = (request, response, next) => {
 
 exports.post_nueva = (request, response, next) => {
     const dieta = new Dieta({
-        nombre: request.body.nombre,
+        nombre: request.body.nombre_usuario_usuario,
         tipo_dieta: request.body.tipo_dieta,
         id_macro: request.body.id_macro,
         id_micro: request.body.id_micro
