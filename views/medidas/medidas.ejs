@@ -1,57 +1,62 @@
 <%- include('../includes/head.ejs'); %>
 <h1 class = "title is-1 has-text-white-ter"> Registrar Medidas</h1>
 <br>
-<div class = "columns">
-    <div class = "column">
-        <label for = "brazo_der"><h5 class="subtitle is-5 has-text-white-ter">Brazo Derecho</h5></label>
-        <input class = "input is-rounded" type = "text" id="brazo_der" name = "brazo_der">
+<form action="/medidas" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <div class = "columns">
+        <div class = "column">
+            <label for = "brazo_der"><h5 class="subtitle is-5 has-text-white-ter">Brazo Derecho</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="brazo_der" name = "brazo_der">
+        </div>
+        <div class = "column">
+            <label for = "brazo_izq"><h5 class="subtitle is-5 has-text-white-ter">Brazo Izquierdo</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="brazo_izq" name = "brazo_izq">
+        </div>
+        <div class = "column">
+            <label for = "cadera"><h5 class="subtitle is-5 has-text-white-ter">Cadera</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="cadera" name = "cadera">
+        </div>
+        <div class = "column">
+            <label for = "cintura"><h5 class="subtitle is-5 has-text-white-ter">Cintura</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="cintura" name = "cintura">
+        </div>
     </div>
-    <div class = "column">
-        <label for = "brazo_izq"><h5 class="subtitle is-5 has-text-white-ter">Brazo Izquierdo</h5></label>
-        <input class = "input is-rounded" type = "text" id="brazo_izq" name = "brazo_izq">
+    <br>
+    <div class = "columns">
+        <div class = "column">
+            <label for = "cuello"><h5 class="subtitle is-5 has-text-white-ter">Cuello</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="cuello" name = "cuello">
+        </div>
+        <div class = "column">
+            <label for = "pantorrilla_der"><h5 class="subtitle is-5 has-text-white-ter">Pantorilla Derecha</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="pantorrilla_der" name = "pantorrilla_der">
+        </div>
+        <div class = "column">
+            <label for = "pantorilla_izq"><h5 class="subtitle is-5 has-text-white-ter">Pantorilla Izquierda</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="pantorrilla_izq" name = "pantorrilla_izq">
+        </div>
+        <div class = "column">
+            <label for = "pecho"><h5 class="subtitle is-5 has-text-white-ter">Pecho</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="pecho" name = "pecho">
+        </div>
     </div>
-    <div class = "column">
-        <label for = "Cadera"><h5 class="subtitle is-5 has-text-white-ter">Cadera</h5></label>
-        <input class = "input is-rounded" type = "text" id="Cadera" name = "Cadera">
+    <br>
+    <div class = "columns ml-6 mr-6">
+        <div class = "column">
+            <label for = "peso"><h5 class="subtitle is-5 has-text-white-ter">Peso</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="peso" name = "peso">
+        </div>
+        <div class = "column">
+            <label for = "pierna_der"><h5 class="subtitle is-5 has-text-white-ter">Pierna Derecha</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="pierna_der" name = "pierna_der">
+        </div>
+        <div class = "column">
+            <label for = "pierna_izq"><h5 class="subtitle is-5 has-text-white-ter">Pierna Izquierda</h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="pierna_izq" name = "pierna_izq">
+        </div>
     </div>
-    <div class = "column">
-        <label for = "cintura"><h5 class="subtitle is-5 has-text-white-ter">Cintura</h5></label>
-        <input class = "input is-rounded" type = "text" id="cintura" name = "cintura">
-    </div>
-</div>
-<br>
-<div class = "columns">
-    <div class = "column">
-        <label for = "cuello"><h5 class="subtitle is-5 has-text-white-ter">Cuello</h5></label>
-        <input class = "input is-rounded" type = "text" id="cuello" name = "cuello">
-    </div>
-    <div class = "column">
-        <label for = "pantorrilla_der"><h5 class="subtitle is-5 has-text-white-ter">Pantorilla Derecha</h5></label>
-        <input class = "input is-rounded" type = "text" id="pantorrilla_der" name = "pantorrilla_der">
-    </div>
-    <div class = "column">
-        <label for = "pantorilla_izq"><h5 class="subtitle is-5 has-text-white-ter">Pantorilla Izquierda</h5></label>
-        <input class = "input is-rounded" type = "text" id="pantorilla_izq" name = "pantorilla_izq">
-    </div>
-    <div class = "column">
-        <label for = "pecho"><h5 class="subtitle is-5 has-text-white-ter">Pecho</h5></label>
-        <input class = "input is-rounded" type = "text" id="pecho" name = "pecho">
-    </div>
-</div>
-<br>
-<div class = "columns ml-6 mr-6">
-    <div class = "column">
-        <label for = "peso"><h5 class="subtitle is-5 has-text-white-ter">Peso</h5></label>
-        <input class = "input is-rounded" type = "text" id="peso" name = "peso">
-    </div>
-    <div class = "column">
-        <label for = "pierna_der"><h5 class="subtitle is-5 has-text-white-ter">Pierna Derecha</h5></label>
-        <input class = "input is-rounded" type = "text" id="pierna_der" name = "pierna_der">
-    </div>
-    <div class = "column">
-        <label for = "pierna_izq"><h5 class="subtitle is-5 has-text-white-ter">Pierna Izquierda</h5></label>
-        <input class = "input is-rounded" type = "text" id="pierna_izq" name = "pierna_izq">
-    </div>
-</div>
+<br> <br>
+<input class="button is-rounded is-info" type="submit" value="Guardar">
+</form>
 
 <%- include('../includes/foot.ejs'); %>
