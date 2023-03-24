@@ -1,4 +1,5 @@
 const Usuario = require('../models/usuario.model');
+const Cliente = require('../models/clientes.model');
 const bcrypt = require('bcryptjs');
 
 // Cargamos la interfaz del inicio
