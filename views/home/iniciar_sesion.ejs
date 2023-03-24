@@ -1,15 +1,33 @@
 <%- include('../includes/head.ejs'); %>
-<div class="columns is-centered">
-    <div class="column is-half">
+<style>
+  .form-section {
+  padding: 16px;
+  font-size: .85rem;
+  background-color: #e0ecfb;
+  box-shadow: rgb(0 0 0 / 8%) 0 -1px;
+  }
+  .form-section a {
+  font-weight: bold;
+  color: #0066ff;
+  transition: color .3s ease;
+}
+
+</style>
+<div class="hero is-fullheight">
+  <div class="hero-body is-justify-content-center is-align-items-center">
+    <div class='columns is-flex is-flex-direction-column box'>
       <form action="/iniciar-sesion" method="POST">
+        <span class="title">Iniciar Sesion</span>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-        
-          <label for = "id_login "> <h5 class="title is-5 has-text-white-ter">Usuario: </h5></label>
-          <input class="input is-info" type="text" id="nombre_usuario" name="nombre_usuario">
-          <br><br>
-          <label for = "contrasena"> <h5 class="title is-5 has-text-white-ter">Contraseña: </h5></label>
-          <input class="input is-info" type="password" id="contrasena" name="contrasena">
-          <br><br>
+          <div class= "column"> 
+            <label for = "id_login "> <h5 class="title is-6 has-text-black-ter">Usuario: </h5></label>
+            <input class="input is-info" type="text" id="nombre_usuario" name="nombre_usuario">
+          </div>
+          <div class="column">
+            <label for = "contrasena"> <h5 class="title is-6 has-text-black-ter">Contraseña: </h5></label>
+            <input class="input is-info" type="password" id="contrasena" name="contrasena">
+         </div>
+         <br>
           <div class="field is-grouped">
               <div class="control">
                 <a href="/home"><button class="button is-info">Enviar</button></a>
@@ -19,6 +37,10 @@
               </div>
           </div>
       </form>
+      <br>
+      <div class="form-section" > <p> No tienes una cuenta? <a href="/registrarse"> Registrate aqui </a></p>
+      </div>
     </div>
+  </div>
 </div>
 <%- include('../includes/foot.ejs'); %>
