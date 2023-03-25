@@ -19,7 +19,10 @@ exports.registrar_medida = (request, response, next) => {
                 medida: request.body.cuello
             })
             console.log(registro);
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.pecho){
             const registro = new Medida({
@@ -27,7 +30,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 2,
                 medida: request.body.pecho
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.brazo_izq){
             const registro = new Medida({
@@ -35,7 +41,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 3,
                 medida: request.body.brazo_izq
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.brazo_der){
             const registro = new Medida({
@@ -43,7 +52,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 4,
                 medida: request.body.brazo_der
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.cintura){
             const registro = new Medida({
@@ -51,7 +63,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 5,
                 medida: request.body.cintura
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.pierna_izq){
             const registro = new Medida({
@@ -59,7 +74,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 6,
                 medida: request.body.pierna_izq
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.pierna_der){
             const registro = new Medida({
@@ -67,7 +85,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 7,
                 medida: request.body.pierna_der
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.pantorrilla_izq){
             const registro = new Medida({
@@ -75,7 +96,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 8,
                 medida: request.body.pantorrilla_izq
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.pantorrilla_der){
             const registro = new Medida({
@@ -83,7 +107,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 9,
                 medida: request.body.brazo_der
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.peso){
             const registro = new Medida({
@@ -91,7 +118,10 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 10,
                 medida: request.body.peso
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
         if (request.body.cadera){
             const registro = new Medida({
@@ -99,9 +129,11 @@ exports.registrar_medida = (request, response, next) => {
                 id_medicion: 11,
                 medida: request.body.cadera
             })
-            registro.save();
+            registro.save()
+            .then(([rows, fieldData]) => {
+                response.redirect('/home');
+            }).catch((error) => {console.log(error)});
         }
-        response.redirect('/home');
     })
     .catch((error) => {console.log(error)});
 }
