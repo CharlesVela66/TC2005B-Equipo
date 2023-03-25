@@ -89,24 +89,36 @@ exports.registrarse = (request, response, next) => {
 
 // Esto pasa cuando el usuario le da click a crear nuevo usuario
 exports.post_registrarse = (request, response, next) => {
-    // Un nuevo usuario se crea
-    const usuario = new Usuario({
-        nombre : request.body.nombre,
-        apellido : request.body.apellido,
-        nombre_usuario : request.body.nombre_usuario,
-        correo : request.body.correo,
-        contrasena : request.body.contrasena,
-        sexo : request.body.sexo,
-        fecha_nacimiento : request.body.fecha_nacimiento
-    });  
-    // Ese usuario se guarda en la base de datos
-    usuario.save()
+    Usuario.fetchOne(request.body.nombre_usuario)
     .then(([rows, fieldData]) => {
-        // Aquí tenía pensado que en vez de redireccionarlo a iniciar sesion, lo redireccionara a preguntarle cosas su objetivo y nivel fisico
-        // Cuando se haga eso, se guarda ahora si un nuevo cliente y finalmente se le redirecciona a iniciar sesion.
-        // Eso nos ayudaria para automatizar el almacenamiento de un usuario como cliente
-        response.redirect('/iniciar-sesion');
-    }).catch((error) => {console.log(error)});
+        // Así aseguramos que no hay un usuario con ese username ya registrado
+        if (rows.length == 0){
+            // Un nuevo usuario se crea
+            const usuario = new Usuario({
+                nombre : request.body.nombre,
+                apellido : request.body.apellido,
+                nombre_usuario : request.body.nombre_usuario,
+                correo : request.body.correo,
+                contrasena : request.body.contrasena,
+                sexo : request.body.sexo,
+                fecha_nacimiento : request.body.fecha_nacimiento
+            });  
+            // Ese usuario se guarda en la base de datos
+            usuario.save()
+            .then(([rows, fieldData]) => {
+                // Aquí tenía pensado que en vez de redireccionarlo a iniciar sesion, lo redireccionara a preguntarle cosas su objetivo y nivel fisico
+                // Cuando se haga eso, se guarda ahora si un nuevo cliente y finalmente se le redirecciona a iniciar sesion.
+                // Eso nos ayudaria para automatizar el almacenamiento de un usuario como cliente
+                response.redirect('/iniciar-sesion');
+            })
+            .catch((error) => {console.log(error)});
+        }
+        else {
+            response.redirect('/registrarse');
+        }
+    })
+    .catch((error) => {console.log(error)});
+
 };
 
 // En lugar de que la sesión se destruya en la página de inicio, implementé una mejor práctica que cuando el usuario ingrese a su sección de perfil
