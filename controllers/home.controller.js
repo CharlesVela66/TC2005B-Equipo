@@ -1,5 +1,6 @@
 const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
+const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
 
 // Cargamos la interfaz del inicio
@@ -81,10 +82,16 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 // Carga la interfaz de registrarse
 exports.registrarse = (request, response, next) => {
-    response.render('home/registrarse', {isLoggedIn: request.session.isLoggedIn || false,
-    nombre: request.session.nombre_usuario || '',
-    rol: request.session.rol || '',
-    });
+    Objetivos.fetchAll()
+    .then(([rows,fieldData]) => {
+        response.render('home/registrarse', {
+            objetivos : rows,
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol || '',
+        })
+    })
+    .catch((error) => {console.log(error)});
 };
 
 // Esto pasa cuando el usuario le da click a crear nuevo usuario
@@ -109,7 +116,23 @@ exports.post_registrarse = (request, response, next) => {
                 // Aquí tenía pensado que en vez de redireccionarlo a iniciar sesion, lo redireccionara a preguntarle cosas su objetivo y nivel fisico
                 // Cuando se haga eso, se guarda ahora si un nuevo cliente y finalmente se le redirecciona a iniciar sesion.
                 // Eso nos ayudaria para automatizar el almacenamiento de un usuario como cliente
-                response.redirect('/iniciar-sesion');
+                Usuario.fetchOne(request.body.nombre_usuario)
+                .then(([infoUsuario, fieldData]) =>{
+                    // Guardamos el rol del usuario 
+                    usuario.saveRol(infoUsuario[0].id_usuario, 1);
+
+                    // Creamos un cliente para guardarlo en la BD
+                    const cliente = new Cliente({
+                        id_usuario : infoUsuario[0].id_usuario,
+                        id_obj : request.body.obj,
+                    });
+                    cliente.save()
+                    .then(([rows, fieldData]) => {
+                        response.redirect('/iniciar-sesion');
+                    }) 
+                    .catch((error) => {console.log(error)});
+                })
+                .catch((error) => {console.log(error)});
             })
             .catch((error) => {console.log(error)});
         }

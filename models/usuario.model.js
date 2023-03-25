@@ -25,6 +25,13 @@ module.exports = class Usuario {
         .catch((error) => {console.log(error)});
     }
 
+    saveRol(id_usuario, id_rol) {
+        return db.execute(`
+            INSERT INTO usuariorol (id_usuario, id_rol)
+            values (?, ?)
+        `, [id_usuario, id_rol]);
+    }
+
     static fetchOne(username){
         return db.execute(`
             SELECT * 

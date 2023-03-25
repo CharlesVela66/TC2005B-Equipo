@@ -45,9 +45,12 @@ exports.post_bitacora = (request,response,next) => {
                 comentarios: request.body.comentarios,
             });
             // Se guarda en la base de datos
-            registro.save();
-            //Redericciona al usuario a la bitacora
-            response.redirect('/home');
+            registro.save()
+            .then(([rows, fieldData]) => {
+                //Redericciona al usuario a la bitacora
+                response.redirect('/home');
+            })
+            .catch((error) => {console.log(error)});
         }
         
     })

@@ -1,68 +1,86 @@
 <%- include('../includes/head.ejs'); %>
 <form action="/registrarse" method="POST">
-  <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-  <div class="field">
-      <label class="label" for="nombre"><h5 class="subtitle is-5 has-text-white-ter">Ingresa tu(s) nombre(s): </h5></label>
-      <div class="control">
-        <input class="input is-info is-rounded" type="text" placeholder="Ingresa tu(s) nombre(s)" size="25" id="nombre" name="nombre">
+<div class = "columns">
+  <div class = "column">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+      <div class="field">
+          <label class="label" for="nombre"><h5 class="subtitle is-5 has-text-white-ter">Ingresa tu(s) nombre(s): </h5></label>
+          <div class="control">
+            <input class="input is-info is-rounded" type="text" placeholder="Ingresa tu(s) nombre(s)" size="25" id="nombre" name="nombre">
+          </div>
       </div>
-  </div>
-    
-  <div class="field">
-    <label class="label" for="apellido"><h5 class="subtitle is-5 has-text-white-ter">Ingresa tu(s) apellidos(s): </h5></label>
-    <div class="control">
-      <input class="input is-info is-rounded" type="text" placeholder="Ingresa tu(s) apellidos(s)" size="25" id="apellido" name="apellido">
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="label" for = "nombre_usuario"><h5 class="subtitle is-5 has-text-white-ter">Crea un usuario: </h5></label>
-    <div class="control">
-      <input class="input is-info is-rounded" type="text" placeholder="Carlos123" size="25" id="nombre_usuario" name="nombre_usuario">
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="label" for = "contrasena"><h5 class="subtitle is-5 has-text-white-ter">Crea una contraseña </h5></label>
-    <div class="control">
-      <input class="input is-info is-rounded" type="text" placeholder="carlosv123" size="25" id="contrasena" name="contrasena">
-    </div>
-  </div>
-    
-  <div class="field">
-    <label class="label" for = "correo"><h5 class="subtitle is-5 has-text-white-ter">Ingresa tu correo electrónico: </h5></label>
-    <div class="control">
-      <input class="input is-info is-rounded" type="text" placeholder="user@example.com" size="25" id="correo"  name="correo">
-    </div>
-  </div>
-    
-    <div class="field">
-      <label class="label" for="sexo"><h5 class="subtitle is-5 has-text-white-ter">Sexo </h5></label>
-      <div class="control">
-        <div class="select">
-          <select id="sexo" name="sexo">
-            <option disabled selected>Selecciona una opción</option>
-            <option>M</option>
-            <option>F</option>
-          </select>
+        
+      <div class="field">
+        <label class="label" for="apellido"><h5 class="subtitle is-5 has-text-white-ter">Ingresa tu(s) apellidos(s): </h5></label>
+        <div class="control">
+          <input class="input is-info is-rounded" type="text" placeholder="Ingresa tu(s) apellidos(s)" size="25" id="apellido" name="apellido">
         </div>
       </div>
-    </div>
-    
-    <div class="field">
-      <label for="fecha_nacimiento"><h5 class="subtitle is-5 has-text-white-ter">Fecha de nacimiento</h5></label>
 
-      <input class ="is-rounded" type="date" id="fecha_nacimiento" name="fecha_nacimiento">
-    </div>
-    
-    <div class="field is-grouped">
-      <div class="control">
-        <a href="/home"><button class="button is-info">Enviar</button></a>
+      <div class="field">
+        <label class="label" for = "nombre_usuario"><h5 class="subtitle is-5 has-text-white-ter">Crea un usuario: </h5></label>
+        <div class="control">
+          <input class="input is-info is-rounded" type="text" placeholder="Carlos123" size="25" id="nombre_usuario" name="nombre_usuario">
+        </div>
       </div>
-      <div class="control">
-        <a href = "/"><button class="button is-link is-light">Cancelar</button></a>
+
+      <div class="field">
+        <label class="label" for = "contrasena"><h5 class="subtitle is-5 has-text-white-ter">Crea una contraseña </h5></label>
+        <div class="control">
+          <input class="input is-info is-rounded" type="text" placeholder="carlosv123" size="25" id="contrasena" name="contrasena">
+        </div>
       </div>
+        
+      <div class="field">
+        <label class="label" for = "correo"><h5 class="subtitle is-5 has-text-white-ter">Ingresa tu correo electrónico: </h5></label>
+        <div class="control">
+          <input class="input is-info is-rounded" type="text" placeholder="user@example.com" size="25" id="correo"  name="correo">
+        </div>
+      </div>
+        
+        <div class="field">
+          <label class="label" for="sexo"><h5 class="subtitle is-5 has-text-white-ter">Sexo </h5></label>
+          <div class="control">
+            <div class="select">
+              <select id="sexo" name="sexo">
+                <option disabled selected>Selecciona una opción</option>
+                <option>M</option>
+                <option>F</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="fecha_nacimiento"><h5 class="subtitle is-5 has-text-white-ter">Fecha de nacimiento</h5></label>
+
+          <input class ="is-rounded" type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+        </div>
+        
+        <div class="field is-grouped">
+          <div class="control">
+            <a href="/home"><button class="button is-info">Enviar</button></a>
+          </div>
+          <div class="control">
+            <a href = "/"><button class="button is-link is-light">Cancelar</button></a>
+          </div>
+        </div>
+  </div>
+  <div class="column">
+    <div class = 'field'>
+      <label for="obj"><h5 class="subtitle is-5 has-text-white-ter">¿Cuál es tu objetivo en el gimnasio?</h5></label>
+      <div class="select is-primary">
+          <select name="obj" id="obj">
+              <% for (let objetivo of objetivos) { %>
+                  <option value="<%= objetivo.id_obj %>" <% if(objetivo.nombre == objetivo.id_obj) { %> selected <% } %>>
+                      <%= objetivo.nombre %>
+                  </option>
+              <% } %>
+          </select>
+        </div>
     </div>
+  </div>
+</div>
 </form>
 
 <%- include('../includes/foot.ejs'); %>
