@@ -11,6 +11,10 @@ exports.get_bitacora = (request, response, next) => {
     consultas++;
 
     response.setHeader('Set-Cookie', 'consultas=' + consultas + '; HttpOnly');*/
+    const mensaje = request.session.mensaje || '';
+    if (request.session.mensaje) {
+        request.session.mensaje  = '';
+    }
 
     // Obtenemos todos los registros de bitacora de un usuario
     Bitacora.fetchAll(request.session.nombre_usuario)
@@ -21,6 +25,7 @@ exports.get_bitacora = (request, response, next) => {
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
+            mensaje: mensaje
         })
     }) 
     .catch((error) => {console.log(error)});
@@ -32,6 +37,7 @@ exports.post_bitacora = (request,response,next) => {
     .then(([rows, fieldData]) => {
         // Si el usuario no ha seleccionado una rutina no puede guardarse el registro
         if (!rows[0].id_rutina){
+            request.session.mensaje = '¡Selecciona una rutina para agregar regsitros a tu bitácora!';
             response.redirect('/home');
         }
         // Si tiene una rutina, se puede guardar el registro

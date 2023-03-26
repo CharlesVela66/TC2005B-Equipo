@@ -1,10 +1,21 @@
 <%- include('../includes/head.ejs'); %>
+<% if (mensaje != '') { %>
+    <div class="notification is-info is-light">
+        <%= mensaje %>
+    </div>
+<% } %>
 <h1 class = "title is-1 is-centered has-text-white-ter"> Bienvenido a tu bitacora!</h1>
 
 <div class = "container">
-    <form action="/home" method="POST">
+    <form action="/home" method="POST" autocomplete="off">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <table class = "table has-text-white-ter has-background-black-ter">
+    <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 40%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 40%;"
+         </colgroup>
         <thead>
             <tr>
                 <th class="has-text-white-ter">Fecha</th>
@@ -31,7 +42,7 @@
 
             <tr>
                     <th class="has-text-white-ter"> </th>
-                    <td><input type = "text" size = "50" class="input is-info is-small is-rounded" name = "descr_sesion" id = "descr_sesion"></td>
+                    <td><input type = "text" size = "50" class="input is-info is-small is-rounded" name = "descr_sesion" id = "descr_sesion" required="required" maxlength="500"></td>
                     <td>
                         <div class="select is-info is-small">
                         <select value = "Escribe" name = "nivel_satisf" id = "nivel_satisf">
@@ -57,10 +68,25 @@
             </tr>
         </tbody>
     </table>
-    <input class="button is-rounded is-info" type="submit" value="Guardar">
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <div class="popup" id="popup">
+        <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+        <button class="button is-success" type = "submit">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+    </div>
     </form>
 </div>
 
+<script>
+    let popup = document.getElementById("popup");
 
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+
+    function closePopup(){
+        popup.classList.remove("open-popup")
+    }
+</script>
 
 <%- include('../includes/foot.ejs'); %>
