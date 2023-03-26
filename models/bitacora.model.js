@@ -22,7 +22,7 @@ module.exports = class Bitacora {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(username) {
         return db.execute(`
-            SELECT fecha, nivel_satisf, descripcion_sesion, comentarios
+            SELECT DATE_FORMAT(fecha, '%e %M %Y ') AS 'fecha', nivel_satisf, descripcion_sesion, comentarios
             FROM bitacora b, cliente c, usuario u
             WHERE b.id_cliente = c.id_cliente
             AND u.id_usuario = c.id_usuario
