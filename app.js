@@ -8,10 +8,32 @@ const csrf = require('csurf');
 
 const app = express();
 
+// Middleware para actualizar la hora de última actividad de la sesión
+app.use(function(req, res, next) {
+    if (req.session) {
+      req.session.lastActive = Date.now();
+    }
+    next();
+  });
+
+// Middleware para comprobar si la sesión ha expirado
+app.use(function(req, res, next) {
+    if (req.session && typeof req.session.lastActive !== 'undefined' && (Date.now() - req.session.lastActive) > 60000) {
+      // La sesión ha expirado, redireccionar al usuario a la página de inicio de sesión
+      res.redirect('/iniciar-sesion');
+    } else {
+      next();
+    }
+  });
+
 app.use(session({
     secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste', 
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
+    cookie:{
+        maxAge: 20000 // Expira después de 2 días de inactividad
+
+    }
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
