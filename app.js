@@ -31,7 +31,7 @@ app.use(session({
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
     cookie:{
-        maxAge: 20000 // Expira después de 2 días de inactividad
+        maxAge: 3600000 // Expira después de 1 hora de inactividad
 
     }
 }));
