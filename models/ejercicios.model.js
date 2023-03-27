@@ -10,7 +10,10 @@ module.exports = class Ejercicio {
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
-
+        return db.execute(`
+            INSERT INTO ejercicio (descripcion, video_ejercicio) 
+            values (?, ?)
+        `, [this.descripcion, this.video_ejercicio]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.

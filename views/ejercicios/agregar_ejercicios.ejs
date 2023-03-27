@@ -1,0 +1,20 @@
+<%- include('../includes/head.ejs'); %>
+<br>
+<h1 class="title is-1 has-text-white-ter">Agregar un nuevo ejercicio</h1>
+    <form action="/ejercicios/agregar_ejercicios" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <label for="descripcion"> <h5 class="title is-5 has-text-white-ter">Descripción:</h5></label> <br>
+            <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" placeholder="">
+    <br><br><br>
+            <label for="video_ejercicio"> <h5 class="title is-5 has-text-white-ter">Liga de video explicativo:</h5></label> <br>
+            <input name="video_ejercicio" id="video_ejercicio" class="input is-rounded" type="text" placeholder="">
+
+    <br><br><br>
+            <input class="button is-rounded is-success" type="submit" value="Registrar">
+    </form>|
+    <br>
+    <div class="control">
+        <a href="/home"><button class="button is-danger">Cancelar</button></a>
+        </div>
+    
+<%- include('../includes/foot.ejs'); %>
