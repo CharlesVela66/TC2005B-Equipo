@@ -134,6 +134,7 @@ exports.registrar_medida = (request, response, next) => {
                 response.redirect('/home');
             }).catch((error) => {console.log(error)});
         }
+        response.redirect('/home');
     })
     .catch((error) => {console.log(error)});
 }
