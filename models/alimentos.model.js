@@ -10,7 +10,10 @@ module.exports = class Alimento {
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
-
+        return db.execute(`
+            INSERT INTO alimento (nombre, medida) 
+            values (?, ?)
+        `, [this.nombre, this.medida]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
