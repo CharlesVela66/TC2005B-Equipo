@@ -3,60 +3,24 @@
 <br>
 <form action="/medidas" method="POST">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <div class = "columns">
+    
+    <% for (let i = 0; i < mediciones.length; i++) { %>
+        <% if (i % 4 === 0) { %>
+            <div class = "columns">
+        <% } %>
+        
         <div class = "column">
-            <label for = "BrazoDer"><h5 class="subtitle is-5 has-text-white-ter">Brazo Derecho</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="BrazoDer" name = "BrazoDer">
+            <label for = "<%= mediciones[i].tipo %>"><h5 class="subtitle is-5 has-text-white-ter"><%= mediciones[i].tipo %></h5></label>
+            <input class = "input is-rounded" type = "number" step="0.1" id="<%= mediciones[i].tipo %>" name = "<%= mediciones[i].tipo %>">
         </div>
-        <div class = "column">
-            <label for = "BrazoIzq"><h5 class="subtitle is-5 has-text-white-ter">Brazo Izquierdo</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="BrazoIzq" name = "BrazoIzq">
-        </div>
-        <div class = "column">
-            <label for = "Cadera"><h5 class="subtitle is-5 has-text-white-ter">Cadera</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="Cadera" name = "Cadera">
-        </div>
-        <div class = "column">
-            <label for = "Cintura"><h5 class="subtitle is-5 has-text-white-ter">Cintura</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="Cintura" name = "Cintura">
-        </div>
-    </div>
-    <br>
-    <div class = "columns">
-        <div class = "column">
-            <label for = "Cuello"><h5 class="subtitle is-5 has-text-white-ter">Cuello</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="Cuello" name = "Cuello">
-        </div>
-        <div class = "column">
-            <label for = "PantorrillaDer"><h5 class="subtitle is-5 has-text-white-ter">Pantorilla Derecha</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="PantorrillaDer" name = "PantorrillaDer">
-        </div>
-        <div class = "column">
-            <label for = "PantorrillaIzq"><h5 class="subtitle is-5 has-text-white-ter">Pantorilla Izquierda</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="PantorrillaIzq" name = "PantorrillaIzq">
-        </div>
-        <div class = "column">
-            <label for = "Pecho"><h5 class="subtitle is-5 has-text-white-ter">Pecho</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="Pecho" name = "Pecho">
-        </div>
-    </div>
-    <br>
-    <div class = "columns ml-6 mr-6">
-        <div class = "column">
-            <label for = "Peso"><h5 class="subtitle is-5 has-text-white-ter">Peso</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="Peso" name = "Peso">
-        </div>
-        <div class = "column">
-            <label for = "PiernaDer"><h5 class="subtitle is-5 has-text-white-ter">Pierna Derecha</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="PiernaDer" name = "PiernaDer">
-        </div>
-        <div class = "column">
-            <label for = "PiernaIzq"><h5 class="subtitle is-5 has-text-white-ter">Pierna Izquierda</h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="PiernaIzq" name = "PiernaIzq">
-        </div>
-    </div>
-<br> <br>
-<input class="button is-rounded is-info" type="submit" value="Guardar">
+        
+        <% if (i % 4 === 3 || i === mediciones.length - 1) { %>
+            </div>
+            <br>
+        <% } %>
+    <% } %>
+    
+    <input class="button is-rounded is-info" type="submit" value="Guardar">
 </form>
 
 <%- include('../includes/foot.ejs'); %>
