@@ -59,6 +59,7 @@ const rutasBitacora = require('./routes/bitacora.routes');
 
 app.use('/home', isAuth, rutasBitacora);
 
+
 const rutasDieta = require('./routes/dietas.routes');
 
 app.use('/dietas', isAuth, rutasDieta);

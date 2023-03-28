@@ -24,6 +24,4 @@ module.exports = class Alimento {
         ORDER BY nombre ASC
     `);
     }
-    
-
 }

@@ -1,4 +1,5 @@
 const Dieta = require('../models/dietas.model');
+const Dieta_Alimentos = require('../models/alimentos.model');
 const DietaFavorita = require('../models/dietas_favoritas.model');
 
 exports.explorar_dietas = (request, response, next) => {
@@ -13,6 +14,15 @@ exports.explorar_dietas = (request, response, next) => {
     })
     .catch(error => console.log(error));
 }
+exports.visualizar =(request, response, next)=>{
+        Dieta.fetch(request.params.id)
+        .then(([rows, fieldData])=>{
+            consonle.log(rows);
+
+            response.render('contenido_d')  
+        })
+}
+
 
 exports.explorar_dietas_favoritas = (request, response, next) => {
     DietaFavorita.fetchAll()
