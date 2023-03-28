@@ -4,6 +4,7 @@
         <%= mensaje %>
     </div>
 <% } %>
+<% if (rol == "Cliente") { %>
 <h1 class = "title is-1 is-centered has-text-white-ter"> Bienvenido a tu bitacora!</h1>
 
 <div class = "container">
@@ -88,5 +89,9 @@
         popup.classList.remove("open-popup")
     }
 </script>
+<% }  else if (rol == "Administrador") { %>
+    <h1 class="title is-1 has-text-white-ter"></h1>
+    <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+<% } %>
 
 <%- include('../includes/foot.ejs'); %>

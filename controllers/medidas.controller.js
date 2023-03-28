@@ -12,129 +12,24 @@ exports.medida = (request,response,next) =>{
 exports.registrar_medida = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
-        if (request.body.cuello){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 1,
-                medida: request.body.cuello
-            })
-            console.log(registro);
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.pecho){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 2,
-                medida: request.body.pecho
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.brazo_izq){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 3,
-                medida: request.body.brazo_izq
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.brazo_der){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 4,
-                medida: request.body.brazo_der
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.cintura){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 5,
-                medida: request.body.cintura
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.pierna_izq){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 6,
-                medida: request.body.pierna_izq
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.pierna_der){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 7,
-                medida: request.body.pierna_der
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.pantorrilla_izq){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 8,
-                medida: request.body.pantorrilla_izq
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.pantorrilla_der){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 9,
-                medida: request.body.brazo_der
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.peso){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 10,
-                medida: request.body.peso
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        if (request.body.cadera){
-            const registro = new Medida({
-                id_cliente: rows[0].id_cliente,
-                id_medicion: 11,
-                medida: request.body.cadera
-            })
-            registro.save()
-            .then(([rows, fieldData]) => {
-                response.redirect('/home');
-            }).catch((error) => {console.log(error)});
-        }
-        response.redirect('/home');
+        Medida.fetchAll()
+        .then(([medidasTotal, fieldData]) => {
+            medidasTotal.forEach((medida) => {
+                if (request.body[medida.tipo]){
+                    const registro = new Medida({
+                        id_cliente: rows[0].id_cliente,
+                        id_medicion: medida.id_medicion,
+                        medida: request.body[medida.tipo]
+                    })
+                    registro.save()
+                    .then(([rows, fieldData]) => {
+                        console.log('Registro guardado');
+                        response.redirect('/home');
+                    }).catch((error) => {console.log(error)});
+                }
+            });
+        })
+        .catch((error) => {console.log(error)});
     })
     .catch((error) => {console.log(error)});
 }
