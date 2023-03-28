@@ -1,5 +1,17 @@
 const Dieta = require('../models/dietas_favoritas.model');
 const Rutina = require('../models/rutinas_favoritas.model')
+const Perfil =require('../models/perfil.model');
+
+/*exports.get_editar=(request, response, next) =>{
+
+    Perfil.fetchOne(request.params.id)
+    .then(([rows, fieldData]))=>{
+        if(rows.length ==1){
+
+            cons
+        }
+    }
+}*/
 
 exports.ver_perfil = (request, response, next) => {
     let dietasRows = new Array;
