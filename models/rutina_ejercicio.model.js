@@ -22,13 +22,29 @@ module.exports = class RutinaEjercicio {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-        SELECT r.nombre, r.tiporutina, r.descripcion, re.series, re.repeticiones, re.dia, e.descripcion, e.video_ejercicio
+        SELECT r.nombre, r.tiporutina, r.descripcion, re.series, re.repeticiones, re.dia, e.descripcion AS Ejercicio, e.video_ejercicio
         FROM rutina r, ejercicio e, rutinaejercicio re
         WHERE re.id_rutina=r.id_rutina AND e.id_ejercicio=re.id_ejercicio
         ORDER BY r.nombre ASC
-    `);
+        `);
     }
 
-    
+    static fetchOne(id_rutina){
+        return db.execute(`
+            SELECT r.nombre, r.tiporutina, r.descripcion, re.series, re.repeticiones, re.dia, e.descripcion AS Ejercicio, e.video_ejercicio
+            FROM rutina r, ejercicio e, rutinaejercicio re
+            WHERE re.id_rutina=r.id_rutina AND e.id_ejercicio=re.id_ejercicio AND r.id_rutina =?
+            ORDER BY r.nombre ASC
+        `, [id]
+        );
+    }
+
+    static fetch(id_rutina){
+        if (id_rutina){
+            return RutinaEjercicio(id_rutina);
+        } else {
+            return RutinaEjercicio.fetchAll();
+        }
+    }
 
 }
