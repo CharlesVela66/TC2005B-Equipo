@@ -24,6 +24,7 @@ module.exports = class RutinaEjercicio {
         return db.execute(`
         SELECT r.nombre, r.tiporutina, r.descripcion, re.series, re.repeticiones, re.dia, e.descripcion, e.video_ejercicio
         FROM rutina r, ejercicio e, rutinaejercicio re
+        WHERE re.id_rutina=r.id_rutina AND e.id_ejercicio=re.id_ejercicio
         ORDER BY r.nombre ASC
     `);
     }
