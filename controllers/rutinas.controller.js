@@ -1,5 +1,6 @@
 const Rutina = require('../models/rutinas.model');
 const RutinaFavorita = require('../models/rutinas_favoritas.model');
+const RutinaEjercicio = require('../models/rutina_ejercicio.model');
 
 exports.explorar_rutinas = (request, response, next) => {
     Rutina.fetchAll()
@@ -12,6 +13,28 @@ exports.explorar_rutinas = (request, response, next) => {
         });
     })
     .catch(error => console.log(error));
+}
+
+exports.get_nuevaRutina=(request, response, next) =>{
+    Rutina.fetchAll()
+    .then(([rows, fieldData]) => {
+        response.render('rutina/nueva', {
+            rutinas: rows,
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+        });
+    }).catch(error => console.log(error));
+};
+
+exports.post_nuevaRutina=(request, response, next) => {
+    console.log(request.file);
+
+    const rutina_ejercicio = new RutinaEjercicio({
+        nombre: request.body.nombre,
+        tiporutina: request.body.rutina,
+        descripcion //Hacer en insert en la tabla de rutina y después hacer el insert en la tabla de la relación
+    })
 }
 
 exports.explorar_rutinas_favoritas = (request, response, next) => {

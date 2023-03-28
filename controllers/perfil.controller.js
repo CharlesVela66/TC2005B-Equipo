@@ -1,17 +1,32 @@
 const Dieta = require('../models/dietas_favoritas.model');
 const Rutina = require('../models/rutinas_favoritas.model')
-const Perfil =require('../models/perfil.model');
+//const Perfil =require('../models/perfil.model');
+//const Usuario= require('../models/usuario.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
-    Perfil.fetchOne(request.params.id)
+    Usuario.fetchOne(request.params.id)
     .then(([rows, fieldData]))=>{
         if(rows.length ==1){
-
-            cons
+            const usuario = new Usuario({
+                nombre: nuevo_usuario.nombre,
+                apellido: nuevo_usuario.apellido,
+                nombre_usuario = nuevo_usuario.nombre_usuario,
+                this.correo = nuevo_usuario.correo,
+                this.contrasena = nuevo_usuario.contrasena,
+                this.foto_perfil = nuevo_usuario.foto_perfil || null;
+                this.sexo = nuevo_usuario.sexo;
+                this.fecha_nacimiento = nuevo_usuario.fecha_nacimiento;
+            })
         }
     }
-}*/
+};
+
+exports.post_editar = (request, response, next) => {
+    console.log("Datos para editar");
+    console.log(request.body);
+
+};*/
 
 exports.ver_perfil = (request, response, next) => {
     let dietasRows = new Array;
