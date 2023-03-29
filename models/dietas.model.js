@@ -18,11 +18,17 @@ module.exports = class Dieta {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-            SELECT nombre, tipo_dieta
+            SELECT id_dieta,nombre, tipo_dieta, Url_image
             FROM dieta
         `);
     }
 
-    
+    static fetchOne(id){
+        return db.execute(`
+        SELECT id_dieta,nombre, tipo_dieta
+        FROM dieta
+        WHERE id_dieta =?
+        `,[id]);
+   } 
 
 }

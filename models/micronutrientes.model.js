@@ -32,8 +32,18 @@ module.exports = class Micronutrientes {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-            SELECT *
-            FROM micronutrientes
+        SELECT * from micronutrientes where id_micro = (SELECT id_micro
+            FROM dieta
+            WHERE id_dieta=?)
         `);
+    }
+    static fetchOne(id) {
+        return db.execute(
+            `
+            SELECT * from micronutrientes where id_micro = (SELECT id_micro
+                FROM dieta
+                WHERE id_dieta=?)
+        `, [id])
+
     }
 }

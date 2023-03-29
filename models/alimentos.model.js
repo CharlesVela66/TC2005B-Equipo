@@ -24,4 +24,12 @@ module.exports = class Alimento {
         ORDER BY nombre ASC
     `);
     }
+    static fetchOne(id){
+        return db.execute(`
+        SELECT nombre, medida
+        FROM alimento
+        ORDER BY nombre ASC
+    `,[id])
+
+    }
 }
