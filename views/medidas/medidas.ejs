@@ -1,4 +1,9 @@
 <%- include('../includes/head.ejs'); %>
+<% if (mensaje != '') { %>
+    <div class="notification is-info is-light">
+        <%= mensaje %>
+    </div>
+<% } %>
 <h1 class = "title is-1 has-text-white-ter"> Registrar Medidas</h1>
 <br>
 <form action="/medidas" method="POST">
@@ -20,7 +25,37 @@
         <% } %>
     <% } %>
     
-    <input class="button is-rounded is-info" type="submit" value="Guardar">
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <div class="popup" id="popup">
+        <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+        <button class="button is-success" type = "submit">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+    </div>
 </form>
+<script>
+    const inputs = document.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            if (input.value > 999.9) {
+                input.value = 999.9;
+            }
+        });
+        input.addEventListener('keydown', event => {
+            if (event.key === 'e' || event.key === 'E') {
+                event.preventDefault();
+            }
+        });
+    });
+
+    let popup = document.getElementById("popup");
+
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+
+    function closePopup(){
+        popup.classList.remove("open-popup")
+    }
+</script>
 
 <%- include('../includes/foot.ejs'); %>
