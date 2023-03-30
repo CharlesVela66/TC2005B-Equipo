@@ -19,7 +19,7 @@ module.exports = class Ejercicio {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-        SELECT descripcion, video_ejercicio
+        SELECT id_ejercicio, descripcion, video_ejercicio
         FROM ejercicio
         ORDER BY descripcion ASC
     `);

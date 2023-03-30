@@ -1,6 +1,5 @@
 const Rutina = require('../models/rutinas.model');
 const RutinaFavorita = require('../models/rutinas_favoritas.model');
-const RutinaEjercicio = require('../models/rutina_ejercicio.model');
 const Ejercicio = require('../models/ejercicios.model');
 const RegistroRutina = require('../models/rutina_ejercicio.model');
 
@@ -17,13 +16,15 @@ exports.explorar_rutinas = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
-exports.nueva_rutina=(request, response, next) => {
+exports.nueva_rutina = (request, response, next) => {
     Ejercicio.fetchAll()
-    .then(([rows, fieldData])=>{
-        response.render('nueva_rutina',{
+    .then(([rows, fieldData]) => {
+        console.log(rows)
+        response.render('rutinas/nueva_rutina',{
             ejercicios: rows,
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
             rutina:false,
         });
     }).catch(error=>console.log(error));
