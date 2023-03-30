@@ -1,6 +1,12 @@
 const Ejercicio = require('../models/ejercicios.model');
 
 exports.ver_ejercicios = (request, response, next) => {
+   
+    const mensaje = request.session.mensaje || '';
+    if (request.session.mensaje) {
+    request.session.mensaje  = '';
+    }
+   
     Ejercicio.fetchAll()
     .then(([rows, fieldData]) => {
         response.render('ejercicios/ejercicios', {
@@ -29,6 +35,7 @@ exports.get_ejercicios = (request, response, next) => {
 }
 
 exports.post_ejercicios = (request, response, next) => {
+
 
     const ejercicio = new Ejercicio({
         descripcion: request.body.descripcion,

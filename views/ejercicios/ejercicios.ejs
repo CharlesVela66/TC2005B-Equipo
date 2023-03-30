@@ -11,26 +11,23 @@
             <% columns++; %>
             <div class="column is-3">
                 <div class="card">
-                    <div class="card-image">
-                        
+                    <div class="card-image">                     
                     </div>
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
-                                
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4"><%= ejercicio.descripcion %></p>
-                                <p class="subtitle is-6"><%= ejercicio.video_ejercicio %></p>
+                                </div>
+                                    <div class="media-content">
+                                        <p class="title is-4"><%= ejercicio.descripcion %></p>
+                                        <p class="subtitle is-6"><%= ejercicio.video_ejercicio %></p>                                  
+                                    </div>
+                                </div>               
                             </div>
                         </div>
-                    
-                    </div>
-                </div>
             </div>
         <% } %>
     </div>
 <% } else { %>
-    <h1 class="has-text-white-ter">No hay ejercicios registradas</h1>
+    <h1 class="has-text-white-ter">No hay ejercicios registrados</h1>
 <% } %>   
 <%- include('../includes/foot.ejs'); %>
