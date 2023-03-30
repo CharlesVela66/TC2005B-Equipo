@@ -30,10 +30,11 @@ exports.visualizar = (request, response, next) => {
     micro.fetchOne(request.params.id)
     .then(([rows, fieldData]) => {
         console.log(rows);
-    
-    
-
             response.render('dietas/contenido_d', {
+                dieta: rows,
+                dieta_alimento: rows,
+                macro: rows,
+                micro: rows,
                 isLoggedIn: request.session.isLoggedIn || false,
                 nombre: request.session.nombre_usuario || '',
                 rol: request.session.rol,

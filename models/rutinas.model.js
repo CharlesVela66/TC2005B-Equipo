@@ -17,9 +17,18 @@ module.exports = class Rutina {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-        SELECT nombre, tiporutina
+        SELECT id_rutina,nombre, tiporutina,URL_Image
         FROM rutina
     `);
+    }
+
+    static fetchOne(id){
+        return db.execute(
+            `
+        SELECT id_rutina,nombre, tiporutina, descripcion
+        FROM rutina
+        WHERE id_rutina =?
+        `,[id])
     }
     
 

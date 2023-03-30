@@ -1,4 +1,6 @@
 const Rutina = require('../models/rutinas.model');
+const Ejercicio= require('../models/ejercicios.model');
+const Rutina_Ejercicio= require ('../models/rutina_ejercicio.model');
 const RutinaFavorita = require('../models/rutinas_favoritas.model');
 
 exports.explorar_rutinas = (request, response, next) => {
@@ -12,6 +14,33 @@ exports.explorar_rutinas = (request, response, next) => {
         });
     })
     .catch(error => console.log(error));
+}
+
+exports.visualizar_rutinas = (request,response,next) => {
+    //console.log(request.params.id);
+        //console.log(request.params.id);
+        Rutina.fetchOne(request.params.id)
+        .then(([rows, fieldData]) => {
+            console.log(rows);
+        Ejercicio.fetchOne(request.params.id)
+        .then(([rows, fieldData]) => {
+            console.log(rows);
+        Rutina_Ejercicio.fetchOne(request.params.id)
+        .then(([rows, fieldData]) => {
+            console.log(rows);
+                response.render('rutinas/contenido_r', {
+                    dieta: rows,
+                    dieta_alimento: rows,
+                    macro: rows,
+                    micro: rows,
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    nombre: request.session.nombre_usuario || '',
+                    rol: request.session.rol,
+                })
+            })
+        })
+    })
+
 }
 
 exports.explorar_rutinas_favoritas = (request, response, next) => {

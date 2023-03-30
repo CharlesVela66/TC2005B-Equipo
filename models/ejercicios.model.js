@@ -24,6 +24,15 @@ module.exports = class Ejercicio {
         ORDER BY descripcion ASC
     `);
     }
-    
+    static fetchOne(id){
+    return db.execute(
+        `
+        SELECT id_ejercicio,descripcion, video_ejercicio
+        FROM ejercicio
+        Where id_ejercicio=? 
+        `
+        ,[id])
+
+    }
 
 }
