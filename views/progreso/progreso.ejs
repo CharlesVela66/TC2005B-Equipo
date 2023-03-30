@@ -1,44 +1,56 @@
 <%- include('../includes/head.ejs'); %>
-<h1 class="title is-1 has-text-white-ter">Progreso</h1>
-<div class="columns">
-    <div class="column is-two-fifths">
-        <div class = "select">
-            <select id = "medida">
-                <option>Brazo Derecho</option>
-                <option>Brazo Izquierdo</option>
-                <option>Cintura</option>
-                <option>Cuello</option>
-                <option>Pecho</option>
-                <option>Pantorrilla Derecha</option>
-                <option>Pantorrilla Izquierda</option>
-                <option>Peso</option>
-                <option>Pierna Derecha</option>
-                <option>Pierna Izquierda</option>
+<% if (mensaje != '') { %>
+    <div class="notification is-info is-light">
+        <%= mensaje %>
+    </div>
+<% } %>
+<% if (rol == "Cliente") { %>
+<h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
+
+<div class = "container">
+    <form action="/home" method="POST" autocomplete="off">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <div class="select is-info is-medium">
+            <select id = "nombre">
+                <% registros.forEach(registro => { %>
+                    <option value="<% registro.nombre %>"><%= registro.nombre %></option>
+                <% }) %>
             </select>
         </div>
-        <table class = "table has-text-white-ter has-background-black-ter">
-            <thead>
-                <tr>
-                    <th class="has-text-white-ter">Fecha</th>     
-                    <th class="has-text-white-ter">Brazo Derecho</th>           
-                </tr>
-            </thead>
-            <tbody>
-                <% if (progresos.length > 0) { %>
-                    <% for (let registro of progresos) { %>
-                        <tr> 
-                        <th class="has-text-white-ter"> <%= registro.fecha %></th>
-                        <td> <%= registro.brazo_der %></td>
-    
-                        </tr>
-                    <% } %>
-            <% } %>
-            </tbody>
-        </table>
-    </div>
-    <div class = "column ml-6 mt-6">
-        <img src = "https://cdn.exceltotal.com/wp-content/uploads/2012/04/formato-personalizado-al-eje-vertical-de-un-grafico-01.png">
-    </div>
-</div>
+    <table class = "table has-text-white-ter has-background-black-ter" style="width: 25%;">
+        <caption>Cambios en el tiempo</caption>
+        <colgroup>
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 50%;">
+         </colgroup>
+        <thead>
+            <tr>
+                <th class="has-text-white-ter">Fecha</th>
+                <th class="has-text-white-ter">Medida</th>
+            </tr>
+        </thead>
+        <tbody>
 
+        <% if (registros.length > 0) { %>
+                <% for (let registro of registros) { %>
+                    <tr> 
+                    <th class="has-text-white-ter"> <%= registro.fecha %></th>
+                    <td> <%= registro.medida %></td>
+                    </tr>
+                <% } %>
+
+        <% } %>
+        
+        </tbody>
+    </table>
+    <input class="button is-rounded is-info" type="submit" value="Graficar">
+    </form>
+    <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
+
+    </section>
+</div>
+<% }  else if (rol == "Administrador") { %>
+    <h1 class="title is-1 has-text-white-ter"></h1>
+    <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+<% } %>
 <%- include('../includes/foot.ejs'); %>
