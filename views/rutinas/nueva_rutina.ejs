@@ -13,11 +13,12 @@
         <input type="file" name="imagen" required><br><br>
 
         <label for="ejercicios">Ejercicios:</label>
-        <select name="ejercicios" multiple>
+        <!--<select name="ejercicios" multiple>-->
+        <input type="checkbox" id="select_ejercicio" onclick="myFunction()">
             <% ejercicios.forEach(ejercicio => { %>
                 <option value="<%= ejercicio.id_ejercicio %>"><%= ejercicio.descripcion %></option>
             <% }) %>
-        </select><br><br><br>
+        <!--</select>--><br><br><br>
         <input type="submit" value="Crear Rutina">
     </form>
 <%- include('../includes/foot.ejs') %>
