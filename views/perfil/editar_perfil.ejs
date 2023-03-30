@@ -1,0 +1,10 @@
+<%- include('includes/head.ejs') %>
+
+<% if(perfil) { %> 
+    <h1 class="title">Editar perfil</h1>
+    <form action="/perfil/editar" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="<%= perfil.id %>" >
+<% } else { %> 
+    <h1 class="title">Registrar nuevo perro</h1>
+    <form action="/perros/nuevo" method="POST" enctype="multipart/form-data">
+<% } %>
