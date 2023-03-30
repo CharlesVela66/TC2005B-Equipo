@@ -16,25 +16,26 @@ exports.explorar_dietas = (request, response, next) => {
         })
         .catch(error => console.log(error));
 }
+
 exports.visualizar = (request, response, next) => {
     //console.log(request.params.id);
     Dieta.fetchOne(request.params.id)
-    .then(([rows, fieldData]) => {
-        console.log(rows);
+    .then(([dieta, fieldData]) => {
+     //   console.log(dieta),
     Dieta_Alimento.fetchOne(request.params.id)
-    .then(([rows, fieldData]) => {
-        console.log(rows);
+    .then(([dieta_alimento, fieldData]) => {
+      //  console.log(dieta_alimento),
     macro.fetchOne(request.params.id)
-    .then(([rows, fieldData]) => {
-        console.log(rows);
+    .then(([macro, fieldData]) => {
+     //   console.log(macro),
     micro.fetchOne(request.params.id)
-    .then(([rows, fieldData]) => {
-        console.log(rows);
+    .then(([micro, fieldData]) => {
+      //  console.log(micro),
             response.render('dietas/contenido_d', {
-                dieta: rows,
-                dieta_alimento: rows,
-                macro: rows,
-                micro: rows,
+                dietas: dieta,
+                dieta_alimentos: dieta_alimento,
+                macronutriente: macro,
+                micronutriente: micro,
                 isLoggedIn: request.session.isLoggedIn || false,
                 nombre: request.session.nombre_usuario || '',
                 rol: request.session.rol,

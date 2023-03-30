@@ -10,6 +10,7 @@ router.get('/favoritas', dietasController.explorar_dietas_favoritas);
 
 router.get('/:id', dietasController.visualizar);
 
+router.get('/', dietasController.visualizar);
 
 router.get('/agregar', dietasController.get_nueva);
 

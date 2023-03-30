@@ -8,10 +8,58 @@
               </p>
             </header>
             <div class="box">
-                <p ><%= dieta.nombre %></p>
-                <p ><%= dieta.tipo_dieta %></p>
+              <p><%= dietas[0].nombre%></p>
+              <p><%= dietas[0].tipo_dieta%></p>
+              <% if (dieta_alimentos.length > 0) { %>
+                <% for (let dieta_alimento of dieta_alimentos) { %>
+                  <p><%= dieta_alimento.nombre%> <%= dieta_alimento.medida%> <%= dieta_alimento.cantidad%></p>
+                  <% } %>
+              <% } %>
+
+              <% if (macronutriente.length > 0) { %>
+                <% for (let macro of macronutriente) { %>
+                  <p>Calorias: <%= macro.calorias%></p>
+                  <p>Proteinas: <%= macro.proteinas%></p>
+                  <p>Carbohidratos: <%= macro.carbohidratos%></p>
+                  <p>Grasas: <%= macro.grasas%></p>
+                  <% } %>
+              <% } %>
+
+              <% if (micronutriente.length > 0) { %>
+                <% for (let micro of micronutriente) { %>
+                  <p>Ceniza: <%= micro.ceniza%></p>
+                  <p>Total de fibra: <%= micro.fibra_total%></p>
+                  <p>Calcio: <%= micro.calcio%></p>
+                  <p>Fosforo: <%= micro.fosforo%></p>
+                  <p>Hierro: <%= micro.hierro%></p>
+                  <p>Tiamina: <%= micro.tiamina%></p>
+                  <p>Riboflavina: <%= micro.riboflavina%></p>
+                  <p>Niacina: <%= micro.niacina%></p>
+                  <p>Vitamina C: <%= micro.vit_c%></p>
+                  <p>Vitamina A: <%= micro.vit_a%></p>
+                  <p>Ácidos Grasos Mínimos: <%= micro.acgrasosmin%></p>
+                  <p>Ácidos  Grasos Poliinsaturados: <%= micro.acgrasospoli%></p>
+                  <p>Ácidos Grasos Saturados: <%= micro.acgrasossat%></p>
+                  <p>Colesterol: <%= micro.colesterol%></p>
+                  <p>Potasio: <%= micro.potasio%></p>
+                  <p>Sodio: <%= micro.sodio%></p>
+                  <p>Zinc: <%= micro.zinc%></p>
+                  <p>Magnesio: <%= micro.magnesio%></p>
+                  <p>Vitamina B6: <%= micro.vit_b6%></p>
+                  <p>Vitamina B12: <%= micro.vit_b12%></p>
+                  <p>Ácido Fólico: <%= micro.acfolico%></p>
+                  <p>Folato: <%= micro.folatoeq%></p>
+                  <% } %>
+              <% } %>
+            
             </div>
 
               </div>
+              <br><br>
+              <div class="buttons">
+              <button class="button is-primary">Seleccionar Dieta</button>
+              <a href="/dietas/" class="button is-danger">Atrás</a>
+            </div>
           </div>
-      </div>
+
+<%- include('../includes/foot.ejs'); %>
