@@ -1,59 +1,62 @@
 <%- include('../includes/head.ejs'); %>
 <div class="container is-fluid">
     <h1 class = "title is-1 has-text-white-ter">Nueva Rutina</h1>
-        <form action="/rutinas/nueva_rutina" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <form action="/rutinas/nueva_rutina" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
-            <label for = "nombre">Nombre:</label>
-            <input type="text" name="nombre" required><br><br>
+        <label for = "nombre">Nombre:</label>
+        <input type="text" name="nombre" required><br><br>
 
-            <label for = "descripcion">Descripción:</label>
-            <textarea class="textarea is-hovered" placeholder="Ingrese la descripción de la rutina" name="descripcion" rows="3" cols="50"></textarea><br><br>
+        <label for = "tiporutina">Tipo de la rutina:</label>
+        <textarea class="textarea is-hovered" placeholder="Ingrese el tipo de la rutina" name="descripcion" rows="1" cols="15"></textarea><br><br>
 
-            <label for = "imagen">Imagen:</label>
-            <input type = "file" name="imagen" required><br><br>
+        <label for = "descripcion">Descripción:</label>
+        <textarea class="textarea is-hovered" placeholder="Ingrese la descripción de la rutina" name="descripcion" rows="3" cols="50"></textarea><br><br>
 
-            <label for="ejercicios">Ejercicios:</label><br>
-            <% ejercicios.forEach(ejercicio => { %>
-                <label value="<%= ejercicio.id_ejercicio %>"><%= ejercicio.descripcion %>
-                </label>
-                <input type="checkbox" id="<%= ejercicio.id_ejercicio %>" onclick="selecEjercicio(id)"><br>
-                <p id = "dia <%= ejercicio.id_ejercicio %>" style="display:none">
-                    Día (Lun/Mar/Mie/Jue/Vie/Sab/Dom)
-                    <input type="text" placeholder="Ej. Lun">
-                </p>
-                <p id = "series <%= ejercicio.id_ejercicio %>" style="display:none">
-                    Series
-                    <input type="number" min="1" max="1000">
-                </p>
-                <p id = "reps <%= ejercicio.id_ejercicio %>" style="display:none">
-                    Repeticiones
-                    <input type="number" min="1" max="1000">
-                </p>
-            <% }) %>
-            <!--</select>--><br><br><br>
-            <input type="submit" value="Crear Rutina">
-        </form>
-        <script>
-            function selecEjercicio(id) {
-                // Get the checkbox
-                var checkBox = document.getElementById(id);
-                // Get the output text
-                var dia = document.getElementById("dia "+id);
-                var series = document.getElementById("series "+id);
-                var reps = document.getElementById("reps "+id);
+        <label for = "imagen">Imagen:</label>
+        <input type = "file" name="imagen" required><br><br>
 
-                // If the checkbox is checked, display the output text
-                if (checkBox.checked == true){
-                    dia.style.display = "block";
-                    series.style.display = "block";
-                    reps.style.display = "block";
-                } else {
-                    dia.style.display = "none";
-                    series.style.display = "none";
-                    reps.style.display = "none";
-                }
+        <label for="ejercicios">Ejercicios:</label><br>
+        <% ejercicios.forEach(ejercicio => { %>
+            <label value="<%= ejercicio.id_ejercicio %>"><%= ejercicio.descripcion %>
+            </label>
+            <input type="checkbox" id="<%= ejercicio.id_ejercicio %>" onclick="selecEjercicio(id)"><br>
+            <p id = "dia <%= ejercicio.id_ejercicio %>" style="display:none">
+                Día (Lun/Mar/Mie/Jue/Vie/Sab/Dom)
+                <input type="text" placeholder="Ej. Lun">
+            </p>
+            <p id = "series <%= ejercicio.id_ejercicio %>" style="display:none">
+                Series
+                <input type="number" step="1" min="1" max="1000">
+            </p>
+            <p id = "repeticiones <%= ejercicio.id_ejercicio %>" style="display:none">
+                Repeticiones
+                <input type="number" step="1" min="1" max="1000">
+            </p>
+        <% }) %>
+        <!--</select>--><br><br><br>
+        <input type="submit" value="Crear Rutina">
+    </form>
+    <script>
+        function selecEjercicio(id) {
+            // Get the checkbox
+            var checkBox = document.getElementById(id);
+            // Get the output text
+            var dia = document.getElementById("dia "+id);
+            var series = document.getElementById("series "+id);
+            var repeticiones = document.getElementById("repeticiones "+id);
+
+            // If the checkbox is checked, display the output text
+            if (checkBox.checked == true){
+                dia.style.display = "block";
+                series.style.display = "block";
+                repeticiones.style.display = "block";
+            } else {
+                dia.style.display = "none";
+                series.style.display = "none";
+                repeticiones.style.display = "none";
             }
+        }
     </script>
-    </div>
+</div>
 <%- include('../includes/foot.ejs') %>
