@@ -1,8 +1,17 @@
 <%- include('../includes/head.ejs'); %>
+<% if (rol == "Cliente") { %>
 <h1 class = "title is-1 is-centered has-text-white-ter"> Bienvenido a tu bitacora!</h1>
 
 <div class = "container">
-    <table class = "table has-text-white-ter has-background-black-ter">
+    <form action="/home" method="POST" autocomplete="off">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 40%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 40%;"
+         </colgroup>
         <thead>
             <tr>
                 <th class="has-text-white-ter">Fecha</th>
@@ -17,7 +26,7 @@
                 <% for (let registro of registros) { %>
                     <tr> 
                     <th class="has-text-white-ter"> <%= registro.fecha %></th>
-                    <td> <%= registro.descr_sesion %></td>
+                    <td> <%= registro.descripcion_sesion %></td>
                     <td> <%= registro.nivel_satisf %></td>
                     <td> <%= registro.comentarios %></td>
 
@@ -26,43 +35,60 @@
 
         <% } %>
         <!--Fuente: https://datatables.net/examples/api/form.html-->
-        <% const today = new Date(); %>
-        <% const yyyy = today.getFullYear(); %>
-        <% let mm = today.getMonth() + 1; %>
-        <% let dd = today.getDay(); %>
-        <% if (dd < 10) dd = '0' + dd; %>
-        <% if (mm < 10) mm = '0' + mm; %>
-        <% const formattedToday = dd + '/' + mm + '/' + yyyy; %>
+
             <tr>
-                <th class="has-text-white-ter"> <%= formattedToday %></th>
-                <td><input type = "text" size = "50" class="input is-info is-small is-rounded"></td>
-                <td>
-                    <div class="select is-info is-small">
-                    <select value = "Escribe">
-                        <option>
-                            1
-                        </option>
-                        <option>
-                            2
-                        </option>
-                        <option>
-                            3
-                        </option>
-                        <option>
-                            4
-                        </option>
-                        <option>
-                            5
-                        </option>
-                    </select>
-                    </div>
-                </td>
-                <td><input type = "text" size = "50" class="input is-info is-small is-rounded"></td>
+                    <th class="has-text-white-ter"><input type="date" id="fecha" name="fecha" required="required"></th>
+                    <td><input type = "text" size = "50" class="input is-info is-small is-rounded" name = "descr_sesion" id = "descr_sesion" required="required" maxlength="500"></td>
+                    <td>
+                        <div class="select is-info is-small">
+                            
+                        <select value = "Escribe" name = "nivel_satisf" id = "nivel_satisf">
+                            <option selected="true" disabled="disabled">Elige una opción</option>
+                            <option>
+                                1
+                            </option>
+                            <option>
+                                2
+                            </option>
+                            <option>
+                                3
+                            </option>
+                            <option>
+                                4
+                            </option>
+                            <option>
+                                5
+                            </option>
+                        </select>
+                        </div>
+                    </td>
+                    <td><input type = "text" size = "50" class="input is-info is-small is-rounded" name = "comentarios" id = "comentarios"></td>
             </tr>
         </tbody>
     </table>
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <div class="popup" id="popup">
+        <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+        <button class="button is-success" type = "submit">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+    </div>
+    </form>
 </div>
 
+<script>
+    let popup = document.getElementById("popup");
 
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+
+    function closePopup(){
+        popup.classList.remove("open-popup")
+    }
+</script>
+<% }  else if (rol == "Administrador") { %>
+    <h1 class="title is-1 has-text-white-ter"></h1>
+    <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+<% } %>
 
 <%- include('../includes/foot.ejs'); %>

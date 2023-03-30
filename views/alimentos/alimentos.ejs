@@ -1,0 +1,41 @@
+<%- include('../includes/head.ejs'); %>
+<h1 class = "title is-1 has-text-white-ter">Alimentos</h1>
+
+<% if (mensaje != '') { %>
+    <div class="notification is-info is-light">
+        <%= mensaje %>
+    </div>
+<% } %>
+
+<% if (alimentos.length > 0) { %>
+    <div class="columns">
+        <% let columns = 0; %>
+        <% for (let alimento of alimentos) { %>
+            <% if (columns % 4 == 0) { %>
+    </div>
+    <div class="columns">
+            <% } %>
+            <% columns++; %>
+            <div class="column is-3">
+                <div class="card">
+                    <div class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4"><%= alimento.nombre %></p>
+                                <p class="subtitle is-6"><%= alimento.medida %></p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+<% } else { %>
+    <h1 class="has-text-white-ter">No hay alimentos registrados</h1>
+<% } %>   
+<%- include('../includes/foot.ejs'); %>

@@ -1,5 +1,5 @@
-const Progreso = require("../models/progreso.model");
+const Medidas = require("../models/medidas.model");
 
 exports.get_progreso = (request,response,next) => {
-    response.render('progreso/progreso', {progresos: Progreso.fetchAll()});
+
 }

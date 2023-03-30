@@ -1,0 +1,20 @@
+<%- include('../includes/head.ejs'); %>
+<br>
+<h1 class="title is-1 has-text-white-ter">Agregar un nuevo alimento</h1>
+    <form action="/alimentos/agregar_alimentos" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <label for="nombre"> <h5 class="title is-5 has-text-white-ter">Nombre:</h5></label> <br>
+            <input required name="nombre" id="nombre" class="input is-rounded" type="text" placeholder="">
+    <br><br><br>
+            <label for="medida"> <h5 class="title is-5 has-text-white-ter">Medida:</h5></label> <br>
+            <input name="medida" id="medida" class="input is-rounded" type="text" placeholder="">
+
+    <br><br><br>
+            <input class="button is-rounded is-success" type="submit" value="Registrar">
+    </form>|
+    <br>
+    <div class="control">
+        <a href="/home"><button class="button is-danger">Cancelar</button></a>
+        </div>
+    
+<%- include('../includes/foot.ejs'); %>

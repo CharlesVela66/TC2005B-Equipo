@@ -18,10 +18,43 @@
       {
         min-height: 100vh;
       }
+      .card {
+        height: 100%;
+      }
+      .popup{
+        width: 400px;
+        background: #fff;
+        border-radius: 6px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.1);
+        text-align: center;
+        padding: 0 30px 30 px;
+        color: #333;
+        visibility: hidden;
+        transition: transform 0.4s, top 0.4s;
+      }
+      .popup button{
+        color: #fff;
+        border: 0;
+        outline: 0;
+        font-size: 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      }
+      .open-popup{
+        visibility: visible;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1);
+      }
     </style>
 </head>
 <body class="has-background-black-ter">
-    <nav class="navbar has-background-black-ter	" role="navigation" aria-label="main navigation">
+  <% if ( isLoggedIn){ %>
+    <% if (rol == "Cliente") { %>
+    <nav class="navbar has-background-link-dark" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="/home">
             <img src="https://picsum.photos/112/28">
@@ -34,65 +67,221 @@
           </a>
         </div>
       
-        <div id="navbarBasicExample" class="navbar-menu">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-item" href="/home">
-              Bitacora
-            </a>
-      
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link" >
-                Dietas
+          <div id="navbarBasicExample " class="navbar-menu">
+            <div class="navbar-start">
+              <a class="navbar-item " href="/home">
+                Bitacora
               </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item " href = "/dietas/favoritas">
-                  Favoritas
+        
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link has-background-link-dark">
+                  Dietas
                 </a>
-                <a class="navbar-item "href="/dietas">
-                  Más Dietas
-                </a>
+        
+                <div class="navbar-dropdown ">
+                  <a class="navbar-item" href="/dietas/favoritas">
+                    Favoritas
+                  </a>
+                  <a class="navbar-item" href="/dietas">
+                    Más dietas
+                  </a>
+                </div>
               </div>
-            </div>
-      
-            <div class="navbar-item has-dropdown is-hoverable ">
-              <a class="navbar-link">
-                Rutinas
-              </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item " href = "/rutinas/favoritas">
-                  Favoritas
+        
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link has-background-link-dark">
+                  Rutinas
                 </a>
-                <a class="navbar-item" href="/rutinas">
-                  Más Rutinas
-                </a>
+        
+                <div class="navbar-dropdown">
+                  <a class="navbar-item " href="/rutinas/favoritas">
+                    Favoritas
+                  </a>
+                  <a class="navbar-item" href="/rutinas">
+                    Más rutinas
+                  </a>
+                </div>
               </div>
-            </div>
 
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                Mediciones
-              </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item" href="/medidas">
-                  Registrar medidas
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link has-background-link-dark">
+                  Mediciones
                 </a>
+        
+                <div class="navbar-dropdown">
+                  <a class="navbar-item" href="/medidas">
+                    Registrar medidas
+                  </a>
+                </div>
               </div>
-            </div>
 
-            <a class="navbar-item" href="/progreso">
-              Progreso
-            </a>
-          </div>
-      
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <a class="button" href = "/perfil">
-                  <img src = https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png>
+              <div class="navbar-item has-dropdown is-hoverable ">
+                <a class="navbar-link has-background-link-dark">
+                  Alimentos
                 </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item" href="/alimentos">
+                    Todos los alimentos
+                  </a>
+                </div>
+              </div>
+
+              <div class="navbar-item has-dropdown is-hoverable ">
+                <a class="navbar-link has-background-link-dark">
+                  Ejercicios
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item" href="/ejercicios">
+                    Todos los ejercicios
+                  </a>
+                </div>
+              </div>
+
+              <a class="navbar-item" href="/progreso">
+                Progreso
+              </a>
+            </div>
+        
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button" href = "/perfil">
+                    <img src = https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
       </nav>
+      <% } else if (rol == "Administrador") { %>
+        <nav class="navbar has-background-link-dark	" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="/home">
+              <img src="https://picsum.photos/112/28">
+            </a>
+        
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+        
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start ">
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link has-background-link-dark">
+                  Dietas
+                </a>
+        
+                <div class="navbar-dropdown ">
+                  <a class="navbar-item" href="/dietas/agregar">
+                    Agregar dietas
+                  </a>
+                  <a class="navbar-item" href="/dietas">
+                    Todas las dietas
+                  </a>
+                </div>
+              </div>
+              
+        
+              <div class="navbar-item has-dropdown is-hoverable ">
+                <a class="navbar-link has-background-link-dark">
+                  Rutinas
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item " href = "/rutinas/agregar">
+                    Agregar rutinas
+                  </a>
+                  <a class="navbar-item" href="/rutinas">
+                    Todas las rutinas
+                  </a>
+                </div>
+              </div>
+  
+              <div class="navbar-item has-dropdown is-hoverable ">
+                <a class="navbar-link has-background-link-dark">
+                  Alimentos
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item " href = "/alimentos/agregar_alimentos">
+                    Agregar alimentos
+                  </a>
+                  <a class="navbar-item" href="/alimentos">
+                    Todos los alimentos
+                  </a>
+                </div>
+              </div>
+  
+              <div class="navbar-item has-dropdown is-hoverable ">
+                <a class="navbar-link has-background-link-dark">
+                  Ejercicios
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item " href = "/ejercicios/agregar_ejercicios">
+                    Agregar ejercicios
+                  </a>
+                  <a class="navbar-item" href="/ejercicios">
+                    Todos los ejercicios
+                  </a>
+                </div>
+              </div>
+  
+              <div class="navbar-item has-dropdown is-hoverable ">
+                <a class="navbar-link has-background-link-dark">
+                  Roles
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item " href = "/roles/agregar">
+                    Agregar roles
+                  </a>
+                  <a class="navbar-item" href="/roles">
+                    Todas los roles
+                  </a>
+                </div>
+              </div>
+            </div>
+        
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button" href = "/perfil">
+                    <img src = https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      <% } %>
+        <% } else if (!isLoggedIn){ %>
+          <nav class="navbar has-background-link-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a class="navbar-item" href="/">
+                <img src="https://picsum.photos/112/28">
+              </a>
+          
+              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+            
+          <div id="navbarBasicExample" class="navbar-menu">      
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-info" href="/registrarse">
+                    <strong>Registrarse</strong>
+                  </a>
+                  <a class="button is-light" href="/iniciar-sesion">
+                    Iniciar Sesión
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+          <% } %>
     <div class="container">
