@@ -2,7 +2,6 @@ const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
 const Rutina_Ejercicio= require ('../models/rutina_ejercicio.model');
 const RutinaFavorita = require('../models/rutinas_favoritas.model');
-const Ejercicio = require('../models/ejercicios.model');
 const RegistroRutina = require('../models/rutina_ejercicio.model');
 
 exports.explorar_rutinas = (request, response, next) => {

@@ -46,3 +46,4 @@ module.exports = class RegistroRutina {
             return RegistroRutina.fetchAll();
         }
     }
+}
