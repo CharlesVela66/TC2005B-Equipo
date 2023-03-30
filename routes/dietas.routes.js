@@ -12,6 +12,8 @@ router.get('/:id', dietasController.visualizar);
 
 router.get('/', dietasController.visualizar);
 
+router.post('/:id',dietasController.seleccionar);
+
 router.get('/agregar', dietasController.get_nueva);
 
 router.post('/agregar', dietasController.post_nueva);

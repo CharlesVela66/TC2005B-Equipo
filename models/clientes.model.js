@@ -17,6 +17,13 @@ module.exports = class Cliente {
     `, [this.id_usuario, this.id_obj]);
     }
 
+    saveDieta(id,id_cliente){
+    return db.execute(`
+        UPDATE cliente SET (id_dieta=?)
+        Where id_cliente=?
+    `,[id,id_cliente])
+}
+
     // Consulta a la base de datos de la info de un cliente a partir de su username
     static fetchOne(username){
         return db.execute(`

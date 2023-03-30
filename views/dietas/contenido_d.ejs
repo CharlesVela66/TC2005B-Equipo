@@ -1,6 +1,7 @@
 <%- include('../includes/head.ejs'); %>
 
 <div class="container" style="margin-top: 20px;" >
+  <form action="/dietas/:id" method="POST">
   <div class="card">
     <header class="card-header" style="background-color: aqua;">
       <p class="card-header-title" style="font-size: 30px;" >
@@ -21,7 +22,7 @@
       <tbody>
         <% if (dieta_alimentos.length > 0) { %>
           <% for (let dieta_alimento of dieta_alimentos) { %>
-            <tr></tr>
+            <tr>
             <td><%= dieta_alimento.nombre%></td>
             <td> <%= dieta_alimento.medida%></td>
             <td> <%= dieta_alimento.cantidad%></td>
@@ -30,71 +31,139 @@
         <% } %>
       </tbody>
     </table>
-<!--<% if (dieta_alimentos.length > 0) { %>
-  <% for (let dieta_alimento of dieta_alimentos) { %>
-    <p><%= dieta_alimento.nombre%> <%= dieta_alimento.medida%> <%= dieta_alimento.cantidad%></p>
-    <% } %>
-    <% } %>-->  
-
-              <% if (macronutriente.length > 0) { %>
-                <% for (let macro of macronutriente) { %>
-                  <p>Calorias: <%= macro.calorias%></p>
-                  <p>Proteinas: <%= macro.proteinas%></p>
-                  <p>Carbohidratos: <%= macro.carbohidratos%></p>
-                  <p>Grasas: <%= macro.grasas%></p>
-                  <% } %>
-              <% } %>
-
-              <% if (micronutriente.length > 0) { %>
-                <% for (let micro of micronutriente) { %>
-                  <p>Ceniza: <%= micro.ceniza%></p>
-                  <p>Total de fibra: <%= micro.fibra_total%></p>
-                  <p>Calcio: <%= micro.calcio%></p>
-                  <p>Fosforo: <%= micro.fosforo%></p>
-                  <p>Hierro: <%= micro.hierro%></p>
-                  <p>Tiamina: <%= micro.tiamina%></p>
-                  <p>Riboflavina: <%= micro.riboflavina%></p>
-                  <p>Niacina: <%= micro.niacina%></p>
-                  <p>Vitamina C: <%= micro.vit_c%></p>
-                  <p>Vitamina A: <%= micro.vit_a%></p>
-                  <p>Ácidos Grasos Mínimos: <%= micro.acgrasosmin%></p>
-                  <p>Ácidos  Grasos Poliinsaturados: <%= micro.acgrasospoli%></p>
-                  <p>Ácidos Grasos Saturados: <%= micro.acgrasossat%></p>
-                  <p>Colesterol: <%= micro.colesterol%></p>
-                  <p>Potasio: <%= micro.potasio%></p>
-                  <p>Sodio: <%= micro.sodio%></p>
-                  <p>Zinc: <%= micro.zinc%></p>
-                  <p>Magnesio: <%= micro.magnesio%></p>
-                  <p>Vitamina B6: <%= micro.vit_b6%></p>
-                  <p>Vitamina B12: <%= micro.vit_b12%></p>
-                  <p>Ácido Fólico: <%= micro.acfolico%></p>
-                  <p>Folato: <%= micro.folatoeq%></p>
-                  <% } %>
-              <% } %>
-            
-              </div>
-              <br><br>
-              <div class="buttons">
-              <input class="button is-primary" type="button" value="Seleccionar Dieta" onclick="openPopup()">
-              <div class="popup" id="popup">
-                <h2 class="title is-2">¿Seguro que quieres seleccionar la dieta de <%= dietas[0].nombre%>?</h2>
-                <button class="button is-success" type = "submit">Confirmar</button>
-                <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
-              </div>
-    </form>
-<script>
-    let popup = document.getElementById("popup");
-
-    function openPopup(){
-        popup.classList.add("open-popup");
-    }
-
-    function closePopup(){
-        popup.classList.remove("open-popup")
-    }
-</script>
-              <a href="/dietas/" class="button is-danger">Atrás</a>
-            </div>
+    <div class="columns" >
+      <div class="column" style="width: 50%; float:left;">
+        <table class="table" style="width: 90%;">
+          <thead>
+            <tr>
+              <th>MACRONUTRIENTES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (macronutriente.length > 0) { %>
+              <% for (let macro of macronutriente) { %>
+              <tr>
+              <th>Calorias</th>
+                <td><%= macro.calorias%></td>
+                <tr></tr>
+                <th>Proteinas</th>
+                <td><%= macro.proteinas%></td>
+                <tr></tr>
+                <th>Carbohidratos</th>
+                <td> <%= macro.carbohidratos%></td>
+                <tr></tr>
+                <th>Grasas</th>
+                <td>  <%= macro.grasas%></td>
+              </tr>
+                <% } %>
+            <% } %>
+          </tbody>
+        </table>
+        <br><br>
+        <div class="buttons">
+          <input class="button is-primary" type="button" value="Seleccionar Dieta" onclick="openPopup()">
+          <div class="popup" id="popup">
+            <h2 class="title is-2">¿Seguro que quieres seleccionar la dieta de <%= dietas[0].nombre%>?</h2>
+            <button class="button is-success" type = "submit">Confirmar</button>
+            <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
           </div>
+        </form>
+        <script>
+        let popup = document.getElementById("popup");
+        function openPopup(){
+          popup.classList.add("open-popup");
+        }
+        function closePopup(){
+          popup.classList.remove("open-popup")
+          }
+          </script>
+          <a href="/dietas/" class="button is-danger">Atrás</a>
+        </div>
+      </div>
+      <div class="column" style="width: 50%; float: right; ">
+        <table class="table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>MICRONUTRIENTES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (micronutriente.length > 0) { %>
+              <% for (let micro of micronutriente) { %>
+              <tr>
+              <th>Ceniza</th>
+                <td><%= micro.ceniza%></td>
+                <tr></tr>
+                <th>Total de Fibra</th>
+                <td><%= micro.fibra_total%></td>
+                <tr></tr>
+                <th>Calcio</th>
+                <td> <%= micro.calcio%></td>
+                <tr></tr>
+                <th>Fosforo</th>
+                <td><%= micro.fosforo%></td>
+                <tr></tr>
+                <th>Hierro</th>
+                <td><%= micro.hierro%></td>
+                <tr></tr>
+                <th>Tiamina</th>
+                <td><%= micro.tiamina%></td>
+                <tr></tr>
+                <th>Riboflavina</th>
+                <td><%= micro.riboflavina%></td>
+                <tr></tr>
+                <th>Niacina</th>
+                <td> <%= micro.niacina%></td>
+                <tr></tr>
+                <th>Vitamina C</th>
+                <td><%= micro.vit_c%></td>
+                <tr></tr>
+                <th>Vitamina A</th>
+                <td><%= micro.vit_a%></td>
+                <tr></tr>
+                <th>Ácidos Grasos Mínimos</th>
+                <td> <%= micro.acgrasosmin%></td>
+                <tr></tr>
+                <th>Ácidos Grasos Poliinsaturados</th>
+                <td><%= micro.acgrasospoli%></td>
+                <tr></tr>
+                <th>Ácidos  Grasos Saturados</th>
+                <td><%= micro.acgrasossat%></td>
+                <tr></tr>
+                <th>Colesterol</th>
+                <td><%= micro.colesterol%></td>
+                <tr></tr>
+                <th>Potasio</th>
+                <td><%= micro.potasio%></td>
+                <tr></tr>
+                <th>Sodio</th>
+                <td><%= micro.sodio%></td>
+                <tr></tr>
+                <th>Zinc</th>
+                <td><%= micro.zinc%></td>
+                <tr></tr>
+                <th>Magnesio</th>
+                <td> <%= micro.magnesio%></td>
+                <tr></tr>
+                <th>Vitamina B6</th>
+                <td><%= micro.vit_b6%></td>
+                <tr></tr>
+                <th>Vitamina B12</th>
+                <td><%= micro.vit_b12%></td>
+                <tr></tr>
+                <th>Ácido Fólicos</th>
+                <td> <%= micro.acfolico%></td>
+                <tr></tr>
+                <th>Folato</th>
+                <td><%= micro.folatoeq%></td>
+              </tr>
+                <% } %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+  </div>
+  </form>
+</div>
 
 <%- include('../includes/foot.ejs'); %>

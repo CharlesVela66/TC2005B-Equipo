@@ -3,6 +3,7 @@ const Dieta_Alimento = require('../models/dieta_alimento.model');
 const macro = require('../models/macro.model');
 const micro = require('../models/micronutrientes.model');
 const alimento = require('../models/alimentos.model');
+const Cliente = require('../models/clientes.model');
 
 exports.explorar_dietas = (request, response, next) => {
     Dieta.fetchAll()
@@ -44,6 +45,21 @@ exports.visualizar = (request, response, next) => {
     })
 })
     })
+}
+exports.seleccionar =(request,response, next) =>{
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then((cliente,fieldData)=> {
+    Dieta.fetchOne(request.params.id)
+    .then((dieta,fieldData)=>{
+
+
+
+    })
+
+        
+
+    })
+
 }
 
 
