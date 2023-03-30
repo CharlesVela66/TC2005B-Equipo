@@ -1,5 +1,12 @@
 <%- include('../includes/head.ejs'); %>
 <h1 class = "title is-1 has-text-white-ter">Ejercicios</h1>
+
+<% if (mensaje != '') { %>
+    <div class="notification is-info is-light">
+        <%= mensaje %>
+    </div>
+<% } %>
+
 <% if (ejercicios.length > 0) { %>
     <div class="columns">
         <% let columns = 0; %>
