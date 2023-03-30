@@ -1,8 +1,6 @@
 const Ejercicio = require('../models/ejercicios.model');
 
 exports.get_ejercicios = (request, response, next) => {
- 
-
     Ejercicio.fetchAll()
     .then(([rows, fieldData]) => {
         response.render('ejercicios/agregar_ejercicios', {
@@ -13,7 +11,6 @@ exports.get_ejercicios = (request, response, next) => {
         });
     })
     .catch(error => console.log(error));
-
 }
 
 exports.post_ejercicios = (request, response, next) => {
@@ -26,7 +23,7 @@ exports.post_ejercicios = (request, response, next) => {
     ejercicio.save()
     .then(([rows, fieldData]) => {
 
-        request.session.mensaje = "El ejercicio fue registrado exitosamente.";
+        request.session.mensaje = "El alimento fue registrado exitosamente.";
 
         response.redirect('/ejercicios');
 
