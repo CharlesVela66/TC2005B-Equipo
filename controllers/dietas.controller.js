@@ -6,9 +6,14 @@ const alimento = require('../models/alimentos.model');
 const Cliente = require('../models/clientes.model');
 
 exports.explorar_dietas = (request, response, next) => {
+    const mensaje = request.session.mensaje || '';
+    if (request.session.mensaje) {
+        request.session.mensaje  = '';
+    }
     Dieta.fetchAll()
         .then(([rows, fieldData]) => {
             response.render('dietas/dietas', {
+                mensaje: mensaje,
                 dietas: rows,
                 isLoggedIn: request.session.isLoggedIn || false,
                 nombre: request.session.nombre_usuario || '',
@@ -18,43 +23,53 @@ exports.explorar_dietas = (request, response, next) => {
         .catch(error => console.log(error));
 }
 
-exports.visualizar = (request, response, next) => {
-    //console.log(request.params.id);
+exports.dieta_detalles = (request, response, next) => {
+    request.session.id_dieta = request.params.id;
     Dieta.fetchOne(request.params.id)
-    .then(([dieta, fieldData]) => {
-     //   console.log(dieta),
-    Dieta_Alimento.fetchOne(request.params.id)
-    .then(([dieta_alimento, fieldData]) => {
-      //  console.log(dieta_alimento),
-    macro.fetchOne(request.params.id)
-    .then(([macro, fieldData]) => {
-     //   console.log(macro),
-    micro.fetchOne(request.params.id)
-    .then(([micro, fieldData]) => {
-      //  console.log(micro),
-            response.render('dietas/contenido_d', {
-                dietas: dieta,
-                dieta_alimentos: dieta_alimento,
-                macronutriente: macro,
-                micronutriente: micro,
-                isLoggedIn: request.session.isLoggedIn || false,
-                nombre: request.session.nombre_usuario || '',
-                rol: request.session.rol,
+        .then(([dieta, fieldData]) => {
+            //   console.log(dieta),
+            Dieta_Alimento.fetchOne(request.params.id)
+            .then(([dieta_alimento, fieldData]) => {
+                //  console.log(dieta_alimento),
+                macro.fetchOne(request.params.id)
+                .then(([macro, fieldData]) => {
+                    //   console.log(macro),
+                    micro.fetchOne(request.params.id)
+                    .then(([micro, fieldData]) => {
+                        //  console.log(micro),
+                        response.render('dietas/dieta_detalles', {
+                        dietas: dieta,
+                        dieta_alimentos: dieta_alimento,
+                        macronutriente: macro,
+                        micronutriente: micro,
+                        isLoggedIn: request.session.isLoggedIn || false,
+                        nombre: request.session.nombre_usuario || '',
+                        rol: request.session.rol,
+                        })
+                    })
+                    .catch(error => console.log(error));
+                })
+                .catch(error => console.log(error))
             })
+            .catch(error => console.log(error))
         })
-    })
-})
-    })
+        .catch(error => console.log(error))
 }
-exports.seleccionar =(request,response, next) =>{
+exports.seleccionar_dieta =(request,response, next) =>{
     Cliente.fetchOne(request.session.nombre_usuario)
-    .then((cliente,fieldData)=> {
-    Dieta.fetchOne(request.params.id)
-    .then((dieta,fieldData)=>{
-
-
-
-    })
+    .then(([cliente,fieldData]) => {
+        Dieta.fetchOne(request.session.id_dieta)
+        .then(([dieta, fieldData]) => {
+            if (cliente[0].id_dieta == dieta[0].id_dieta){
+                request.session.mensaje = "Esta dieta ya la tienes seleccionada";
+            }
+            else {
+                Cliente.saveDieta(dieta[0].id_dieta, cliente[0].id_cliente);
+            }
+            response.redirect('/dietas');
+        })
+        .catch(error => console.log(error))
+    .catch(error => console.log(error));
 
         
 
