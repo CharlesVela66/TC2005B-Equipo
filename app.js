@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware para actualizar la hora de última actividad de la sesión
 app.use(function(req, res, next) {
-    if (req.session) {
+    if (req.session && req.session.isLoggedIn) {
       req.session.lastActive = Date.now();
     }
     next();

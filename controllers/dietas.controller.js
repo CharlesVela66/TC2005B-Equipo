@@ -17,7 +17,6 @@ exports.explorar_dietas = (request, response, next) => {
 exports.explorar_dietas_favoritas = (request, response, next) => {
     DietaFavorita.fetchAll()
     .then((rows, fieldData) => {
-        console.log(rows[0]); 
         response.render('dietas/dietas_favoritas', {
             dietas: rows[0],
             isLoggedIn: request.session.isLoggedIn || false,
