@@ -40,7 +40,7 @@ exports.post_nueva_rutina=(request,response,next)=>{
         dia: request.body.dia,
     });
     registro_rutina.save()
-    .then(([rows,fieldData])=>{ //.then(([rows,fieldData])=>{
+    .then(([rows,fieldData])=>{ //.then(([result])=>{
         request.session.mensaje="El registro de la bitácora se añadió correctamente";
         response.redirect('/rutinas/');
     })

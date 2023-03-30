@@ -1,0 +1,24 @@
+<%- include('../includes/head.ejs'); %>
+<h1 class = "title is-1 has-text-white-ter">Nueva Rutina</h1>
+    <form action="/rutinas/nueva-rutina" method="POST" enctype="multipart/form-data">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" rows="4" cols="50"></textarea>
+
+        <label for="duracion">Duración:</label>
+        <input type="text" name="duracion" required>
+
+        <label for="imagen">Imagen:</label>
+        <input type="file" name="imagen" required>
+
+        <label for="ejercicios">Ejercicios:</label>
+        <select name="ejercicios" multiple>
+            <% ejercicios.forEach(ejercicio => { %>
+                <option value="<%= ejercicio.id %>"><%= ejercicio.nombre %></option>
+            <% }) %>
+        </select>
+        <input type="submit" value="Crear Rutina">
+    </form>
+<%- include('includes/foot.ejs') %>

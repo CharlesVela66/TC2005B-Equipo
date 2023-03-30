@@ -8,4 +8,6 @@ router.get('/', rutinasController.explorar_rutinas);
 
 router.get('/favoritas', rutinasController.explorar_rutinas_favoritas);
 
+router.get('/nueva_rutina', rutinasController.nueva_rutina);
+
 module.exports = router;
