@@ -1,18 +1,5 @@
 const Alimento = require('../models/alimentos.model');
 
-exports.ver_alimentos = (request, response, next) => {
-    Alimento.fetchAll()
-    .then(([rows, fieldData]) => {
-        response.render('alimentos/alimentos', {
-            alimentos: rows,
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
-    })
-    .catch(error => console.log(error));
-}
-
 exports.get_alimentos = (request, response, next) => {
     Alimento.fetchAll()
     .then(([rows, fieldData]) => {
@@ -24,7 +11,6 @@ exports.get_alimentos = (request, response, next) => {
         });
     })
     .catch(error => console.log(error));
-
 }
 
 exports.post_alimentos = (request, response, next) => {
@@ -39,10 +25,32 @@ exports.post_alimentos = (request, response, next) => {
 
         request.session.mensaje = "El alimento fue registrado exitosamente.";
 
-        request.session.ultimo_alimento = alimento.descripcion;
-
         response.redirect('/alimentos/');
+
     })
     .catch((error) => {console.log(error)});
 
 };
+
+exports.ver_alimentos = (request, response, next) => {
+    
+    let mensaje = '';
+
+    if (request.session.mensaje) {
+        mensaje = request.session.mensaje;
+        request.session.mensaje = '';
+    }
+
+    Alimento.fetchAll()
+    .then(([rows, fieldData]) => {
+        response.render('alimentos/alimentos', {
+            alimentos: rows,
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+            mensaje: mensaje
+        });
+        
+    })
+    .catch(error => console.log(error));
+}

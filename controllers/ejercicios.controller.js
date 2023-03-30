@@ -1,8 +1,22 @@
 const Ejercicio = require('../models/ejercicios.model');
 
-exports.get_ejercicios = (request, response, next) => {
- 
+exports.visualizar = (request, response, next) => {
+    //console.log(request.params.id);
+    Ejercicio.fetchOne(request.params.id)
+    .then(([ejercicio, fieldData]) => {
 
+            response.render('ejercicios/contenido_e', {
+                ejercicios: ejercicio,
+                isLoggedIn: request.session.isLoggedIn || false,
+                nombre: request.session.nombre_usuario || '',
+                rol: request.session.rol,
+            })
+        })
+    }
+
+    
+
+exports.get_ejercicios = (request, response, next) => {
     Ejercicio.fetchAll()
     .then(([rows, fieldData]) => {
         response.render('ejercicios/agregar_ejercicios', {
@@ -13,7 +27,6 @@ exports.get_ejercicios = (request, response, next) => {
         });
     })
     .catch(error => console.log(error));
-
 }
 
 exports.post_ejercicios = (request, response, next) => {

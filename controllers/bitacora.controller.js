@@ -35,17 +35,12 @@ exports.post_bitacora = (request,response,next) => {
     // Obtenemos todos los datos del cliente pasandole como argumento su nombre de usuario
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
-        // Si el usuario no ha seleccionado una rutina no puede guardarse el registro
-        if (!rows[0].id_rutina){
-            request.session.mensaje = '¡Selecciona una rutina para agregar regsitros a tu bitácora!';
-            response.redirect('/home');
-        }
         // Si tiene una rutina, se puede guardar el registro
-        else {
             // Se crea un nuevo registro de bitacora
             const registro = new Bitacora({
                 id_cliente: rows[0].id_cliente,
                 id_rutina: rows[0].id_rutina,
+                fecha: request.body.fecha,
                 descr_sesion: request.body.descr_sesion,
                 nivel_satisf: request.body.nivel_satisf,
                 comentarios: request.body.comentarios,
@@ -57,7 +52,6 @@ exports.post_bitacora = (request,response,next) => {
                 response.redirect('/home');
             })
             .catch((error) => {console.log(error)});
-        }
         
     })
     .catch((error) => {console.log(error)});
