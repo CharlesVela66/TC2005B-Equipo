@@ -10,4 +10,8 @@ router.get('/agregar_ejercicios', ejerciciosController.get_ejercicios);
 
 router.post('/agregar_ejercicios', ejerciciosController.post_ejercicios)
 
+router.get('/:id', ejerciciosController.visualizar);
+
+router.get('/', ejerciciosController.visualizar);
+
 module.exports = router;
