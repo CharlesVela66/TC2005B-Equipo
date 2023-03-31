@@ -6,9 +6,14 @@ const RegistroRutina = require('../models/rutina_ejercicio.model');
 const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
+    const mensaje = request.session.mensaje || '';
+    if (request.session.mensaje) {
+        request.session.mensaje  = '';
+    }
     Rutina.fetchAll()
     .then(([rows, fieldData]) => {
         response.render('rutinas/rutinas', {
+            mensaje: mensaje,
             rutinas: rows,
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
