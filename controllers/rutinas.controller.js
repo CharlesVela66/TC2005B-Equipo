@@ -110,7 +110,6 @@ exports.post_nueva_rutina=(request,response,next)=>{
             .then(([ejerciciosTotal, fieldData]) => {
                 const savePromises = ejerciciosTotal.map((ejercicio) => {
                     if (request.body[ejercicio.id_ejercicio]){
-                        console.log("Yes")
                         const ejercicio = new Rutina_Ejercicio({
                             id_rutina: rutina[0].id_rutina,
                             id_ejercicio: ejercicio.id_ejercicio,
