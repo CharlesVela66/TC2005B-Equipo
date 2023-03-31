@@ -1,6 +1,7 @@
 const ClienteMedidas = require("../models/cliente_medicion.model");
 const Cliente = require("../models/clientes.model");
 
+
 exports.get_progreso = (request,response,next) => {
     console.log("Progeso :3")
     const mensaje = request.session.mensaje || '';
@@ -19,6 +20,8 @@ exports.get_progreso = (request,response,next) => {
         })
     }) 
     .catch((error) => {console.log(error)});
+
+    
 }
 
 exports.post_progreso = (request,response,next) => {

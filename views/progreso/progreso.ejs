@@ -6,51 +6,66 @@
 <% } %>
 <% if (rol == "Cliente") { %>
 <h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
+<script>
+    var selectValue; // Variable global
+    function admSelectCheck() {
+        selectValue = document.getElementById("nombre").value;
+        document.getElementById("valorSeleccionado").innerHTML = selectValue;
+        return selectValue
+    }
+</script>
+<div class = "columns">
+    <columns style="width: 25%;">
+        <form id="myForm" action="/home" method="post" autocomplete="off">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <div class="select is-info is-medium">
+                <select id="nombre" onchange="admSelectCheck()">
+                    <% registros.forEach(registro => { %>
+                        <option value="<%= registro.nombre %>"><%= registro.nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+        <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+            <caption>Cambios en el tiempo</caption>
+            <colgroup>
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 50%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="has-text-white-ter">Fecha</th>
+                    <th class="has-text-white-ter">Medida</th>
+                </tr>
+            </thead>
+            <tbody>
 
-<div class = "container">
-    <form action="/home" method="POST" autocomplete="off">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-        <div class="select is-info is-medium">
-            <select id = "nombre">
-                <% registros.forEach(registro => { %>
-                    <option value="<% registro.nombre %>"><%= registro.nombre %></option>
-                <% }) %>
-            </select>
-        </div>
-    <table class = "table has-text-white-ter has-background-black-ter" style="width: 25%;">
-        <caption>Cambios en el tiempo</caption>
-        <colgroup>
-            <col span="1" style="width: 50%;">
-            <col span="1" style="width: 50%;">
-         </colgroup>
-        <thead>
-            <tr>
-                <th class="has-text-white-ter">Fecha</th>
-                <th class="has-text-white-ter">Medida</th>
-            </tr>
-        </thead>
-        <tbody>
-
-        <% if (registros.length > 0) { %>
+            <% if (registros.length > 0) { %>
                 <% for (let registro of registros) { %>
-                    <tr> 
-                    <th class="has-text-white-ter"> <%= registro.fecha %></th>
-                    <td> <%= registro.medida %></td>
-                    </tr>
+                    <% if (registro.nombre == registro.nombre) { %> <!-- Usando la variable global selectValue -->
+                        <tr> 
+                            <th class="has-text-white-ter"> <%= registro.fecha %></th>
+                            <td> <%= registro.medida %></td>
+                        </tr>
+                    <% } %>
                 <% } %>
 
-        <% } %>
+            <% } %>
         
-        </tbody>
-    </table>
-    <input class="button is-rounded is-info" type="submit" value="Graficar">
-    </form>
-    <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
-
-    </section>
+            </tbody>
+        </table>
+        </form>
+    </columns>
+    <columns  style="width: 65%;">
+        <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
+            <h1>Holaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+        </section>
+        <div id="valorSeleccionado"></div>
+    </columns>
+    
 </div>
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title is-1 has-text-white-ter"></h1>
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
 <% } %>
 <%- include('../includes/foot.ejs'); %>
+
