@@ -18,8 +18,9 @@ module.exports = class Dieta {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-            SELECT id_dieta,nombre, tipo_dieta, Url_image
-            FROM dieta
+            SELECT id_dieta,nombre, calorias, Url_image
+            FROM dieta d, macronutrientes m
+            WHERE m.id_macro = d.id_macro
         `);
     }
 
