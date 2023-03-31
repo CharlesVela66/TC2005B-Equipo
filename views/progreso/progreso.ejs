@@ -25,7 +25,7 @@
                     <% }) %>
                 </select>
             </div>
-        <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+        <table class = "table has-text-white-ter has-background-black-ter" id="datos" style="width: 100%;">
             <caption>Cambios en el tiempo</caption>
             <colgroup>
                 <col span="1" style="width: 50%;">
@@ -54,12 +54,63 @@
             </tbody>
         </table>
         </form>
+        <script>
+            const table = document.getElementById('datos');
+            const labels = Array.from(table.querySelectorAll('tbody tr td:first-child')).map(td => td.textContent);
+            const data = Array.from(table.querySelectorAll('tbody tr td:last-child')).map(td => parseInt(td.textContent));
+
+            const neonPurple = 'rgba(128, 0, 128, 0.5)';
+            const neonPurpleBorder = 'rgba(128, 0, 128, 1)';
+
+            const chart = new Chart('grafico', {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "nombre",
+                    data: data,
+                    backgroundColor: neonPurple,
+                    borderColor: neonPurpleBorder,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor: 'white'
+                        },
+                        gridLines: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: 'white'
+                        },
+                        gridLines: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                        fontColor: 'white'
+                    }
+                }
+            }
+            });
+        </script>
     </columns>
     <columns  style="width: 65%;">
         <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
-            <h1>Holaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+            <h1 >Grafica</h1>
+            <div>
+                <canvas id="grafico"></canvas>
+            </div>
+            <div id="valorSeleccionado"></div>
         </section>
-        <div id="valorSeleccionado"></div>
     </columns>
     
 </div>
