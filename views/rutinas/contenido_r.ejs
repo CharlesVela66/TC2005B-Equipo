@@ -1,22 +1,62 @@
 <%- include('../includes/head.ejs'); %>
-    <div class="container" >
-        <h1 class="title is-1 has-text-white-ter">Contenido</h1>
-        <div class="card">
-            <header class="card-header" style="background-color: aqua;">
-              <p class="card-header-title">
-                Ejercicios
-              </p>
-            </header>
-            <div class="box">
 
-            </div>
-
-              </div>
-              <br><br><br><br><br>
-              <div class="buttons">
-              <button class="button is-primary">Seleccionar Dieta</button>
-              <a href="/rutinas/" class="button is-danger">Atrás</a>
-            </div>
-          </div>
+<div class="container" style="margin-top: 20px;" >
+  <form action="/rutinas/hola" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+  <div class="card">
+    <header class="card-header" style="background-color: aqua;">
+      <p class="card-header-title" style="font-size: 30px;" >
+        <%= rutina[0].nombre%>
+      </p>
+    </header>
+  </div>
+  <div class="box">
+    <p>DESCRIPCION: <%= rutina[0].descripcion%></p>
+    <p>TIPO RUTINA: <%= rutina[0].tiporutina %></p>
+    <table class="table" width="100%">
+      <thead>Ejercicios</thead>
+      <thead>
+        <tr>
+          <th>Descripcion</th>
+          <th><abbr title="Played">Link</abbr></th>
+          <th><abbr title="Won">Series</abbr></th>
+          <th><abbr title="Won">Repeticiones</abbr></th>
+          <th><abbr title="Won">Día</abbr></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (rutina_ejercicio.length > 0) { %>
+          <% for (let rutina_ejercicios of rutina_ejercicio) { %>
+            <tr>
+            <td><%= rutina_ejercicios.descripcion%></td>
+            <td> <%= rutina_ejercicios.video_ejercicio%></td>
+            <td> <%= rutina_ejercicios.series%></td>
+            <td> <%= rutina_ejercicios.repeticiones%></td>
+            <td> <%= rutina_ejercicios.dia%></td>
+          </tr>
+            <% } %>
+        <% } %>
+      </tbody>
+    </table>
+    <br><br>
+    <div class="buttons">
+      <input class="button is-primary" type="button" value="Seleccionar Rutina" onclick="openPopup()">
+      <div class="popup" id="popup">
+        <h2 class="title is-2">¿Seguro que quieres seleccionar la rutina de <%= rutina[0].nombre%>?</h2>
+        <button class="button is-success" type = "submit">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+      </div>
+    </form>
+    <script>
+    let popup = document.getElementById("popup");
+    function openPopup(){
+      popup.classList.add("open-popup");
+    }
+    function closePopup(){
+      popup.classList.remove("open-popup")
+      }
+      </script>
+      <a href="/rutinas/" class="button is-danger">Atrás</a>
+</div>
 
 <%- include('../includes/foot.ejs'); %>

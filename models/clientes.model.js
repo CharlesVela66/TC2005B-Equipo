@@ -22,7 +22,15 @@ module.exports = class Cliente {
           `UPDATE cliente SET id_dieta = ? WHERE id_cliente = ?`,
           [dieta,cliente]
         );
-      }
+    }
+
+    static saveRutina(rutina, cliente){
+        return db.execute(
+            `UPDATE cliente SET id_rutina = ? WHERE id_cliente = ?`,
+            [rutina,cliente]
+        );
+    }
+
       
 
     // Consulta a la base de datos de la info de un cliente a partir de su username

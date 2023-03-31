@@ -31,13 +31,22 @@ module.exports = class RegistroRutina {
 
     static fetchOne(id_rutina){
         return db.execute(`
-            SELECT r.nombre, r.tiporutina, r.descripcion, r.URL_Image, re.series, re.repeticiones, re.dia, e.descripcion AS Ejercicio, e.video_ejercicio
-            FROM rutina r, ejercicio e, rutinaejercicio re
-            WHERE re.id_rutina=r.id_rutina AND e.id_ejercicio=re.id_ejercicio AND r.id_rutina =?
-            ORDER BY r.nombre ASC
+        SELECT r.nombre, r.tiporutina, r.descripcion, r.URL_Image, re.series, re.repeticiones, re.dia, e.descripcion AS Ejercicio, e.video_ejercicio
+        FROM rutina r, ejercicio e, rutinaejercicio re
+        WHERE re.id_rutina=r.id_rutina AND e.id_ejercicio=re.id_ejercicio AND r.id_rutina =?
+        ORDER BY r.nombre ASC
         `, [id_rutina]
         );
     }
+    static fetchOne(id){
+        return db.execute(`
+        SELECT e.descripcion, e.video_ejercicio, re.series, re.repeticiones, re.dia
+        FROM rutinaejercicio re, ejercicio e
+        Where re.id_rutina=? AND re.id_ejercicio=e.id_ejercicio
+        `, [id]
+        );
+
+}
 
     static fetch(id_rutina){
         if (id_rutina){

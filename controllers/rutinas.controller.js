@@ -3,6 +3,7 @@ const Ejercicio= require('../models/ejercicios.model');
 const Rutina_Ejercicio= require ('../models/rutina_ejercicio.model');
 const RutinaFavorita = require('../models/rutinas_favoritas.model');
 const RegistroRutina = require('../models/rutina_ejercicio.model');
+const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
     Rutina.fetchAll()
@@ -17,29 +18,50 @@ exports.explorar_rutinas = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
-exports.visualizar_rutinas = (request,response,next) => {
-    //console.log(request.params.id);
-        //console.log(request.params.id);
-        Rutina.fetchOne(request.params.id)
-        .then(([rows, fieldData]) => {
-            console.log(rows);
-        Ejercicio.fetchOne(request.params.id)
-        .then(([rows, fieldData]) => {
-            console.log(rows);
-        Rutina_Ejercicio.fetchOne(request.params.id)
-        .then(([rows, fieldData]) => {
-            console.log(rows);
-                response.render('rutinas/contenido_r', {
-                    dieta: rows,
-                    dieta_alimento: rows,
-                    macro: rows,
-                    micro: rows,
-                    isLoggedIn: request.session.isLoggedIn || false,
-                    nombre: request.session.nombre_usuario || '',
-                    rol: request.session.rol,
+exports.visualizar_rutinas= (request, response, next) => {
+    request.session.id_rutina = request.params.id;
+    Rutina.fetchOne(request.params.id)
+        .then(([rutinas, fieldData]) => {
+            //   console.log(dieta),
+            Rutina_Ejercicio.fetchOne(request.params.id)
+            .then(([rutinas_ejercicios, fieldData]) => {
+                //  console.log(dieta_alimento),
+                Ejercicio.fetchOne(request.params.id)
+                .then(([ejercicios, fieldData]) => {
+                    //   console.log(macro),
+                        response.render('rutinas/contenido_r', {
+                        rutina: rutinas,
+                        rutina_ejercicio: rutinas_ejercicios,
+                        ejercicio: ejercicios,
+                        isLoggedIn: request.session.isLoggedIn || false,
+                        nombre: request.session.nombre_usuario || '',
+                        rol: request.session.rol,
+                        })
+                    })
+                    .catch(error => console.log(error));
                 })
+                .catch(error => console.log(error))
             })
+            .catch(error => console.log(error))
+}
+exports.seleccionar_rutinas=(request,response, next) =>{
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([cliente,fieldData]) => {
+        Rutina.fetchOne(request.session.id_rutina)
+        .then(([rutina, fieldData]) => {
+            if (cliente[0].id_rutina == rutina[0].id_rutina){
+                request.session.mensaje = "Esta dieta ya la tienes seleccionada";
+            }
+            else {
+                Cliente.saveRutina(rutina[0].id_rutina, cliente[0].id_cliente);
+            }
+            response.redirect('/rutinas');
         })
+        .catch(error => console.log(error))
+    .catch(error => console.log(error));
+
+        
+
     })
 
 }
