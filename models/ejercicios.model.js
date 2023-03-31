@@ -35,4 +35,9 @@ module.exports = class Ejercicio {
 
     }
 
+
+    static fetchOneByDescripcion(descripcion) {
+        return db.execute('SELECT * FROM ejercicio WHERE descripcion = ?', [descripcion]);
+      }
+
 }

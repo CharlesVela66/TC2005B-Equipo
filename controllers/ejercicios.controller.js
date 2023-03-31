@@ -1,5 +1,10 @@
 const Ejercicio = require('../models/ejercicios.model');
 
+function validarDescripcion(descripcion) {
+    const patron = /^[a-zA-Z\s]*$/;
+    return patron.test(descripcion);
+  }
+
 exports.visualizar = (request, response, next) => {
     //console.log(request.params.id);
     Ejercicio.fetchOne(request.params.id)
@@ -30,23 +35,40 @@ exports.get_ejercicios = (request, response, next) => {
 }
 
 exports.post_ejercicios = (request, response, next) => {
-
-    const ejercicio = new Ejercicio({
-        descripcion: request.body.descripcion,
-        video_ejercicio: request.body.video_ejercicio,
-    });
-
-    ejercicio.save()
-    .then(([rows, fieldData]) => {
-
-        request.session.mensaje = "El ejercicio fue registrado exitosamente.";
-
-        response.redirect('/ejercicios');
-
-    })
-    .catch((error) => {console.log(error)});
-
-};
+    const descripcion = request.body.descripcion.trim();
+    const video_ejercicio = request.body.video_ejercicio.trim();
+  
+    if (!validarDescripcion(descripcion)) {
+      request.session.mensaje = "La descripción solo puede contener letras y espacios.";
+      response.redirect('/ejercicios');
+      return;
+    }
+  
+    Ejercicio.fetchOneByDescripcion(descripcion)
+      .then(([rows, fieldData]) => {
+        if (rows.length > 0) {
+          request.session.mensaje = "Ya existe un ejercicio con la misma descripción.";
+          response.redirect('/ejercicios');
+        } else {
+          const ejercicio = new Ejercicio({
+            descripcion: descripcion,
+            video_ejercicio: video_ejercicio,
+          });
+  
+          ejercicio.save()
+            .then(([rows, fieldData]) => {
+              request.session.mensaje = "El ejercicio fue registrado exitosamente.";
+              response.redirect('/ejercicios');
+            })
+            .catch((error) => {
+              console.log(error);
+              request.session.mensaje = "Error al registrar el ejercicio.";
+              response.redirect('/ejercicios');
+            });
+        }
+      })
+      .catch(error => console.log(error));
+  };
 
 exports.ver_ejercicios = (request, response, next) => {
    

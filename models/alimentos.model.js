@@ -32,4 +32,8 @@ module.exports = class Alimento {
     `,[id])
 
     }
+
+    static fetchOneByNombre(nombre) {
+        return db.execute('SELECT * FROM alimento WHERE nombre = ?', [nombre]);
+    }
 }
