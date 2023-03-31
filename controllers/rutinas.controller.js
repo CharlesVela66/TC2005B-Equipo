@@ -50,7 +50,7 @@ exports.seleccionar_rutinas=(request,response, next) =>{
         Rutina.fetchOne(request.session.id_rutina)
         .then(([rutina, fieldData]) => {
             if (cliente[0].id_rutina == rutina[0].id_rutina){
-                request.session.mensaje = "Esta dieta ya la tienes seleccionada";
+                request.session.mensaje = "Esta rutina ya la tienes seleccionada";
             }
             else {
                 Cliente.saveRutina(rutina[0].id_rutina, cliente[0].id_cliente);
@@ -69,7 +69,6 @@ exports.seleccionar_rutinas=(request,response, next) =>{
 exports.nueva_rutina = (request, response, next) => {
     Ejercicio.fetchAll()
     .then(([rows, fieldData]) => {
-        console.log(rows)
         response.render('rutinas/nueva_rutina',{
             ejercicios: rows,
             isLoggedIn: request.session.isLoggedIn || false,
@@ -81,7 +80,7 @@ exports.nueva_rutina = (request, response, next) => {
 }
 
 exports.post_nueva_rutina=(request,response,next)=>{
-    console.log(request.file);
+/*    console.log(request.file);
 
     const registro_rutina=new RegistroRutina({
         id_rutina: request.body.id_rutina,
@@ -94,6 +93,45 @@ exports.post_nueva_rutina=(request,response,next)=>{
     .then(([rows,fieldData])=>{ //.then(([result])=>{
         request.session.mensaje="El registro de la bitácora se añadió correctamente";
         response.redirect('/rutinas/');
+    })
+    .catch((error)=>{console.log(error)});*/
+    const rutina = new Rutina ({
+        nombre: request.body.nombre,
+        tiporutina: request.body.tiporutina,
+        descripcion:  request.body.descripcion,
+    })
+    console.log(rutina);
+    rutina.save()
+    .then(([rows, fieldData]) => {
+        console.log(rows);
+        Rutina.fetchOneByNombre(request.body.nombre)
+        .then(([rutina, fieldData]) => {
+            Ejercicio.fetchAll()
+            .then(([ejerciciosTotal, fieldData]) => {
+                const savePromises = ejerciciosTotal.map((ejercicio) => {
+                    if (request.body[ejercicio.id_ejercicio]){
+                        console.log("Yes")
+                        const ejercicio = new Rutina_Ejercicio({
+                            id_rutina: rutina[0].id_rutina,
+                            id_ejercicio: ejercicio.id_ejercicio,
+                            series: request.body.series,
+                            repeticiones: request.body.repeticiones,
+                            dia: request.body.dia,
+                        })
+                        return ejercicio.save();
+                    }
+                    return Promise.resolve(null);
+                });
+                Promise.all(savePromises)
+                .then(() => {
+                    console.log('Todos los registros guardados');
+                    response.redirect('/home');
+                })
+                .catch((error) => {console.log(error)});
+            })
+            .catch((error)=>{console.log(error)});
+        })
+        .catch((error)=>{console.log(error)});
     })
     .catch((error)=>{console.log(error)});
 }

@@ -1,20 +1,20 @@
 <%- include('../includes/head.ejs'); %>
 <div class="container is-fluid">
     <h1 class = "title is-1 has-text-white-ter">Nueva Rutina</h1>
-    <form action="/rutinas/nueva_rutina" method="POST" enctype="multipart/form-data">
+    <form action="/rutinas/nueva_rutina" method="POST" >
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
         <label for = "nombre">Nombre:</label>
-        <input type="text" name="nombre" required><br><br>
+        <input type="text" id = "nombre" name="nombre" required><br><br>
 
         <label for = "tiporutina">Tipo de la rutina:</label>
-        <textarea class="textarea is-hovered" placeholder="Ingrese el tipo de la rutina" name="descripcion" rows="1" cols="15"></textarea><br><br>
+        <textarea class="textarea is-hovered" placeholder="Ingrese el tipo de la rutina" id= "tiporutina" name="tiporutina" rows="1" cols="15"></textarea><br><br>
 
         <label for = "descripcion">Descripción:</label>
-        <textarea class="textarea is-hovered" placeholder="Ingrese la descripción de la rutina" name="descripcion" rows="3" cols="50"></textarea><br><br>
+        <textarea class="textarea is-hovered" placeholder="Ingrese la descripción de la rutina" id = "descripcion"name="descripcion" rows="3" cols="50"></textarea><br><br>
 
         <label for = "imagen">Imagen:</label>
-        <input type = "file" name="imagen" required><br><br>
+        <input type = "file" name="imagen"><br><br>
 
         <label for="ejercicios">Ejercicios:</label><br>
         <% ejercicios.forEach(ejercicio => { %>
@@ -23,15 +23,15 @@
             <input type="checkbox" id="<%= ejercicio.id_ejercicio %>" onclick="selecEjercicio(id)"><br>
             <p id = "dia <%= ejercicio.id_ejercicio %>" style="display:none">
                 Día (Lun/Mar/Mie/Jue/Vie/Sab/Dom)
-                <input type="text" placeholder="Ej. Lun">
+                <input type="text" placeholder="Ej. Lun" id="dia" name="dia">
             </p>
             <p id = "series <%= ejercicio.id_ejercicio %>" style="display:none">
                 Series
-                <input type="number" step="1" min="1" max="1000">
+                <input type="number" step="1" min="1" max="1000" id="series" name="series">
             </p>
             <p id = "repeticiones <%= ejercicio.id_ejercicio %>" style="display:none">
                 Repeticiones
-                <input type="number" step="1" min="1" max="1000">
+                <input type="number" step="1" min="1" max="1000" id="repeticiones" name="repeticiones">
             </p>
         <% }) %>
         <!--</select>--><br><br><br>

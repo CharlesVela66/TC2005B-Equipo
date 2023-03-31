@@ -10,6 +10,8 @@ router.get('/favoritas', rutinasController.explorar_rutinas_favoritas);
 
 router.get('/nueva_rutina', rutinasController.nueva_rutina);
 
+router.post('/nueva_rutina', rutinasController.post_nueva_rutina);
+
 router.get('/:id', rutinasController.visualizar_rutinas);
 
 router.post('/:id',rutinasController.seleccionar_rutinas);
