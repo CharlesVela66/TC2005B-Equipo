@@ -107,5 +107,3 @@ exports.ver_ejercicios = (request, response, next) => {
     .catch(error => console.log(error));
 
 }
-
-
