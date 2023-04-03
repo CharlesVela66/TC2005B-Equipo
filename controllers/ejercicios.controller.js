@@ -5,6 +5,18 @@ function validarDescripcion(descripcion) {
     return patron.test(descripcion);
   }
 
+function embedLink(link) {
+    var newLink = link.replace("watch?v=", "embed/");
+    return newLink;
+  } 
+
+function addHttps(link) {
+    if (!link.includes("https://www.") && !link.includes("http://www.")) {
+      link = "https://www." + link;
+    }
+    return link;
+  }
+
 exports.visualizar = (request, response, next) => {
     //console.log(request.params.id);
     Ejercicio.fetchOne(request.params.id)
@@ -17,9 +29,7 @@ exports.visualizar = (request, response, next) => {
                 rol: request.session.rol,
             })
         })
-    }
-
-    
+    } 
 
 exports.get_ejercicios = (request, response, next) => {
     Ejercicio.fetchAll()
@@ -44,6 +54,10 @@ exports.post_ejercicios = (request, response, next) => {
       return;
     }
   
+    const nuevoEnlace = embedLink(video_ejercicio);
+
+    const nuevoNuevoEnlace = addHttps(nuevoEnlace);
+  
     Ejercicio.fetchOneByDescripcion(descripcion)
       .then(([rows, fieldData]) => {
         if (rows.length > 0) {
@@ -52,7 +66,7 @@ exports.post_ejercicios = (request, response, next) => {
         } else {
           const ejercicio = new Ejercicio({
             descripcion: descripcion,
-            video_ejercicio: video_ejercicio,
+            video_ejercicio: nuevoNuevoEnlace, // Usamos el nuevo enlace de YouTube
           });
   
           ejercicio.save()
