@@ -1,7 +1,7 @@
 const Dieta = require('../models/dietas_favoritas.model');
 const Rutina = require('../models/rutinas_favoritas.model')
 //const Perfil =require('../models/perfil.model');
-//const Usuario= require('../models/usuario.model');
+const Usuario= require('../models/usuario.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
@@ -48,3 +48,18 @@ exports.ver_perfil = (request, response, next) => {
     })
     .catch(error => console.log(error));
 }
+
+/*exports.actualizarPerfil = (request, response, next) => {
+    Usuario.fetchById()
+    .then(([rows, fieldData]) => {
+        usuariosRows.push(rows[0]);
+        response.render('perfil/editar_perfil', {
+            usuario: usuariosRows[0],
+            isLoggedIn: request.session.isLoggedIn[0] || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+        })
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+}*/

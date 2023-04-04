@@ -14,8 +14,7 @@ app.use(function(req, res, next) {
       req.session.lastActive = Date.now();
     }
     next();
-  });
-
+});
 // Middleware para comprobar si la sesión ha expirado
 app.use(function(req, res, next) {
     if (req.session && typeof req.session.lastActive !== 'undefined' && (Date.now() - req.session.lastActive) > 60000) {
