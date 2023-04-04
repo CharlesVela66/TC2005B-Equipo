@@ -3,30 +3,45 @@ const Rutina = require('../models/rutinas_favoritas.model')
 //const Perfil =require('../models/perfil.model');
 const Usuario= require('../models/usuario.model');
 
-/*exports.get_editar=(request, response, next) =>{
-
+exports.get_editar = (request, response, next) => {
     Usuario.fetchOne(request.params.id)
-    .then(([rows, fieldData]))=>{
-        if(rows.length ==1){
-            const usuario = new Usuario({
-                nombre: nuevo_usuario.nombre,
-                apellido: nuevo_usuario.apellido,
-                nombre_usuario = nuevo_usuario.nombre_usuario,
-                this.correo = nuevo_usuario.correo,
-                this.contrasena = nuevo_usuario.contrasena,
-                this.foto_perfil = nuevo_usuario.foto_perfil || null;
-                this.sexo = nuevo_usuario.sexo;
-                this.fecha_nacimiento = nuevo_usuario.fecha_nacimiento;
-            })
+    .then(([rows, fieldData]) => {
+        if (rows.length == 1) {
+            const usuario = rows[0];
+            response.render('editar', {
+                usuario: usuario,
+                isLoggedIn: request.session.isLoggedIn || false,
+                nombre: request.session.nombre_usuario || '',
+                rol: request.session.rol,
+            });
+        } else {
+            response.redirect('/perfil/');
         }
-    }
+    })
+    .catch(error => console.log(error));
 };
+
+exports.ver_informacion = (request, response, next) => {
+    request.session.id_usuario = request.params.id;
+    Usuario.fetchOne(request.params.id)
+    .then(([usuario, fieldData]) => {
+        //console.log(usuario),
+        response.render('ver_informacion', {
+            usuario: usuario,
+            isLoggedIn: req.session.isLoggedIn || false,
+            nombre: req.session.nombre_usuario || '',
+            rol: req.session.rol,
+        });
+    })
+    .catch(err => console.log(err));
+};
+  
 
 exports.post_editar = (request, response, next) => {
     console.log("Datos para editar");
     console.log(request.body);
 
-};*/
+};
 
 exports.ver_perfil = (request, response, next) => {
     let dietasRows = new Array;

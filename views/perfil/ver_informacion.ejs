@@ -1,0 +1,24 @@
+<%- include('../includes/head.ejs'); %>
+
+<h1 class="title is-1">Información del Usuario</h1>
+
+<div class="card">
+  <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-128x128">
+          <img src="<%= usuario.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-4"><%= usuario.nombre %> <%= usuario.apellido %></p>
+        <p class="subtitle is-6"><%= usuario.nombre_usuario %></p>
+        <p class="subtitle is-6"><%= usuario.correo %></p>
+        <p class="subtitle is-6"><%= usuario.sexo %></p>
+        <p class="subtitle is-6"><%= usuario.fecha_nacimiento %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../includes/foot.ejs'); %>
