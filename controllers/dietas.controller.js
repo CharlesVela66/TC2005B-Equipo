@@ -2,7 +2,6 @@ const Dieta = require('../models/dietas.model');
 const Dieta_Alimento = require('../models/dieta_alimento.model');
 const macro = require('../models/macro.model');
 const micro = require('../models/micronutrientes.model');
-const alimento = require('../models/alimentos.model');
 const Cliente = require('../models/clientes.model');
 
 exports.explorar_dietas = (request, response, next) => {
@@ -79,7 +78,7 @@ exports.seleccionar_dieta =(request,response, next) =>{
 
 
 exports.explorar_dietas_favoritas = (request, response, next) => {
-    DietaFavorita.fetchAll()
+    Dieta.fetchAllFavoritas()
     .then((rows, fieldData) => {
         console.log(rows[0]); 
         response.render('dietas/dietas_favoritas', {

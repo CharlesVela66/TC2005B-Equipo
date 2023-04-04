@@ -18,9 +18,15 @@ module.exports = class Dieta {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-            SELECT id_dieta,nombre, calorias, Url_image
+            SELECT d.id_dieta, d.nombre, m.calorias, Url_image
             FROM dieta d, macronutrientes m
             WHERE m.id_macro = d.id_macro
+            AND id_dieta NOT IN (
+                SELECT d.id_dieta
+                FROM dieta d, dietasfavoritas df
+                WHERE d.id_dieta = df.id_dieta
+                AND df.id_cliente = 1
+            );
         `);
     }
 
@@ -31,5 +37,14 @@ module.exports = class Dieta {
         WHERE id_dieta =?
         `,[id]);
    } 
+
+   static fetchAllFavoritas() {
+    return db.execute(`
+    SELECT d.nombre, d.tipo_dieta
+    FROM dieta d, dietasfavoritas df
+    WHERE d.id_dieta = df.id_dieta
+    AND df.id_cliente = 1;
+`);
+}
 
 }
