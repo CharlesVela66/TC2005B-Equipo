@@ -5,64 +5,60 @@
     </div>
 <% } %>
 <% if (rol == "Cliente") { %>
-<h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
-<script>
-    var selectValue; // Variable global
-    function admSelectCheck() {
-        selectValue = document.getElementById("nombre").value;
-        document.getElementById("valorSeleccionado").innerHTML = selectValue;
-        return selectValue
-    }
-</script>
-<div class = "columns">
-    <columns style="width: 25%;">
-        <form id="myForm" action="/home" method="post" autocomplete="off">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-            <div class="select is-info is-medium">
-                <select id="nombre" onchange="admSelectCheck()">
-                    <% registros.forEach(registro => { %>
-                        <option value="<%= registro.nombre %>"><%= registro.nombre %></option>
-                    <% }) %>
-                </select>
-            </div>
-        <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
-            <caption>Cambios en el tiempo</caption>
-            <colgroup>
-                <col span="1" style="width: 50%;">
-                <col span="1" style="width: 50%;">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th class="has-text-white-ter">Fecha</th>
-                    <th class="has-text-white-ter">Medida</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            <% if (registros.length > 0) { %>
-                <% for (let registro of registros) { %>
-                    <% if (registro.nombre == registro.nombre) { %> <!-- Usando la variable global selectValue -->
-                        <tr> 
-                            <th class="has-text-white-ter"> <%= registro.fecha %></th>
-                            <td> <%= registro.medida %></td>
-                        </tr>
+    <h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
+    <script>
+        var selectValue; // Variable global
+        function admSelectCheck() {
+            selectValue = document.getElementById("nombre").value;
+            document.getElementById("valorSeleccionado").innerHTML = selectValue;
+            return selectValue
+        }
+    </script>
+    <div class = "columns">
+        <columns style="width: 25%;">
+            <form id="myForm" action="/home" method="post" autocomplete="off">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <div class="select is-info is-medium">
+                    <select id="nombre" onchange="admSelectCheck(); actualizarTabla();">
+                        <% registros.forEach(registro => { %>
+                            <option value="<%= registro.nombre %>"><%= registro.nombre %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </form>
+            <table id="tablaRegistros" class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+                <caption>Cambios en el tiempo</caption>
+                <colgroup>
+                    <col span="1" style="width: 50%;">
+                    <col span="1" style="width: 50%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="has-text-white-ter">Nombre</th>
+                        <th class="has-text-white-ter">Fecha</th>
+                        <th class="has-text-white-ter">Medida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (registros.length > 0) { %>
+                        <% for (let registro of registros) { %>
+                            <tr> 
+                                <td> <%= registro.nombre %></td>
+                                <td> <%= registro.fecha %></td>
+                                <td> <%= registro.medida %></td>
+                            </tr>
+                        <% } %>
                     <% } %>
-                <% } %>
-
-            <% } %>
-        
-            </tbody>
-        </table>
-        </form>
-    </columns>
-    <columns  style="width: 65%;">
-        <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
-            <h1>Holaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
-        </section>
-        <div id="valorSeleccionado"></div>
-    </columns>
-    
-</div>
+                </tbody>
+            </table>
+        </columns>
+        <columns  style="width: 65%;">
+            <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
+                <h1>Holaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+            </section>
+            <div id="valorSeleccionado"></div>
+        </columns>
+    </div>
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title is-1 has-text-white-ter"></h1>
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
