@@ -8,6 +8,8 @@ router.get('/', dietasController.explorar_dietas);
 
 router.get('/favoritas', dietasController.explorar_dietas_favoritas);
 
+router.post('/', dietasController.registrar_dieta_favorita);
+
 router.get('/:id', dietasController.dieta_detalles);
 
 router.post('/:id',dietasController.seleccionar_dieta);

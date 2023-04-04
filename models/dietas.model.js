@@ -15,19 +15,28 @@ module.exports = class Dieta {
 
     }
 
+    static saveFavorita(id_cliente, id_dieta) {
+        return db.execute(`
+            INSERT INTO dietasfavoritas (id_cliente, id_dieta)
+            VALUES (?, ?)
+        `, [id_cliente, id_dieta]);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
-    static fetchAll() {
+    static fetchAll(usuario) {
         return db.execute(`
             SELECT d.id_dieta, d.nombre, m.calorias, Url_image
             FROM dieta d, macronutrientes m
             WHERE m.id_macro = d.id_macro
             AND id_dieta NOT IN (
                 SELECT d.id_dieta
-                FROM dieta d, dietasfavoritas df
+                FROM dieta d, dietasfavoritas df, cliente c, usuario u
                 WHERE d.id_dieta = df.id_dieta
-                AND df.id_cliente = 1
+                AND df.id_cliente = c.id_cliente
+                AND c.id_usuario = u.id_usuario
+                AND u.nombre_usuario = ?
             );
-        `);
+        ` , [usuario]);
     }
 
     static fetchOne(id){
@@ -38,13 +47,15 @@ module.exports = class Dieta {
         `,[id]);
    } 
 
-   static fetchAllFavoritas() {
+   static fetchAllFavoritas(usuario) {
     return db.execute(`
     SELECT d.nombre, d.tipo_dieta
-    FROM dieta d, dietasfavoritas df
+    FROM dieta d, dietasfavoritas df, cliente c, usuario u
     WHERE d.id_dieta = df.id_dieta
-    AND df.id_cliente = 1;
-`);
+    AND df.id_cliente = c.id_cliente
+    AND c.id_usuario = u.id_usuario
+    AND u.nombre_usuario = ?;
+`, [usuario]);
 }
 
 }
