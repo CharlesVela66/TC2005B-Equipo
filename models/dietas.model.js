@@ -49,9 +49,10 @@ module.exports = class Dieta {
 
    static fetchAllFavoritas(usuario) {
     return db.execute(`
-    SELECT d.nombre, d.tipo_dieta
-    FROM dieta d, dietasfavoritas df, cliente c, usuario u
-    WHERE d.id_dieta = df.id_dieta
+    SELECT d.nombre, d.tipo_dieta, d.id_dieta, d.Url_image, m.calorias
+    FROM dieta d, dietasfavoritas df, cliente c, usuario u, macronutrientes m
+    WHERE d.id_macro = m.id_macro
+    AND d.id_dieta = df.id_dieta
     AND df.id_cliente = c.id_cliente
     AND c.id_usuario = u.id_usuario
     AND u.nombre_usuario = ?;

@@ -10,14 +10,19 @@ exports.explorar_dietas = (request, response, next) => {
         request.session.mensaje  = '';
     }
     Dieta.fetchAll(request.session.nombre_usuario)
-        .then(([rows, fieldData]) => {
-            response.render('dietas/dietas', {
-                mensaje: mensaje,
-                dietas: rows,
-                isLoggedIn: request.session.isLoggedIn || false,
-                nombre: request.session.nombre_usuario || '',
-                rol: request.session.rol,
-            });
+        .then(([dietas, fieldData]) => {
+            Dieta.fetchAllFavoritas(request.session.nombre_usuario)
+            .then(([dietasFav, fieldData]) => {
+                response.render('dietas/dietas', {
+                    dietasFav: dietasFav,
+                    mensaje: mensaje,
+                    dietas: dietas,
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    nombre: request.session.nombre_usuario || '',
+                    rol: request.session.rol,
+                });
+            })
+            .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
 }
@@ -69,25 +74,8 @@ exports.seleccionar_dieta =(request,response, next) =>{
         })
         .catch(error => console.log(error))
     .catch(error => console.log(error));
-
-        
-
     })
 
-}
-
-
-exports.explorar_dietas_favoritas = (request, response, next) => {
-    Dieta.fetchAllFavoritas(request.session.nombre_usuario)
-    .then((rows, fieldData) => {
-        response.render('dietas/dietas_favoritas', {
-            dietas: rows[0],
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
-    })
-    .catch(error => console.log(error));
 }
 
 exports.registrar_dieta_favorita = (request, response, next) => {
