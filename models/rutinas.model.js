@@ -18,13 +18,28 @@ module.exports = class Rutina {
         `, [ this.nombre, this.tiporutina, this.descripcion, this.URL_Image]);
     }
 
+    static saveFavorita(id_cliente, id_rutina) {
+        return db.execute(`
+            INSERT INTO rutinasfavoritas (id_cliente, id_rutina)
+            VALUES (?, ?)
+        `, [id_cliente, id_rutina]);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
-    static fetchAll() {
+    static fetchAll(usuario) {
         return db.execute(`
         SELECT *
         FROM rutina r
+        WHERE r.id_rutina NOT IN (
+            SELECT r.id_rutina
+            FROM rutina r, rutinasfavoritas rf, cliente c, usuario u
+            WHERE r.id_rutina = rf.id_rutina
+            AND rf.id_cliente = c.id_cliente
+            AND c.id_usuario = u.id_usuario
+            AND u.nombre_usuario = ?
+        )
         ORDER BY r.id_rutina ASC
-        `);
+        `, [usuario]);
     }
 
     static fetchOne(id_rutina){
@@ -42,6 +57,17 @@ module.exports = class Rutina {
         FROM rutina r
         WHERE r.nombre =?
         `, [nombre]);
+    }
+
+    static fetchAllFavoritas(usuario) {
+        return db.execute(`
+        SELECT r.id_rutina, r.nombre, r.tiporutina, r.Url_image, r.descripcion
+        FROM rutina r, rutinasfavoritas rf, cliente c, usuario u
+        WHERE r.id_rutina = rf.id_rutina
+        AND rf.id_cliente = c.id_cliente
+        AND c.id_usuario = u.id_usuario
+        AND u.nombre_usuario = ?
+    `, [usuario]);
     }
 
     static fetch(id_rutina){

@@ -88,7 +88,6 @@ exports.registrar_dieta_favorita = (request, response, next) => {
         .catch(error => console.log(error));
     })
     .catch(error => console.log(error));
-
 }
 
 exports.get_nueva = (request, response, next) => {
