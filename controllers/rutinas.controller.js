@@ -1,8 +1,7 @@
 const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
 const Rutina_Ejercicio= require ('../models/rutina_ejercicio.model');
-const RutinaFavorita = require('../models/rutinas_favoritas.model');
-const RegistroRutina = require('../models/rutina_ejercicio.model');
+//const RutinaFavorita = require('../models/rutinas_favoritas.model');
 const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
@@ -10,15 +9,20 @@ exports.explorar_rutinas = (request, response, next) => {
     if (request.session.mensaje) {
         request.session.mensaje  = '';
     }
-    Rutina.fetchAll()
+    Rutina.fetchAll(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
-        response.render('rutinas/rutinas', {
-            mensaje: mensaje,
-            rutinas: rows,
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
+        Rutina.fetchAllFavoritas(request.session.nombre_usuario)
+        .then(([rutinasFavs, fieldData]) => {
+            response.render('rutinas/rutinas', {
+                mensaje: mensaje,
+                rutinas: rows,
+                rutinasFavs: rutinasFavs,
+                isLoggedIn: request.session.isLoggedIn || false,
+                nombre: request.session.nombre_usuario || '',
+                rol: request.session.rol,
+            });
+        })
+        .catch(error => console.log(error));
     })
     .catch(error => console.log(error));
 }
@@ -64,9 +68,6 @@ exports.seleccionar_rutinas=(request,response, next) =>{
         })
         .catch(error => console.log(error))
     .catch(error => console.log(error));
-
-        
-
     })
 
 }
@@ -82,6 +83,18 @@ exports.nueva_rutina = (request, response, next) => {
             rutina:false,
         });
     }).catch(error=>console.log(error));
+}
+
+exports.registrar_rutina_favorita = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([cliente, fieldData]) => {
+        Rutina.saveFavorita(cliente[0].id_cliente, request.body.id_rutina)
+        .then(([rows, fieldData]) =>{
+            response.redirect('/rutinas');
+        })
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
 }
 
 exports.post_nueva_rutina=(request,response,next)=>{
@@ -138,35 +151,4 @@ exports.post_nueva_rutina=(request,response,next)=>{
         .catch((error)=>{console.log(error)});
     })
     .catch((error)=>{console.log(error)});
-}
-
-exports.listar=(request,response,next)=>{
-    Rutina.fetch(request.params.id_rutina)
-    .then(([rows,fieldData])=>{
-        console.log(rows);
-
-        response.render('lista',{
-            ejercicios: rows,
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            privilegios: request.session.privilegios || [],
-        });
-    })
-    .catch(err =>{
-        console.log(err);
-    });
-};
-
-exports.explorar_rutinas_favoritas = (request, response, next) => {
-    RutinaFavorita.fetchAll()
-    .then((rows, fieldData) => {
-        console.log(rows[0]); // Aquí le puse rows[0] (osea que solo estoy seleccionando el primer elemento del arreglo) porque se agregaba un elemento al arreglo todo raro. Hay que tener en cuenta eso para cuando tengamos mas de una rutina favorita, pero por el momento, dejaremos el rows[0]
-        response.render('rutinas/rutinas_favoritas', {
-            rutinas: rows[0],
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
-    })
-    .catch(error => console.log(error));
 }

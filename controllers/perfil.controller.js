@@ -1,5 +1,5 @@
-const Dieta = require('../models/dietas_favoritas.model');
-const Rutina = require('../models/rutinas_favoritas.model')
+const Dieta = require('../models/dietas.model');
+const Rutina = require('../models/rutinas.model')
 //const Perfil =require('../models/perfil.model');
 //const Usuario= require('../models/usuario.model');
 
@@ -31,10 +31,10 @@ exports.post_editar = (request, response, next) => {
 exports.ver_perfil = (request, response, next) => {
     let dietasRows = new Array;
     let rutinasRows = new Array;
-    Dieta.fetchAll()
+    Dieta.fetchAllFavoritas()
     .then(([rows, fieldData]) => {
         dietasRows.push(rows[0]);
-        Rutina.fetchAll()
+        Rutina.fetchAllFavoritas()
         .then(([rows, fieldData]) => {
             rutinasRows.push(rows[0]);
             response.render('perfil/perfil', {

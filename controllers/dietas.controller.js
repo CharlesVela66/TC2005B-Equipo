@@ -2,7 +2,6 @@ const Dieta = require('../models/dietas.model');
 const Dieta_Alimento = require('../models/dieta_alimento.model');
 const macro = require('../models/macro.model');
 const micro = require('../models/micronutrientes.model');
-const alimento = require('../models/alimentos.model');
 const Cliente = require('../models/clientes.model');
 
 exports.explorar_dietas = (request, response, next) => {
@@ -10,15 +9,20 @@ exports.explorar_dietas = (request, response, next) => {
     if (request.session.mensaje) {
         request.session.mensaje  = '';
     }
-    Dieta.fetchAll()
-        .then(([rows, fieldData]) => {
-            response.render('dietas/dietas', {
-                mensaje: mensaje,
-                dietas: rows,
-                isLoggedIn: request.session.isLoggedIn || false,
-                nombre: request.session.nombre_usuario || '',
-                rol: request.session.rol,
-            });
+    Dieta.fetchAll(request.session.nombre_usuario)
+        .then(([dietas, fieldData]) => {
+            Dieta.fetchAllFavoritas(request.session.nombre_usuario)
+            .then(([dietasFav, fieldData]) => {
+                response.render('dietas/dietas', {
+                    dietasFav: dietasFav,
+                    mensaje: mensaje,
+                    dietas: dietas,
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    nombre: request.session.nombre_usuario || '',
+                    rol: request.session.rol,
+                });
+            })
+            .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
 }
@@ -70,24 +74,18 @@ exports.seleccionar_dieta =(request,response, next) =>{
         })
         .catch(error => console.log(error))
     .catch(error => console.log(error));
-
-        
-
     })
 
 }
 
-
-exports.explorar_dietas_favoritas = (request, response, next) => {
-    DietaFavorita.fetchAll()
-    .then((rows, fieldData) => {
-        console.log(rows[0]); 
-        response.render('dietas/dietas_favoritas', {
-            dietas: rows[0],
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
+exports.registrar_dieta_favorita = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([cliente, fieldData]) => {
+        Dieta.saveFavorita(cliente[0].id_cliente, request.body.id_dieta)
+        .then(([rows, fieldData]) =>{
+            response.redirect('/dietas');
+        })
+        .catch(error => console.log(error));
     })
     .catch(error => console.log(error));
 }
