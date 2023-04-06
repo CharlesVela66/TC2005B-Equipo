@@ -1,0 +1,32 @@
+<%- include('../includes/head.ejs'); %>
+
+<h1 class="title is-1">Información del Usuario</h1>
+
+<div class="card">
+  <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-128x128">
+          <img src="<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-4"><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
+        <p class="subtitle is-6"><%= infoCliente.nombre_usuario %></p>
+        <p class="subtitle is-6"><%= infoCliente.correo %></p>
+        <p class="subtitle is-6"><%= infoCliente.sexo %></p>
+        <p class="subtitle is-6"><%= infoCliente.fecha_nacimiento %></p>
+        <p class="subtitle is-6"><%= infoCliente.TipoObjetivo %></p>
+      </div>
+    </div>
+  </div>
+</div>
+  <!--Esta vista muestra la foto de perfil del usuario, su nombre, apellido, nombre de usuario, correo, sexo, fecha de nacimiento, IMC y objetivo. La imagen de perfil por defecto es una imagen de perfil genérica en caso de que el usuario no tenga una foto de perfil asociada en la base de datos.-->
+  
+  
+  
+  
+  
+  
+
+<%- include('../includes/foot.ejs'); %>

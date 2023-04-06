@@ -9,17 +9,28 @@
         color:rgb(31, 93, 240)
       }
 
+      .card {
+        background-color: rgb(29, 29, 29);
+        height:100%;
+      }
 
       .navbar-item, .navbar-link, .navbar-dropdown{
         color:rgb(216, 216, 216);
       }
 
+      html{
+        background-color: black;
+      }
+      
       body
       {
         min-height: 100vh;
       }
-      .card {
-        height: 100%;
+
+      * { 
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
       }
       .popup{
         width: 400px;
@@ -55,7 +66,7 @@
       }
     </style>
 </head>
-<body class="has-background-black-ter">
+<body>
   <% if ( isLoggedIn){ %>
     <% if (rol == "Cliente") { %>
     <nav class="navbar has-background-link-dark" role="navigation" aria-label="main navigation">

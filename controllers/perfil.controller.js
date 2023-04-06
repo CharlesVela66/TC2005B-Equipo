@@ -1,5 +1,6 @@
 const Dieta = require('../models/dietas.model');
 const Rutina = require('../models/rutinas.model')
+const Cliente = require('../models/clientes.model');
 //const Perfil =require('../models/perfil.model');
 //const Usuario= require('../models/usuario.model');
 
@@ -31,10 +32,10 @@ exports.post_editar = (request, response, next) => {
 exports.ver_perfil = (request, response, next) => {
     let dietasRows = new Array;
     let rutinasRows = new Array;
-    Dieta.fetchAllFavoritas()
+    Dieta.fetchAllFavoritas(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
         dietasRows.push(rows[0]);
-        Rutina.fetchAllFavoritas()
+        Rutina.fetchAllFavoritas(request.session.nombre_usuario)
         .then(([rows, fieldData]) => {
             rutinasRows.push(rows[0]);
             response.render('perfil/perfil', {
@@ -48,3 +49,15 @@ exports.ver_perfil = (request, response, next) => {
     })
     .catch(error => console.log(error));
 }
+exports.verCliente = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([clientes, fieldData]) => {
+      response.render('perfil/ver_info', {
+        infoCliente: clientes[0],
+        isLoggedIn: request.session.isLoggedIn || false,
+        nombre: request.session.nombre_usuario || '',
+        rol: request.session.rol,
+      });
+    })
+    .catch(err => console.log(err));
+};
