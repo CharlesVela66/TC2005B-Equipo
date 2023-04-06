@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 module.exports = class Usuario {
 
     constructor(nuevo_usuario) {
-        this.nombre = nuevo_usuario.nombre;
+        this.nombre = nuevo_usuario.nombre ;
         this.apellido = nuevo_usuario.apellido;
         this.nombre_usuario = nuevo_usuario.nombre_usuario;
         this.correo = nuevo_usuario.correo;

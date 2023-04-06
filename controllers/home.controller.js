@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
-    response.render('home/inicio', {
+    response.render('home/home', {
         isLoggedIn: request.session.isLoggedIn,
         nombre: request.session.nombre_usuario || '',
         rol: request.session.rol || '',
@@ -92,6 +92,19 @@ exports.registrarse = (request, response, next) => {
         })
     })
     .catch((error) => {console.log(error)});
+};
+
+exports.informacion = (request,response,next)=>{
+    Objetivos.fetchAll()
+    .then(([rows,fieldData])=> {
+        response.render('home/informacion_personal',{
+            objetivos : rows,
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol || '',
+        })
+    })
+    .catch((error)=>{console.log(error)});
 };
 
 // Esto pasa cuando el usuario le da click a crear nuevo usuario
