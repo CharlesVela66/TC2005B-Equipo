@@ -1,39 +1,16 @@
 const Dieta = require('../models/dietas_favoritas.model');
 const Rutina = require('../models/rutinas_favoritas.model')
-//const Perfil =require('../models/perfil.model');
-const Usuario= require('../models/usuario.model');
+const Cliente= require('../models/clientes.model');
 
-exports.get_editar = (request, response, next) => {
-    Usuario.fetchOne(request.params.id)
-    .then(([rows, fieldData]) => {
-        if (rows.length == 1) {
-            const usuario = rows[0];
-            response.render('editar', {
-                usuario: usuario,
-                isLoggedIn: request.session.isLoggedIn || false,
-                nombre: request.session.nombre_usuario || '',
-                rol: request.session.rol,
-            });
-        } else {
-            response.redirect('/perfil/');
-        }
-    })
-    .catch(error => console.log(error));
-};
 
-exports.ver_informacion = (request, response, next) => {
-    request.session.id_usuario = request.params.id;
-    Usuario.fetchOne(request.params.id)
-    .then(([usuario, fieldData]) => {
-        //console.log(usuario),
-        response.render('ver_informacion', {
-            usuario: usuario,
-            isLoggedIn: req.session.isLoggedIn || false,
-            nombre: req.session.nombre_usuario || '',
-            rol: req.session.rol,
-        });
-    })
-    .catch(err => console.log(err));
+exports.verCliente = async (req, res, next) => {
+    try {
+      const cliente = await Cliente.verCliente(req.params.id);
+      res.render('perfil/ver_informacion', { cliente: cliente[0] });
+    } catch (err) {
+      console.log(err);
+      res.redirect('/');
+    }
 };
   
 

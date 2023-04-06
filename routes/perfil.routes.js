@@ -6,6 +6,6 @@ const perfilController = require('../controllers/perfil.controller');
 
 router.get('/', perfilController.ver_perfil);
 
-router.get('/:id', perfilController.ver_informacion);
+router.get('/perfil/:id', perfilController.verCliente);
 
 module.exports = router;

@@ -72,6 +72,7 @@ module.exports = class Usuario {
         return db.execute('UPDATE usuarios SET foto_perfil = ? WHERE id = ?', [nuevaFoto, id]);
     }
 
+    //Esto va a servir al momento de la creación de un nuevo usuario, donde se busca por correo, y si hay un correo igual que el que se tiene en la app, no te va a dejar registrar un nuevo usuario con este correo.
     static buscarPorCorreo(correo) {
         const query = 'SELECT * FROM usuarios WHERE correo = ?';
         const [rows] = db.execute(query, [correo]);
