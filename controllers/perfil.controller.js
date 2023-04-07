@@ -1,6 +1,6 @@
 const Dieta = require('../models/dietas.model');
 const Rutina = require('../models/rutinas.model')
-const Cliente= require('../models/clientes.model');
+const Cliente = require('../models/clientes.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
@@ -60,3 +60,18 @@ exports.verCliente = (request, response, next) =>{
     })
     .catch(err => console.log(err));
 };
+
+/*
+exports.verCliente = (request, response, next) =>{
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([clientes, fieldData]) => {
+        response.render('perfil/ver_info', {
+            infoCliente: clientes[0],
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+        });
+    })
+    .catch(err => console.log(err));
+};
+*/ 
