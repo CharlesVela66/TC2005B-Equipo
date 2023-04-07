@@ -1,6 +1,6 @@
 <%- include('../includes/head.ejs'); %>
 <br>
-<form action="/rutinas/nueva_rutina" method="POST" autocomplete="off" id="rutina-form">
+<form action="/rutinas/nueva_rutina" method="POST" autocomplete="off" id="rutina-form" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
     <h1 class="title is-1 has-text-white-ter">Agregar Rutinas</h1>
     <div class="card">
@@ -37,7 +37,7 @@
                         <p class="title is-4 has-text-white-ter">
                             Imagen
                         </p>
-                        <input type="file" name="archivo">
+                        <input type="file" id="imagen" name="imagen">
     
                     </div>
                 </div>

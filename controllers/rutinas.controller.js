@@ -97,10 +97,15 @@ exports.registrar_rutina_favorita = (request, response, next) => {
 }
 
 exports.post_nueva_rutina = (request, response, next) => {
+
+    console.log(request.file);
+    console.log(request.file.filename);
+    
     const newRutina = new Rutina({
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,
       tiporutina: request.body.tiporutina,
+      URL_Image: request.file.filename
     });
   
     // Verificar si existe una rutina con el mismo nombre
