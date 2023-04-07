@@ -1,6 +1,6 @@
 const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
-const Rutina_Ejercicio= require ('../models/rutina_ejercicio.model');
+const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
 //const RutinaFavorita = require('../models/rutinas_favoritas.model');
 const Cliente =require('../models/clientes.model');
 
@@ -32,14 +32,14 @@ exports.visualizar_rutinas= (request, response, next) => {
     Rutina.fetchOne(request.params.id)
         .then(([rutinas, fieldData]) => {
             //   console.log(dieta),
-            Rutina_Ejercicio.fetchOne(request.params.id)
+            RutinaEjercicio.fetchOne(request.params.id)
             .then(([rutinas_ejercicios, fieldData]) => {
                 //  console.log(dieta_alimento),
                 Ejercicio.fetchOne(request.params.id)
                 .then(([ejercicios, fieldData]) => {
                     //   console.log(macro),
                         response.render('rutinas/contenido_r', {
-                        rutina: rutinas,
+                        rutina: rutinas[0],
                         rutina_ejercicio: rutinas_ejercicios,
                         ejercicio: ejercicios,
                         isLoggedIn: request.session.isLoggedIn || false,
@@ -80,7 +80,6 @@ exports.nueva_rutina = (request, response, next) => {
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
-            rutina:false,
         });
     }).catch(error=>console.log(error));
 }
@@ -97,58 +96,57 @@ exports.registrar_rutina_favorita = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
-exports.post_nueva_rutina=(request,response,next)=>{
-/*    console.log(request.file);
+exports.post_nueva_rutina = (request, response, next) => {
 
-    const registro_rutina=new RegistroRutina({
-        id_rutina: request.body.id_rutina,
-        id_ejercicio: request.body.id_ejercicio,
-        series: request.body.series,
-        repeticiones: request.body.repeticiones,
-        dia: request.body.dia,
+    console.log(request.file);
+    console.log(request.file.filename);
+    
+    const newRutina = new Rutina({
+      nombre: request.body.nombre_rutina,
+      descripcion: request.body.descripcion,
+      tiporutina: request.body.tiporutina,
+      URL_Image: request.file.filename
     });
-    registro_rutina.save()
-    .then(([rows,fieldData])=>{ //.then(([result])=>{
-        request.session.mensaje="El registro de la bitácora se añadió correctamente";
-        response.redirect('/rutinas/');
-    })
-    .catch((error)=>{console.log(error)});*/
-    const rutina = new Rutina ({
-        nombre: request.body.nombre,
-        tiporutina: request.body.tiporutina,
-        descripcion:  request.body.descripcion,
-    })
-    console.log(rutina);
-    rutina.save()
-    .then(([rows, fieldData]) => {
-        console.log(rows);
-        Rutina.fetchOneByNombre(request.body.nombre)
-        .then(([rutina, fieldData]) => {
-            Ejercicio.fetchAll()
-            .then(([ejerciciosTotal, fieldData]) => {
-                const savePromises = ejerciciosTotal.map((ejercicio) => {
-                    if (request.body[ejercicio.id_ejercicio]){
-                        const ejercicio = new Rutina_Ejercicio({
-                            id_rutina: rutina[0].id_rutina,
-                            id_ejercicio: ejercicio.id_ejercicio,
-                            series: request.body.series,
-                            repeticiones: request.body.repeticiones,
-                            dia: request.body.dia,
-                        })
-                        return ejercicio.save();
-                    }
-                    return Promise.resolve(null);
-                });
-                Promise.all(savePromises)
-                .then(() => {
-                    console.log('Todos los registros guardados');
-                    response.redirect('/home');
-                })
-                .catch((error) => {console.log(error)});
-            })
-            .catch((error)=>{console.log(error)});
-        })
-        .catch((error)=>{console.log(error)});
-    })
-    .catch((error)=>{console.log(error)});
-}
+  
+    // Verificar si existe una rutina con el mismo nombre
+    Rutina.fetchOneByNombre(request.body.nombre_rutina)
+      .then(([rutinas, fieldData]) => {
+        if (rutinas.length > 0) {
+          // Si existe una rutina con el mismo nombre, muestra un mensaje de error
+          return response.status(400).send("Ya existe una rutina con este nombre.");
+        }
+  
+        // Si no existe una rutina con el mismo nombre, guarda la nueva rutina
+        return newRutina.save();
+      })
+      .then(([rows, fieldData]) => {
+        // Obtén el ID de la nueva rutina insertada
+        const id_rutina = rows.insertId;
+  
+        // Recorre los ejercicios enviados en el formulario
+        const ejercicios = JSON.parse(request.body.ejercicios);
+        const promises = ejercicios.map(ejercicio => {
+          // Guarda cada ejercicio en la tabla 'rutinaejercicios'
+          const newRutinaEjercicio = new RutinaEjercicio({
+            id_rutina: id_rutina,
+            id_ejercicio: ejercicio.id_ejercicio,
+            series: ejercicio.series,
+            repeticiones: ejercicio.repeticiones,
+            dia: ejercicio.dia
+          });
+  
+          return newRutinaEjercicio.save();
+        });
+  
+        // Espera a que todos los ejercicios se guarden en la base de datos
+        return Promise.all(promises);
+      })
+      .then(() => {
+        // Redirige a la página de éxito o a donde desees después de guardar la rutina y los ejercicios
+        response.redirect('/home');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
