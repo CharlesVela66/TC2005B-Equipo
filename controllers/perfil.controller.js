@@ -32,12 +32,15 @@ exports.ver_perfil = (request, response, next) => {
     let rutinasRows = new Array;
     Dieta.fetchAllFavoritas(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
-        dietasRows.push(rows[0]);
+        dietasRows.push(rows);
         Rutina.fetchAllFavoritas(request.session.nombre_usuario)
         .then(([rows, fieldData]) => {
-            rutinasRows.push(rows[0]);
+            rutinasRows.push(rows);
+            console.log(rutinasRows[0]);
+            console.log(dietasRows[0]);
             response.render('perfil/perfil', {
-                dieta: dietasRows[0], rutina: rutinasRows[0],
+                dieta: dietasRows[0], 
+                rutina: rutinasRows[0],
                 isLoggedIn: request.session.isLoggedIn || false,
                 nombre: request.session.nombre_usuario || '',
                 rol: request.session.rol,
