@@ -20,7 +20,10 @@
         <p class="subtitle is-6"><%= infoCliente.sexo %></p>
         <p class="resaltado" style="font-weight: bold">Fecha de nacimiento</p>
         <p class="subtitle is-6"><%= new Date(infoCliente.fecha_nacimiento).getDate() %>/<%= new Date(infoCliente.fecha_nacimiento).getMonth()+1 %>/<%= new Date(infoCliente.fecha_nacimiento).getFullYear() %></p>
-        <p class="subtitle is-6"><%= infoCliente.TipoObjetivo %></p>
+        <p class="resaltado" style="font-weight: bold">Objetivo</p>
+        <p class="subtitle is-6"><%= infoCliente.nombre_obj %></p>
+        <p class="resaltado" style="font-weight: bold">Nivel físico</p>
+        <p class="subtitle is-6"><%= infoCliente.nombre_niv %></p>
       </div>
     </div>
   </div>
