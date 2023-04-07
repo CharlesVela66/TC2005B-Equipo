@@ -1,5 +1,6 @@
-const Dieta = require('../models/dietas_favoritas.model');
-const Rutina = require('../models/rutinas_favoritas.model')
+const Dieta = require('../models/dietas.model');
+const Rutina = require('../models/rutinas.model')
+const Cliente = require('../models/clientes.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
