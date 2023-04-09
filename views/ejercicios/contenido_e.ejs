@@ -7,11 +7,11 @@
       </p>
     </header>
   </div>
-            <div class="box">
-              <table class="table" width="100%">
+            <div class="box"style="background-color: rgb(29, 29, 29) ">
+              <table class="tablee" width="100%">
                 <thead>
                   <tr>
-                    <th>Video explicativo:
+                    <th class="has-text-white"-ter>Video explicativo:
                     </th>
                   </tr>
                 </thead>
@@ -20,19 +20,31 @@
                     <% for (let ejercicio of ejercicios) { %>
                       
                       <th><<%= ejercicio.video_ejercicio %></th>
+                      <br>
                       <iframe width="420" height="345" src="<%= ejercicio.video_ejercicio %>">>
                       </iframe>
-                   
+        
                       <% } %>
                      
                   <% } %>
                 </tbody>
               </table>
               </div>
-              <br><br>
-              <div class="buttons">
-              <a href="/ejercicios/" class="button is-danger">Atrás</a>
-            </div>
+              
+              <% if (ejercicios.length > 0) { %>
+                <% for (let ejercicio of ejercicios) { %>
+                  <div class="field is-grouped"> 
+                  <div class="buttons">
+                    <a href="/ejercicios/editar/<%= ejercicio.id_ejercicio %>" class="button is-info is-rounded">Modificar</a>
+                    <a href="/ejercicios/" class="button is-danger">Atrás</a>
+                  </div>
+                  </div>
+                  
+                  <% } %>
+                 
+              <% } %>
+              <br>
+
           </div>
         </div>
 
