@@ -1,0 +1,22 @@
+
+<%- include('../includes/head.ejs'); %>
+<br>
+<h1 class="title has-text-white-ter">Modificar alimento</h1>
+<form action="/alimentos/editar" method="POST">
+<input type="hidden" name="id" value="<%= alimento.id_alimento %>" >
+ 
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <label for="nombre"> <h5 class="title is-5 has-text-white-ter">Nombre:</h5></label> <br>
+            <input required name="nombre" id="nombre" class="input is-rounded" type="text" placeholder="<%= alimento.nombre %>">
+    <br><br><br>
+            <label for="medida"> <h5 class="title is-5 has-text-white-ter">Medida:  </label> <br> <br>
+            <input name="medida" id="medida" class="input is-rounded" type="text" placeholder="">
+
+    <br><br><br>
+            <input class="button is-rounded is-success" type="submit" value="Actualizar">
+    </form>
+    <br><br>
+        <form action="/alimnetos" method="GET">
+            <button type="submit" class="button is rounded is-danger has-text-white-ter">Cancelar</button>
+          </form>
+<%- include('../includes/foot.ejs'); %>

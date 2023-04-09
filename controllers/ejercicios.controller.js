@@ -86,7 +86,7 @@ exports.post_editar = (request, response, next) => {
         response.redirect('/ejercicios');
         return;
       }
-  
+   console.log(id)
     Ejercicio.fetchOneByDescripcion(descripcion)
       .then(([rows, fieldData]) => {
         if (rows.length > 0) {
@@ -101,11 +101,7 @@ exports.post_editar = (request, response, next) => {
                   descripcion: descripcion,
                   video_ejercicio: nuevoNuevoEnlace,
                 });
-  
-                console.log(id);
-                console.log(video_ejercicio);
-                console.log(nuevoNuevoEnlace);
-                console.log(descripcion);
+                console.log(id)
                 ejercicio.update()
                   .then(([rows, fieldData]) => {
                     request.session.mensaje = "El ejercicio fue actualizado exitosamente.";
@@ -114,10 +110,10 @@ exports.post_editar = (request, response, next) => {
                   .catch((error) => {
                     console.log(error);
                     request.session.mensaje = "Error al actualizar el ejercicio.";
-                    response.redirect('/ejercicios/editar/' + id);
+                    response.redirect('/ejercicios');
                   });
               } else {
-                return response.redirect('/ejercicios/editar');
+                return response.redirect('/ejercicios');
               }
             })
             .catch(error => console.log(error));
