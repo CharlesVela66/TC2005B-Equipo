@@ -4,6 +4,7 @@ module.exports = class Ejercicio {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nuevo_ejercicio) {
+        this.id_ejercicio = nuevo_ejercicio.id_ejercicio || 0;
         this.descripcion = nuevo_ejercicio.descripcion || "";
         this.video_ejercicio = nuevo_ejercicio.video_ejercicio || "";
     }
@@ -39,5 +40,13 @@ module.exports = class Ejercicio {
     static fetchOneByDescripcion(descripcion) {
         return db.execute('SELECT * FROM ejercicio WHERE descripcion = ?', [descripcion]);
       }
+
+
+      update() {
+        return db.execute(`
+        UPDATE ejercicio SET descripcion=?, video_ejercicio=? WHERE id_ejercicio=?
+        `, [this.descripcion, this.video_ejercicio, this.id_ejercicio]);
+    }
+
 
 }
