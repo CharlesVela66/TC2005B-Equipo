@@ -1,32 +1,21 @@
 <%- include('../includes/head.ejs'); %>
-<br>
 <form action="/rutinas/nueva_rutina" method="POST" autocomplete="off" id="rutina-form" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <h1 class="title is-1 has-text-white-ter">Agregar Rutinas</h1>
-    <div class="card">
+    <h1 class="title is-1 has-text-white-ter has-text-centered">Agregar Rutinas</h1>
         <div class="columns">
             <div class="column">
-                <div class="card-content">
-                    <div class="content">
-                        <p class="title is-4 has-text-white-ter">
+                        <p class="title is-4 has-text-white-ter has-text-centered" >
                             Nombre de la rutina
                         </p>
                         <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "nombre_rutina" id = "nombre_rutina" required="required" maxlength="25">
-                    </div>
-                </div>
             </div>
             <div class="column">
-                <div class="card-content">
-                    <div class="content">
-                        <p class="title is-4 has-text-white-ter">
+                        <p class="title is-4 has-text-white-ter has-text-centered">
                             Descricpción
                         </p>
-                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "descripcion" id = "descripcion" required="required" maxlength="500">
-                    </div>
-                </div>
+                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "descripcion" id = "descripcion" required="required" maxlength="1000">
             </div>
         </div>
-    </div>
     <br>
     <br>
     <div class="card">
@@ -34,7 +23,7 @@
             <div class="column">
                 <div class="card-content">
                     <div class="content">
-                        <p class="title is-4 has-text-white-ter">
+                        <p class="title is-4 has-text-white-ter ">
                             Imagen
                         </p>
                         <input type="file" id="imagen" name="imagen" required="required">
@@ -69,7 +58,7 @@
     <div class="card">
         <div class="card-content">
             <div class="content">
-                <p class="title is-4 has-text-white-ter">
+                <p class="title is-4 has-text-white-ter ">
                     Ejercicios
                 </p>
                 <div class="columns">
@@ -85,7 +74,7 @@
                                 <col span="1" style="width: 40%;">
                                 <col span="1" style="width: 20%;">
                                 <col span="1" style="width: 20%;">
-                                <col span="1" style="width: 20%;"
+                                <col span="1" style="width: 20%;">
                             </colgroup>
                             <thead>
                                 <tr>
@@ -103,7 +92,12 @@
             </div>
         </div>
     </div>
-    <button id="submit-button" class="button is-info">Enviar</button>
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <div class="popup" id="popup">
+        <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+        <button class="button is-success" type = "submit" id="submit-button" name="submit-button">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+    </div>
 </form>
 
 <%- include('../includes/foot.ejs'); %>
@@ -277,7 +271,7 @@
         diaSelect.required = true;
 
         // Opciones del select
-        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const dias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'];
         dias.forEach(dia => {
             // Agregamos las opciones al HTML
             const option = document.createElement('option');
@@ -303,7 +297,6 @@
         const ejercicioDiaMap = new Map();
 
         for (const ejercicio of ejercicios) {
-            console.log(ejercicio.dia);
             if (!ejercicio.series || !ejercicio.repeticiones || !ejercicio.dia) {
                 alert("Por favor, complete todos los campos de series, repeticiones y día.");
                 return false;
@@ -330,5 +323,12 @@
             }
         }
         return true;
+    }
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+
+    function closePopup(){
+        popup.classList.remove("open-popup")
     }
 </script>

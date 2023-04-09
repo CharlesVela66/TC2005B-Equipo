@@ -94,14 +94,17 @@ exports.nueva_rutina = (request, response, next) => {
                 response.render('rutinas/nueva_rutina',{
                     ejercicios: rows,
                     rutinas: rutinas,
-                    rutinasFavs, rutinasFavs,
+                    rutinasFavs: rutinasFavs,
                     isLoggedIn: request.session.isLoggedIn || false,
                     nombre: request.session.nombre_usuario || '',
                     rol: request.session.rol,
                 });
             })
+            .catch(error=>console.log(error));
         })
-    }).catch(error=>console.log(error));
+        .catch(error=>console.log(error));
+    })
+    .catch(error=>console.log(error));
 }
 
 

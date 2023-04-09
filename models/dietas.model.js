@@ -5,14 +5,17 @@ module.exports = class Dieta {
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nueva_dieta) {
         this.nombre = nueva_dieta.nombre || "";
-        this.tipo_dieta = nueva_dieta.tipo_dieta || "";
         this.id_macro = nueva_dieta.id_macro || "";
         this.id_micro = nueva_dieta.id_micro || "";
+        this.Url_imagen = nueva_dieta.Url_imagen || "";
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
-
+        return db.execute(`
+            INSERT INTO dieta(nombre, id_macro, id_micro, Url_imagen)
+            VALUES (?, ?, ?, ?)
+        `, [this.nombre, this.id_macro, this.id_micro, this.Url_imagen]);
     }
 
     static saveFavorita(id_cliente, id_dieta) {
@@ -46,6 +49,14 @@ module.exports = class Dieta {
         WHERE id_dieta =?
         `,[id]);
    } 
+
+   static fetchOneByNombre(nombre){
+    return db.execute(`
+    SELECT *
+    FROM dieta d
+    WHERE d.nombre =?
+    `, [nombre]);
+}
 
    static fetchAllFavoritas(usuario) {
     return db.execute(`
