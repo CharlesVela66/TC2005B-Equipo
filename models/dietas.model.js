@@ -7,15 +7,15 @@ module.exports = class Dieta {
         this.nombre = nueva_dieta.nombre || "";
         this.id_macro = nueva_dieta.id_macro || "";
         this.id_micro = nueva_dieta.id_micro || "";
-        this.Url_imagen = nueva_dieta.Url_imagen || "";
+        this.Url_image = nueva_dieta.Url_imagen || "";
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-            INSERT INTO dieta(nombre, id_macro, id_micro, Url_imagen)
+            INSERT INTO dieta(nombre, id_macro, id_micro, Url_image)
             VALUES (?, ?, ?, ?)
-        `, [this.nombre, this.id_macro, this.id_micro, this.Url_imagen]);
+        `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
     }
 
     static saveFavorita(id_cliente, id_dieta) {

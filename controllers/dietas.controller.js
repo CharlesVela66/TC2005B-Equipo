@@ -157,7 +157,7 @@ exports.post_nueva = (request, response, next) => {
                 nombre: request.body.nombre_dieta,
                 id_macro: id_macro,
                 id_micro: id_micro,
-                Url_image: request.body.imagen
+                Url_image: request.body.image
             })
             newDieta.save()
             .then(([dieta, fieldData]) => {
