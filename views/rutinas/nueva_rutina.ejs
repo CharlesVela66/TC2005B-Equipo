@@ -1,32 +1,21 @@
 <%- include('../includes/head.ejs'); %>
-<br>
 <form action="/rutinas/nueva_rutina" method="POST" autocomplete="off" id="rutina-form" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <h1 class="title is-1 has-text-white-ter">Agregar Rutinas</h1>
-    <div class="card">
+    <h1 class="title is-1 has-text-white-ter has-text-centered">Agregar Rutinas</h1>
         <div class="columns">
             <div class="column">
-                <div class="card-content">
-                    <div class="content">
-                        <p class="title is-4 has-text-white-ter">
+                        <p class="title is-4 has-text-white-ter has-text-centered" >
                             Nombre de la rutina
                         </p>
                         <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "nombre_rutina" id = "nombre_rutina" required="required" maxlength="25">
-                    </div>
-                </div>
             </div>
             <div class="column">
-                <div class="card-content">
-                    <div class="content">
-                        <p class="title is-4 has-text-white-ter">
+                        <p class="title is-4 has-text-white-ter has-text-centered">
                             Descricpción
                         </p>
-                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "descripcion" id = "descripcion" required="required" maxlength="500">
-                    </div>
-                </div>
+                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "descripcion" id = "descripcion" required="required" maxlength="1000">
             </div>
         </div>
-    </div>
     <br>
     <br>
     <div class="card">
@@ -34,10 +23,10 @@
             <div class="column">
                 <div class="card-content">
                     <div class="content">
-                        <p class="title is-4 has-text-white-ter">
+                        <p class="title is-4 has-text-white-ter ">
                             Imagen
                         </p>
-                        <input type="file" id="imagen" name="imagen">
+                        <input type="file" id="imagen" name="imagen" required="required">
     
                     </div>
                 </div>
@@ -50,8 +39,7 @@
                         </p>
                         <div class="select is-info is-small">
                                 
-                            <select value = "Escribe" name = "tiporutina" id = "tiporutina" required="required">
-                                <option selected="true" disabled="disabled">Elige una opción</option>
+                            <select name = "tiporutina" id = "tiporutina" required="required">
                                 <option>
                                     Bajar de Peso
                                 </option>
@@ -62,7 +50,7 @@
                                     Subir de Peso
                                 </option>
                             </select>
-                            </div>
+                        </div>
                     </div>
                 </div>
         </div>
@@ -70,7 +58,7 @@
     <div class="card">
         <div class="card-content">
             <div class="content">
-                <p class="title is-4 has-text-white-ter">
+                <p class="title is-4 has-text-white-ter ">
                     Ejercicios
                 </p>
                 <div class="columns">
@@ -84,9 +72,9 @@
                         <table id="tabla-ejercicios" class="table is-bordered">
                             <colgroup>
                                 <col span="1" style="width: 40%;">
-                                <col span="1" style="width: 20;">
                                 <col span="1" style="width: 20%;">
-                                <col span="1" style="width: 20%;"
+                                <col span="1" style="width: 20%;">
+                                <col span="1" style="width: 20%;">
                             </colgroup>
                             <thead>
                                 <tr>
@@ -104,7 +92,12 @@
             </div>
         </div>
     </div>
-    <button id="submit-button" class="button is-info">Enviar</button>
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <div class="popup" id="popup">
+        <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+        <button class="button is-success" type = "submit" id="submit-button" name="submit-button">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+    </div>
 </form>
 
 <%- include('../includes/foot.ejs'); %>
@@ -171,9 +164,74 @@
             });
         }
     });
+    // Cuando se le haga click al botón submit...
+    document.getElementById("submit-button").addEventListener("click", function (event) {
+        // Verificamos que los campos del nombre de la rutina, tipo de rutina y descripcion hayan sido llenados
+        const nombreRutina = document.getElementById("nombre_rutina");
+        const tipoRutina = document.getElementById("tiporutina");
+        const descripcion = document.getElementById("descripcion");
+        const imagen = document.getElementById("imagen");
 
+        const rutinasStr = "<%- escape(JSON.stringify(rutinas)) %>";
+        const rutinas = JSON.parse(unescape(rutinasStr));
+
+        const rutinasFavStr = "<%- escape(JSON.stringify(rutinasFavs)) %>";
+        const rutinasFavs = JSON.parse(unescape(rutinasFavStr));
+
+        if (!nombreRutina.value || tipoRutina.value == "Elige una opción" || !descripcion.value || !imagen.value){
+            return;
+        }
+
+        event.preventDefault();
+
+        // Obtenemos la forma, la tabla y las filas con los ID's declarados en la vista
+        const form = document.getElementById("rutina-form");
+        const table = document.getElementById("tabla-ejercicios");
+        const rows = Array.from(table.querySelectorAll("tr")).slice(1); // Omitir la fila del encabezado
+
+        // Por cada ejercicio en la tabla regresamos
+        const ejercicios = rows.map(row => {
+        const cells = row.querySelectorAll("td");
+        return {
+            // El valor de la primera columna
+            id_ejercicio: cells[0].getAttribute('data-idEjercicio'), 
+            // El contenido de la primera columna
+            nombre: cells[0].innerText,
+            // El valor del input de la segunda columna
+            series: cells[1].querySelector("input").value,
+            // El valor del input de la tercera columna
+            repeticiones: cells[2].querySelector("input").value,
+            // La opcion seleccionada de la cuarta columna
+            dia: cells[3].querySelector("select").value
+        };
+        });
+
+        if(ejercicios.length == 0){
+            alert("Tienes que agregar mínimo un ejercicio para guardar la rutina");
+            return;
+        }
+        else if (!checkEjercicioAttributes(ejercicios)) {
+            return;
+        }
+        else if (!checkRutinasNombres(rutinas, rutinasFavs, nombreRutina.value)){
+            alert('Ya existe una rutina con ese nombre')
+            return;
+        }
+
+        // Creamos un input escondido para que ese sea el que llamamos en el controlador con todos la información que se encuentra en las tablas
+        const ejerciciosInput = document.createElement("input");
+        ejerciciosInput.type = "hidden";
+        ejerciciosInput.id = "ejercicios";
+        ejerciciosInput.name = "ejercicios";
+        ejerciciosInput.value = JSON.stringify(ejercicios);
+        form.appendChild(ejerciciosInput);
+
+        // Esa información es la que se envia en el form
+        form.submit();
+    });
+
+    // Metodos
     function addEjercicioToTable(ejercicio) {
-
         // Creamos una nueva fila
         const row = document.createElement('tr');
         // Primera columna: Nombre del ejercicio
@@ -211,8 +269,9 @@
         diaSelect.id = `dia`;
         diaSelect.name = `dia`;
         diaSelect.required = true;
+
         // Opciones del select
-        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const dias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'];
         dias.forEach(dia => {
             // Agregamos las opciones al HTML
             const option = document.createElement('option');
@@ -229,52 +288,47 @@
 
         // Agregamos todo el codigo al HTML de la tabla 
         document.getElementById('tabla-ejercicios').querySelector('tbody').appendChild(row);
-    }
-    // Cuando se le haga click al botón submit...
-    document.getElementById("submit-button").addEventListener("click", function (event) {
-        // Verificamos que los campos del nombre de la rutina, tipo de rutina y descripcion hayan sido llenados
-        const nombreRutina = document.getElementById("nombre_rutina");
-        const tipoRutina = document.getElementById("tiporutina");
-        const descripcion = document.getElementById("descripcion");
 
-        if (!nombreRutina.value || tipoRutina.value === "Elige una opción" || !descripcion.value){
-            return;
-        }
-
-        event.preventDefault();
-
-        // Obtenemos la forma, la tabla y las filas con los ID's declarados en la vista
-        const form = document.getElementById("rutina-form");
-        const table = document.getElementById("tabla-ejercicios");
-        const rows = Array.from(table.querySelectorAll("tr")).slice(1); // Omitir la fila del encabezado
-
-        // Por cada ejercicio en la tabla regresamos
-        const ejercicios = rows.map(row => {
-        const cells = row.querySelectorAll("td");
-        return {
-            // El valor de la primera columna
-            id_ejercicio: cells[0].getAttribute('data-idEjercicio'), 
-            // El contenido de la primera columna
-            nombre: cells[0].innerText,
-            // El valor del input de la segunda columna
-            series: cells[1].querySelector("input").value,
-            // El valor del input de la tercera columna
-            repeticiones: cells[2].querySelector("input").value,
-            // La opcion seleccionada de la cuarta columna
-            dia: cells[3].querySelector("select").value
-        };
+        nombreCell.addEventListener('click', () => {
+            ejerciciosTable.querySelector('tbody').removeChild(row);
         });
+    }
+    function checkEjercicioAttributes(ejercicios) {
+        const ejercicioDiaMap = new Map();
 
-        // Creamos un input escondido para que ese sea el que llamamos en el controlador con todos la información que se encuentra en las tablas
-        const ejerciciosInput = document.createElement("input");
-        ejerciciosInput.type = "hidden";
-        ejerciciosInput.id = "ejercicios";
-        ejerciciosInput.name = "ejercicios";
-        ejerciciosInput.value = JSON.stringify(ejercicios);
-        form.appendChild(ejerciciosInput);
+        for (const ejercicio of ejercicios) {
+            if (!ejercicio.series || !ejercicio.repeticiones || !ejercicio.dia) {
+                alert("Por favor, complete todos los campos de series, repeticiones y día.");
+                return false;
+            }
+            const ejercicioDiaKey = `${ejercicio.id_ejercicio}_${ejercicio.dia}`;
+            if (ejercicioDiaMap.has(ejercicioDiaKey)) {
+                alert("No se pueden tener dos ejercicios con el mismo nombre y el mismo día");
+                return false;
+            }
+            ejercicioDiaMap.set(ejercicioDiaKey, true);
+        }
+        return true;
+    }
 
-        // Esa información es la que se envia en el form
-        form.submit();
-    });
+    function checkRutinasNombres(rutinas, rutinasFavs, nombre){
+        for (let rutina of rutinas) {
+            if (rutina.nombre == nombre){
+                return false;
+            }
+        }
+        for (let rutina of rutinasFavs) {
+            if (rutina.nombre == nombre){
+                return false;
+            }
+        }
+        return true;
+    }
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
 
+    function closePopup(){
+        popup.classList.remove("open-popup")
+    }
 </script>

@@ -4,9 +4,9 @@ const router = express.Router();
 
 const rutinasController = require('../controllers/rutinas.controller');
 
-router.get('/nueva_rutina', rutinasController.nueva_rutina);
+router.get('/agregar', rutinasController.nueva_rutina);
 
-router.post('/nueva_rutina', rutinasController.post_nueva_rutina);
+router.post('/agregar', rutinasController.post_nueva_rutina);
 
 router.get('/:id', rutinasController.visualizar_rutinas);
 

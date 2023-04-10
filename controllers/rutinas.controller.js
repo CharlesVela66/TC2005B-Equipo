@@ -72,18 +72,6 @@ exports.seleccionar_rutinas=(request,response, next) =>{
 
 }
 
-exports.nueva_rutina = (request, response, next) => {
-    Ejercicio.fetchAll()
-    .then(([rows, fieldData]) => {
-        response.render('rutinas/nueva_rutina',{
-            ejercicios: rows,
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
-    }).catch(error=>console.log(error));
-}
-
 exports.registrar_rutina_favorita = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente, fieldData]) => {
@@ -96,10 +84,31 @@ exports.registrar_rutina_favorita = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
-exports.post_nueva_rutina = (request, response, next) => {
+exports.nueva_rutina = (request, response, next) => {
+    Ejercicio.fetchAll()
+    .then(([rows, fieldData]) => {
+        Rutina.fetchAll(request.session.nombre_usuario)
+        .then(([rutinas, fieldData]) => {
+            Rutina.fetchAllFavoritas(request.session.nombre_usuario)
+            .then(([rutinasFavs, fieldData]) => {
+                response.render('rutinas/nueva_rutina',{
+                    ejercicios: rows,
+                    rutinas: rutinas,
+                    rutinasFavs: rutinasFavs,
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    nombre: request.session.nombre_usuario || '',
+                    rol: request.session.rol,
+                });
+            })
+            .catch(error=>console.log(error));
+        })
+        .catch(error=>console.log(error));
+    })
+    .catch(error=>console.log(error));
+}
 
-    console.log(request.file);
-    console.log(request.file.filename);
+
+exports.post_nueva_rutina = (request, response, next) => {
     
     const newRutina = new Rutina({
       nombre: request.body.nombre_rutina,
@@ -111,12 +120,7 @@ exports.post_nueva_rutina = (request, response, next) => {
     // Verificar si existe una rutina con el mismo nombre
     Rutina.fetchOneByNombre(request.body.nombre_rutina)
       .then(([rutinas, fieldData]) => {
-        if (rutinas.length > 0) {
-          // Si existe una rutina con el mismo nombre, muestra un mensaje de error
-          return response.status(400).send("Ya existe una rutina con este nombre.");
-        }
-  
-        // Si no existe una rutina con el mismo nombre, guarda la nueva rutina
+          // Si no existe una rutina con el mismo nombre, guarda la nueva rutina
         return newRutina.save();
       })
       .then(([rows, fieldData]) => {
@@ -149,4 +153,3 @@ exports.post_nueva_rutina = (request, response, next) => {
         console.log(error);
       });
   };
-  
