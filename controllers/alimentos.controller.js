@@ -108,6 +108,12 @@ exports.post_alimentos = (request, response, next) => {
     const nombre = request.body.nombre.trim();
     const medida = request.body.medida.trim();
   
+    if (!nombre || !medida) {
+      request.session.mensaje = "Por favor complete ambos campos.";
+      response.redirect('/alimentos');
+      return;
+    }
+
     if (!validarNombre(nombre)) {
       request.session.mensaje = "El nombre solo puede contener letras y espacios.";
       response.redirect('/alimentos');

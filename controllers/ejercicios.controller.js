@@ -140,9 +140,9 @@ exports.get_ejercicios = (request, response, next) => {
 exports.post_ejercicios = (request, response, next) => {
     const descripcion = request.body.descripcion.trim();
     const video_ejercicio = request.body.video_ejercicio.trim();
-  
-    if (!validarDescripcion(descripcion)) {
-      request.session.mensaje = "La descripción solo puede contener letras y espacios.";
+    
+    if (!descripcion || !video_ejercicio) {
+      request.session.mensaje = "Por favor complete ambos campos.";
       response.redirect('/ejercicios');
       return;
     }
