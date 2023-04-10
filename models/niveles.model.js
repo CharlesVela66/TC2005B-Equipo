@@ -4,6 +4,7 @@ module.exports = class Niveles {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nuevo_objetivo) {
+        this.id_niv = nuevo_objetivo.id_niv;
         this.nombre_niv = nuevo_objetivo.nombre_niv;
         this.descripcion_niv = nuevo_objetivo.descripcion_niv;
     }

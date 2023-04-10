@@ -7,10 +7,13 @@
     <div class="media">
       <div class="media-left">
         <figure class="image is-200x200">
-          <img src="<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
+          <img style="border-radius: 3%; margin: 10px;" src="<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
         </figure>
+        <div class="has-text-centered">
+          <a class="button is-link" href="/perfil/editar_perfil">Ver informacion</a>
+        </div>
       </div>
-      <div class="media-content">
+      <div class="media-content" style="margin-left:35px; margin-top: 10px; ">
         <p class="title is-4"><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
         <p class="resaltado" style="font-weight: bold">Username</p>
         <p class="subtitle is-6"><%= infoCliente.nombre_usuario %></p>

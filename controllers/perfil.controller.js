@@ -2,31 +2,6 @@ const Dieta = require('../models/dietas.model');
 const Rutina = require('../models/rutinas.model')
 const Cliente = require('../models/clientes.model');
 
-/*exports.get_editar=(request, response, next) =>{
-
-    Usuario.fetchOne(request.params.id)
-    .then(([rows, fieldData]))=>{
-        if(rows.length ==1){
-            const usuario = new Usuario({
-                nombre: nuevo_usuario.nombre,
-                apellido: nuevo_usuario.apellido,
-                nombre_usuario = nuevo_usuario.nombre_usuario,
-                this.correo = nuevo_usuario.correo,
-                this.contrasena = nuevo_usuario.contrasena,
-                this.foto_perfil = nuevo_usuario.foto_perfil || null;
-                this.sexo = nuevo_usuario.sexo;
-                this.fecha_nacimiento = nuevo_usuario.fecha_nacimiento;
-            })
-        }
-    }
-};
-
-exports.post_editar = (request, response, next) => {
-    console.log("Datos para editar");
-    console.log(request.body);
-
-};*/
-
 exports.ver_perfil = (request, response, next) => {
     let dietasRows = new Array;
     let rutinasRows = new Array;
@@ -64,17 +39,37 @@ exports.verCliente = (request, response, next) =>{
     .catch(err => console.log(err));
 };
 
-/*
-exports.verCliente = (request, response, next) =>{
+
+
+exports.post_editar = (request, response, next) => {
+    const nuevo_cliente = {
+        nombre: request.body.nombre,
+        apellido: request.body.apellido,
+        nombre_usuario: request.body.nombre_usuario,
+        correo: request.body.correo,
+        fecha_nacimiento: request.body.fecha_nacimiento,
+        sexo: request.body.sexo,
+        foto_perfil: request.body.foto_perfil,
+        nombre_obj: request.body.nombre_obj,
+        nombre_niv: request.body.nombre_niv
+    };
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([clientes, fieldData]) => {
-        response.render('perfil/ver_info', {
-            infoCliente: clientes[0],
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
+        const id_cliente = clientes[0].id_cliente;
+        const cliente = new Cliente({id_usuario: clientes[0].id_usuario, id_obj: clientes[0].id_obj});
+        cliente.nombre = nuevo_cliente.nombre;
+        cliente.apellido = nuevo_cliente.apellido;
+        cliente.nombre_usuario = nuevo_cliente.nombre_usuario;
+        cliente.correo = nuevo_cliente.correo;
+        cliente.fecha_nacimiento = nuevo_cliente.fecha_nacimiento;
+        cliente.sexo = nuevo_cliente.sexo;
+        cliente.foto_perfil = nuevo_cliente.foto_perfil;
+        cliente.nombre_obj = nuevo_cliente.nombre_obj;
+        cliente.nombre_niv = nuevo_cliente.nombre_niv;
+        return cliente.saveCliente(id_cliente);
+    })
+    .then(() => {
+        response.redirect('/perfil/ver_info');
     })
     .catch(err => console.log(err));
 };
-*/ 
