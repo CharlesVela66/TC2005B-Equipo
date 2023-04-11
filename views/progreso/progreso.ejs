@@ -5,115 +5,39 @@
     </div>
 <% } %>
 <% if (rol == "Cliente") { %>
-<h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
-<script>
-    var selectValue; // Variable global
-    function admSelectCheck() {
-        selectValue = document.getElementById("nombre").value;
-        document.getElementById("valorSeleccionado").innerHTML = selectValue;
-        return selectValue
-    }
-</script>
-<div class = "columns">
-    <columns style="width: 25%;">
-        <form id="myForm" action="/home" method="post" autocomplete="off">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-            <div class="select is-info is-medium">
-                <select id="nombre" onchange="admSelectCheck()">
-                    <% registros.forEach(registro => { %>
-                        <option value="<%= registro.nombre %>"><%= registro.nombre %></option>
-                    <% }) %>
-                </select>
-            </div>
-        <table class = "table has-text-white-ter has-background-black-ter" id="datos" style="width: 100%;">
-            <caption>Cambios en el tiempo</caption>
-            <colgroup>
-                <col span="1" style="width: 50%;">
-                <col span="1" style="width: 50%;">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th class="has-text-white-ter">Fecha</th>
-                    <th class="has-text-white-ter">Medida</th>
-                </tr>
-            </thead>
-            <tbody>
+    <h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const registrosStr = "<%- escape(JSON.stringify(registros)) %>";
+        const registros = JSON.parse(unescape(registrosStr));
+        $(document).ready(function() {
+            $('#seleccion').change(function() {
+                var valorSeleccionado = $(this).val();
+                var tabla = $('#tabla-dinamica');
+                tabla.append('<tr><th>'+registros.registro.nombre+'</th><td>'+valorSeleccionado+'</td></tr>');
 
-            <% if (registros.length > 0) { %>
-                <% for (let registro of registros) { %>
-                    <% if (registro.nombre == registro.nombre) { %> <!-- Usando la variable global selectValue -->
-                        <tr> 
-                            <th class="has-text-white-ter"> <%= registro.fecha %></th>
-                            <td> <%= registro.medida %></td>
-                        </tr>
-                    <% } %>
-                <% } %>
+        });
+      });
+    </script>
+    <label for="seleccion">Selecciona un valor:</label>
+    <select id="seleccion">
+        <option selected="true" disabled="disabled">Escoga uno</option>
+        <% registros.forEach(registro => { %>
+            <option value="<%= registro.nombre %>"><%= registro.nombre %></option>
+        <% }) %>
+    </select>
+    <br><br>
+    <table id="tabla-dinamica">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Medida</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
-            <% } %>
-        
-            </tbody>
-        </table>
-        </form>
-        <script>
-            const table = document.getElementById('datos');
-            const labels = Array.from(table.querySelectorAll('tbody tr td:first-child')).map(td => td.textContent);
-            const data = Array.from(table.querySelectorAll('tbody tr td:last-child')).map(td => parseInt(td.textContent));
-
-            const neonPurple = 'rgba(128, 0, 128, 0.5)';
-            const neonPurpleBorder = 'rgba(128, 0, 128, 1)';
-
-            const chart = new Chart('grafico', {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "nombre",
-                    data: data,
-                    backgroundColor: neonPurple,
-                    borderColor: neonPurpleBorder,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            fontColor: 'white'
-                        },
-                        gridLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            fontColor: 'white'
-                        },
-                        gridLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
-                    }]
-                },
-                legend: {
-                    labels: {
-                        fontColor: 'white'
-                    }
-                }
-            }
-            });
-        </script>
-    </columns>
-    <columns  style="width: 65%;">
-        <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
-            <h1 >Grafica</h1>
-            <div>
-                <canvas id="grafico"></canvas>
-            </div>
-            <div id="valorSeleccionado"></div>
-        </section>
-    </columns>
-    
-</div>
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title is-1 has-text-white-ter"></h1>
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
