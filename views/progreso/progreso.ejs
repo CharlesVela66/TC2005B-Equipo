@@ -24,25 +24,31 @@
         });
         });
     </script>
-    <label for="seleccion">Selecciona un valor:</label>
-    <select id="seleccion">
-        <option selected="true" disabled="disabled">Escoga uno</option>
-        <% registros.forEach(registro => { %>
-            <option value="<%= registro.nombre %>">
-                <%= registro.nombre %></option>
-        <% }) %>
-    </select>
-    <br><br>
-    <table id="tabla-dinamica">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Medida</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="columns">
+        <columns style="width: 25%;">
+            <label for="seleccion">Selecciona un valor:</label>
+            <select id="seleccion">
+                <option selected="true" disabled="disabled">Escoga uno</option>
+                <% medidas.forEach(medida => { %>
+                    <option value="<%= medida.tipo %>"><%= medida.tipo %></option>
+                <% }) %>
+            </select>
+            <br><br>
+            <table id="tabla-dinamica">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Medida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </columns>
+        <columns style="width: 65%;">
+        </columns>
+    </div>
+    
 
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title is-1 has-text-white-ter"></h1>

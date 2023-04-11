@@ -11,12 +11,16 @@ exports.get_progreso = (request,response,next) => {
     ClienteMedidas.fetchAll(request.session.nombre_usuario)
     .then((rows, fieldData) => {
         // 
+        Medidas.fetchAll()
+        .then(([medida, fieldData]) => {
             response.render('progreso/progreso', {
             registros: rows[0],
+            medidas: medida,
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
             rol: request.session.rol,
             mensaje: mensaje
+        })
         })
     }) 
     .catch((error) => {console.log(error)});
