@@ -1,7 +1,9 @@
 <%- include('../includes/head.ejs'); %>
 <br>
-<h1 class="title is-1 has-text-white-ter">Agregar un nuevo ejercicio</h1>
-    <form action="/ejercicios/agregar_ejercicios" method="POST">
+
+        <h1 class="title is-1 has-text-white-ter has-text-centered">Agregar Ejercicio</h1>
+        <form action="/ejercicios/agregar_ejercicios" method="POST" autocomplete="off">
+ 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
             <label for="descripcion"> <h5 class="title is-5 has-text-white-ter">Descripción:</h5></label> <br>
             <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" placeholder="">
@@ -13,8 +15,8 @@
             <input class="button is-rounded is-success" type="submit" value="Registrar">
     </form>
     <br><br>
-    <div class="control">
-        <a href="/home"><button class="button is-danger">Cancelar</button></a>
-        </div>
+    <form action="/ejercicios" method="GET">
+        <button type="submit" class="button is rounded is-danger has-text-white-ter">Cancelar</button>
+      </form>
     
 <%- include('../includes/foot.ejs'); %>

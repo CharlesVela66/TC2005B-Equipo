@@ -7,7 +7,10 @@ module.exports = class Dieta_Alimento{
         this.cantidad = nuevo_dietaAlimento.cantidad || '';
     }
     save(){
-
+        return db.execute(`
+            INSERT INTO dietasalimentos(id_dieta, id_alimento, cantidad)
+            VALUES (?, ?, ?)
+        `, [this.id_dieta, this.id_alimento, this.cantidad]);
     }
     static fetchOne(id){
         return db.execute(

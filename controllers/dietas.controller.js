@@ -1,7 +1,8 @@
 const Dieta = require('../models/dietas.model');
 const Dieta_Alimento = require('../models/dieta_alimento.model');
-const macro = require('../models/macro.model');
-const micro = require('../models/micronutrientes.model');
+const Alimentos = require('../models/alimentos.model');
+const Macro = require('../models/macro.model');
+const Micro = require('../models/micronutrientes.model');
 const Cliente = require('../models/clientes.model');
 
 exports.explorar_dietas = (request, response, next) => {
@@ -35,10 +36,10 @@ exports.dieta_detalles = (request, response, next) => {
             Dieta_Alimento.fetchOne(request.params.id)
             .then(([dieta_alimento, fieldData]) => {
                 //  console.log(dieta_alimento),
-                macro.fetchOne(request.params.id)
+                Macro.fetchOne(request.params.id)
                 .then(([macro, fieldData]) => {
                     //   console.log(macro),
-                    micro.fetchOne(request.params.id)
+                    Micro.fetchOne(request.params.id)
                     .then(([micro, fieldData]) => {
                         //  console.log(micro),
                         response.render('dietas/dieta_detalles', {
@@ -91,15 +92,102 @@ exports.registrar_dieta_favorita = (request, response, next) => {
 }
 
 exports.get_nueva = (request, response, next) => {
-    response.render('dietas/agregar_dietas')
+    Alimentos.fetchAll()
+    .then(([rows, fieldData]) => {
+        Dieta.fetchAll(request.session.nombre_usuario)
+        .then(([dietas, fieldData]) => {
+            Dieta.fetchAllFavoritas(request.session.nombre_usuario)
+            .then(([dietasFavs, fieldData]) => {
+                response.render('dietas/agregar_dietas',{
+                    alimentos: rows,
+                    dietas: dietas,
+                    dietasFavs: dietasFavs,
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    nombre: request.session.nombre_usuario || '',
+                    rol: request.session.rol,
+                });
+            })
+            .catch(error=>console.log(error));
+        })
+        .catch(error=>console.log(error));
+    })
+    .catch(error=>console.log(error));
 }
 
 exports.post_nueva = (request, response, next) => {
-    const dieta = new Dieta({
-        nombre: request.body.nombre_usuario_usuario,
-        tipo_dieta: request.body.tipo_dieta,
-        id_macro: request.body.id_macro,
-        id_micro: request.body.id_micro
-    });
-    dieta.save()
-}
+    const newMacro = new Macro({
+        calorias: request.body.calorias,
+        proteinas: request.body.proteinas,
+        carbohidratos: request.body.carbohidratos,
+        grasas: request.body.grasas
+    })
+    newMacro.save()
+    .then(([macro, fieldData])=>{
+        const id_macro = macro.insertId;
+        
+        const newMicro = new Micro({
+            ceniza: request.body.ceniza,
+            fibra_total: request.body.fibra_total,
+            calcio: request.body.calcio,
+            fosforo: request.body.fosforo,
+            hierro: request.body.hierro,
+            tiamina: request.body.tiamina,
+            riboflavina: request.body.riboflavina,
+            niacina: request.body.niacina,
+            vit_c: request.body.vit_c,
+            vit_a: request.body.vit_a,
+            acgrasosmin: request.body.acgrasosmin,
+            acgrasospoli: request.body.acgrasospoli,
+            acgrasossat: request.body.acgrasossat,
+            colesterol: request.body.colesterol,
+            potasio: request.body.potasio,
+            sodio: request.body.sodio,
+            zinc: request.body.zinc,
+            magnesio: request.body.magnesio,
+            vit_b6: request.body.vit_b6,
+            vit_b12: request.body.vit_b12,
+            acfolico: request.body.acfolico,
+            folatoeq: request.body.folatoeq
+        })
+        newMicro.save()
+        .then(([micro, fieldData]) => {
+            const id_micro = micro.insertId;
+
+            const newDieta = new Dieta({
+                nombre: request.body.nombre_dieta,
+                id_macro: id_macro,
+                id_micro: id_micro,
+                Url_image: request.body.image
+            })
+            newDieta.save()
+            .then(([dieta, fieldData]) => {
+                const id_dieta = dieta.insertId;
+  
+                // Recorre los alimentos enviados en el formulario
+                const alimentos = JSON.parse(request.body.alimentos);
+                const promises = alimentos.map(alimento => {
+                  // Guarda cada alimento en la tabla 'rutinaalimentos'
+                  const newDietaAlimento = new Dieta_Alimento({
+                    id_dieta: id_dieta,
+                    id_alimento: alimento.id_alimento,
+                    cantidad: alimento.cantidad
+                  });
+          
+                  return newDietaAlimento.save();
+                });
+          
+                // Espera a que todos los ejercicios se guarden en la base de datos
+                return Promise.all(promises);
+            })
+            .then(() => {
+                // Redirige a la página de éxito o a donde desees después de guardar la rutina y los ejercicios
+                response.redirect('/home');
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+        })
+        .catch(error=>console.log(error));
+    })
+    .catch(error=>console.log(error));
+};

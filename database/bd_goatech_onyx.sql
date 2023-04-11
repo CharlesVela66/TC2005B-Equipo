@@ -444,15 +444,15 @@ INSERT INTO `micronutrientes` (`id_micro`, `ceniza`, `fibra_total`, `calcio`, `f
 
 CREATE TABLE `nivelfisico` (
   `id_niv` int(11) NOT NULL,
-  `nombre` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_spanish2_ci NOT NULL
+  `nombre_niv` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `descripcion_niv` text COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Dumping data for table `nivelfisico`
 --
 
-INSERT INTO `nivelfisico` (`id_niv`, `nombre`, `descripcion`) VALUES
+INSERT INTO `nivelfisico` (`id_niv`, `nombre_niv`, `descripcion_niv`) VALUES
 (1, 'Noob', 'Hace menos de 12 repeticiones,no sabe técnica'),
 (2, 'Beginner', 'Ya realiza 12 repeticiones'),
 (3, 'Intermediate', 'Realiza 12 repeticiones con pesos fuertes,buena técnica'),
@@ -466,15 +466,15 @@ INSERT INTO `nivelfisico` (`id_niv`, `nombre`, `descripcion`) VALUES
 
 CREATE TABLE `objetivo` (
   `id_obj` int(11) NOT NULL,
-  `nombre` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_spanish2_ci NOT NULL
+  `nombre_obj` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `descripcion_obj` text COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Dumping data for table `objetivo`
 --
 
-INSERT INTO `objetivo` (`id_obj`, `nombre`, `descripcion`) VALUES
+INSERT INTO `objetivo` (`id_obj`, `nombre_obj`, `descripcion_obj`) VALUES
 (1, 'Bajar peso', 'Adelgaza y tonifica cuerpo'),
 (2, 'Mantener peso', 'Se mantiene el peso, pero genera musculo'),
 (3, 'Subir peso', 'Dieta rica en carbohidratos y calorías para subir el peso');

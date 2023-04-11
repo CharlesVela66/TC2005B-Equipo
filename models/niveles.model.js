@@ -4,11 +4,16 @@ module.exports = class Niveles {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nuevo_objetivo) {
+        this.nombre_niv = nuevo_objetivo.nombre_niv;
+        this.descripcion_niv = nuevo_objetivo.descripcion_niv;
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
-
+        return db.execute(`
+        INSERT INTO  nivelfisico(nombre_niv, descripcion_niv) 
+        values (?, ?)
+    `, [this.nombre_niv, this.descripcion_niv]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
@@ -17,6 +22,14 @@ module.exports = class Niveles {
             SELECT *
             FROM nivelfisico
         `);
+    }
+
+    static fetchOne(id_niv){
+        return db.execute(`
+            SELECT *
+            FROM nivelfisico
+            WHERE id_niv =?
+        `, [id_niv]);
     }
     
 

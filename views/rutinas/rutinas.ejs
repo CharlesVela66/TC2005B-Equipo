@@ -5,6 +5,8 @@
     </div>
 <% } %>
 
+<% if (rol == "Cliente") {%>
+
 <h1 class = "title is-1 has-text-white-ter">Rutinas Favoritas</h1>
 <% if (rutinasFavs.length > 0) { %>
     <div class="columns">
@@ -33,7 +35,7 @@
                             </a>
                         </div>
                         <figure class="image is-4by3">
-                            <a href="/rutinas/<%= rutinaFav.id_rutina %>"><img src="<%= rutinaFav.Url_image %>"
+                            <a href="/rutinas/<%= rutinaFav.id_rutina %>"><img src="/uploads/<%= rutinaFav.Url_image %>"
                                     alt="Placeholder image"></a>
                         </figure>
                     </div>
@@ -88,7 +90,7 @@
                             </a>
                         </div>
                         <figure class="image is-4by3">
-                            <a href="/rutinas/<%= rutina.id_rutina %>"><img src="<%= rutina.URL_Image %>" 
+                            <a href="/rutinas/<%= rutina.id_rutina %>"><img src="/uploads/<%= rutina.URL_Image %>" 
                                 alt="Hola"></a>
                         </figure>
                     </div>
@@ -132,5 +134,45 @@
         popup.classList.remove("open-popup")
     }
 </script>
-
+<% } else if (rol == "Administrador") { %>
+    <h1 class = "title is-1 has-text-white-ter"> Rutinas</h1>
+<% if (rutinas.length > 0) { %>
+    <div class="columns">
+        <% let columns = 0; %>
+        <% for (let rutina of rutinas) { %>
+            <% if (columns % 4 == 0) { %>
+    </div>
+    <div class="columns">
+            <% } %>
+            <% columns++; %>
+            <div class="column is-3">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <a href="/rutinas/<%= rutina.id_rutina %>"><img src="/uploads/<%= rutina.URL_Image %>" 
+                                alt="Hola"></a>
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1518/1518886.png" alt="Placeholder image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4"><%= rutina.nombre %></p>
+                                <p class="subtitle is-6"><%= rutina.tiporutina %></p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+<% } else { %>
+    <h1>No hay rutinas registradas</h1>
+<% } %>   
+<% } %>
 <%- include('../includes/foot.ejs'); %>

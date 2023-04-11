@@ -4,6 +4,9 @@
         <%= mensaje %>
     </div>
 <% } %>
+
+<% if (rol == 'Cliente') { %>
+
 <h1 class = "title is-1 has-text-white-ter">Dietas Favoritas</h1>
 <% if (dietasFav.length > 0) { %>
     <div class="columns">
@@ -135,4 +138,56 @@
         popup.classList.remove("open-popup")
     }
 </script>
+<% } else if (rol == "Administrador") { %>
+    <h1 class = "title is-1 has-text-white-ter"> Dietas</h1>
+    <% if (dietas.length> 0) { %>
+        <div class="columns">
+            <% columns=0; %>
+                <% for (let dieta of dietas) { %>
+                    <% if (columns % 4==0) { %>
+        </div>
+        <div class="columns">
+            <% } %>
+                <% columns++; %>
+                    <div class="column is-3">
+                        <div class="card" data-id="<%= dieta.id_dieta %>">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <a href="/dietas/<%= dieta.id_dieta %>"><img src="<%= dieta.Url_image %>"
+                                            alt="Placeholder image"></a>
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/706/706133.png"
+                                                alt="Placeholder image">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4">
+                                            <%= dieta.nombre %>
+                                        </p>
+                                        <p class="subtitle is-6">
+                                            Calorías: <%= dieta.calorias.toFixed(2) %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+        </div>
+        <div class="popup" id="popup">
+            <h2 class="title is-2">¿Quieres guardar esta dieta en Favoritos?</h2>
+            <button class="button is-success" type = "submit">Sí</button>
+            <button class="button is-danger" type="button" onclick="closePopup()">No</button>
+        </div>
+    </form>
+        <% } else { %>
+            <h1 class="has-text-white-ter">No hay dietas registradas</h1>
+        <%}%>
+<% } %>
+
 <%- include('../includes/foot.ejs'); %>

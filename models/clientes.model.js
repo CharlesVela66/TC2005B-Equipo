@@ -37,10 +37,22 @@ module.exports = class Cliente {
     static fetchOne(username){
         return db.execute(`
             SELECT *
-            FROM cliente c, usuario u
+            FROM cliente c, usuario u, objetivo o, nivelfisico n
             WHERE u.nombre_usuario = ?
             AND c.id_usuario = u.id_usuario
+            AND c.id_obj=o.id_obj
+            AND c.id_niv=n.id_niv
         `, [username]);
+    }
+
+    //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
+    static getObjetivo(id_cliente) {
+        return db.execute(
+            `
+            SELECT u.id_usuario, c.id_cliente, o.od_obj, o.nombre, o.descripcion
+            FROM usuario u, cliente c, objetivo o
+            WHERE u.id_usuario=c.id_usuario AND c.id_obj=o.id_obj AND c.id_cliente = ?;
+         `, [id_cliente]);
     }
 
 }

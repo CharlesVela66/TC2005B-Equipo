@@ -1,62 +1,334 @@
 <%- include('../includes/head.ejs'); %>
-<div class="container is-fluid">
-    <h1 class = "title is-1 has-text-white-ter">Nueva Rutina</h1>
-    <form action="/rutinas/nueva_rutina" method="POST" >
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+<form action="/rutinas/agregar" method="POST" autocomplete="off" id="rutina-form" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <h1 class="title is-1 has-text-white-ter has-text-centered">Agregar Rutinas</h1>
+        <div class="columns">
+            <div class="column">
+                        <p class="title is-4 has-text-white-ter has-text-centered" >
+                            Nombre de la rutina
+                        </p>
+                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "nombre_rutina" id = "nombre_rutina" required="required" maxlength="25">
+            </div>
+            <div class="column">
+                        <p class="title is-4 has-text-white-ter has-text-centered">
+                            Descricpción
+                        </p>
+                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "descripcion" id = "descripcion" required="required" maxlength="1000">
+            </div>
+        </div>
+    <br>
+    <br>
+    <div class="card">
+        <div class="columns">
+            <div class="column">
+                <div class="card-content">
+                    <div class="content">
+                        <p class="title is-4 has-text-white-ter ">
+                            Imagen
+                        </p>
+                        <input type="file" id="imagen" name="imagen" required="required">
+    
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card-content">
+                    <div class="content">
+                        <p class="title is-4 has-text-white-ter">
+                            Tipo de rutina
+                        </p>
+                        <div class="select is-info is-small">
+                                
+                            <select name = "tiporutina" id = "tiporutina" required="required">
+                                <option>
+                                    Bajar de Peso
+                                </option>
+                                <option>
+                                    Mantener Peso
+                                </option>
+                                <option>
+                                    Subir de Peso
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <p class="title is-4 has-text-white-ter ">
+                    Ejercicios
+                </p>
+                <div class="columns">
+                    <div class="column">
+                        <input type="text" id="search" class="input is-info is-small is-rounded" placeholder="Buscar ejercicios">
+                        <ul id="suggestions" class="suggestions-list">
+                            
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <table id="tabla-ejercicios" class="table is-bordered">
+                            <colgroup>
+                                <col span="1" style="width: 40%;">
+                                <col span="1" style="width: 20%;">
+                                <col span="1" style="width: 20%;">
+                                <col span="1" style="width: 20%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Nombre del ejercicio</th>
+                                    <th>Series</th>
+                                    <th>Repeticiones</th>
+                                    <th>Día</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <div class="popup" id="popup">
+        <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+        <button class="button is-success" type = "submit" id="submit-button" name="submit-button">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+    </div>
+</form>
 
-        <label for = "nombre">Nombre:</label>
-        <input type="text" id = "nombre" name="nombre" required><br><br>
+<%- include('../includes/foot.ejs'); %>
 
-        <label for = "tiporutina">Tipo de la rutina:</label>
-        <textarea class="textarea is-hovered" placeholder="Ingrese el tipo de la rutina" id= "tiporutina" name="tiporutina" rows="1" cols="15"></textarea><br><br>
+<style>
+    .suggestions-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        max-height: 200px;
+        overflow-y: auto;
+        position: absolute;
+        z-index: 999;
+        width: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .suggestions-list li {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+    .suggestions-list li:hover {
+        background-color: #e2e8f0;
+    }
+</style>
 
-        <label for = "descripcion">Descripción:</label>
-        <textarea class="textarea is-hovered" placeholder="Ingrese la descripción de la rutina" id = "descripcion"name="descripcion" rows="3" cols="50"></textarea><br><br>
+<script>
+    // Aquí se obtienen todos los ejercicios que les pasamos desde el controlador, los transforma en string y luego los guarda en una constante ejercicios
+    const ejerciciosStr = "<%- escape(JSON.stringify(ejercicios)) %>";
+    const ejercicios = JSON.parse(unescape(ejerciciosStr));
+    // Obtenemos el elemento de busqueda
+    const searchInput = document.getElementById('search');
+    // Lista que se va a desplegar como parte de la sugerencias
+    const suggestionsList = document.getElementById('suggestions');
+    // Tabla que registrara los ejercicios seleccionados
+    const ejerciciosTable = document.getElementById('tabla-ejercicios');
 
-        <label for = "imagen">Imagen:</label>
-        <input type = "file" name="imagen"><br><br>
+    // Agregamos a la barra de busqueda un evento cuando se le ingrese texto
+    searchInput.addEventListener('input', (e) => {
+        // El valor de la busqueda ingresada se guarda en searchTerm
+        const searchTerm = e.target.value.toLowerCase();
+        // El HTML de la lista lo declaramos inicialmente como un string vacio
+        suggestionsList.innerHTML = '';
 
-        <label for="ejercicios">Ejercicios:</label><br>
-        <% ejercicios.forEach(ejercicio => { %>
-            <label value="<%= ejercicio.id_ejercicio %>"><%= ejercicio.descripcion %>
-            </label>
-            <input type="checkbox" id="<%= ejercicio.id_ejercicio %>" onclick="selecEjercicio(id)"><br>
-            <p id = "dia <%= ejercicio.id_ejercicio %>" style="display:none">
-                Día (Lun/Mar/Mie/Jue/Vie/Sab/Dom)
-                <input type="text" placeholder="Ej. Lun" id="dia" name="dia">
-            </p>
-            <p id = "series <%= ejercicio.id_ejercicio %>" style="display:none">
-                Series
-                <input type="number" step="1" min="1" max="1000" id="series" name="series">
-            </p>
-            <p id = "repeticiones <%= ejercicio.id_ejercicio %>" style="display:none">
-                Repeticiones
-                <input type="number" step="1" min="1" max="1000" id="repeticiones" name="repeticiones">
-            </p>
-        <% }) %>
-        <!--</select>--><br><br><br>
-        <input type="submit" value="Crear Rutina">
-    </form>
-    <script>
-        function selecEjercicio(id) {
-            // Get the checkbox
-            var checkBox = document.getElementById(id);
-            // Get the output text
-            var dia = document.getElementById("dia "+id);
-            var series = document.getElementById("series "+id);
-            var repeticiones = document.getElementById("repeticiones "+id);
+        // Si existe texto dentro de la barra de busqueda...
+        if (searchTerm) {
+            // Filtramos cada ejercicio de la matriz ejercicios para ver los ejercicios que incluyen el searchTerm y los que hagan match se guardan en el arreglo de filteredEjercicios
+            const filteredEjercicios = ejercicios.filter(ejercicio => ejercicio.descripcion.toLowerCase().includes(searchTerm));
 
-            // If the checkbox is checked, display the output text
-            if (checkBox.checked == true){
-                dia.style.display = "block";
-                series.style.display = "block";
-                repeticiones.style.display = "block";
-            } else {
-                dia.style.display = "none";
-                series.style.display = "none";
-                repeticiones.style.display = "none";
+            //Por cada ejercicio dentro del arreglo filteredEjercicios, creamos un elemento en la lista
+            filteredEjercicios.forEach(ejercicio => {
+                const listItem = document.createElement('li');
+                // El contenido del elemento será la descripcion del ejercicio
+                listItem.textContent = ejercicio.descripcion;
+                // Le agregamos un evento a cada elemento de la lista por si se le hace click, llamará a la función de agregar ejercicio a tabla
+                listItem.addEventListener('click', () => {
+                    addEjercicioToTable(ejercicio);
+                    // Cuando se le haga click a un elemento y se agregue a la tabla, debemos reiniciar la lista y el valor de busqueda
+                    searchInput.value = '';
+                    suggestionsList.innerHTML = '';
+                });
+                // Agregamos el elemento al HTML de la lista
+                suggestionsList.appendChild(listItem);
+            });
+        }
+    });
+    // Cuando se le haga click al botón submit...
+    document.getElementById("submit-button").addEventListener("click", function (event) {
+        // Verificamos que los campos del nombre de la rutina, tipo de rutina y descripcion hayan sido llenados
+        const nombreRutina = document.getElementById("nombre_rutina");
+        const tipoRutina = document.getElementById("tiporutina");
+        const descripcion = document.getElementById("descripcion");
+        const imagen = document.getElementById("imagen");
+
+        const rutinasStr = "<%- escape(JSON.stringify(rutinas)) %>";
+        const rutinas = JSON.parse(unescape(rutinasStr));
+
+        const rutinasFavStr = "<%- escape(JSON.stringify(rutinasFavs)) %>";
+        const rutinasFavs = JSON.parse(unescape(rutinasFavStr));
+
+        if (!nombreRutina.value || tipoRutina.value == "Elige una opción" || !descripcion.value || !imagen.value){
+            return;
+        }
+
+        event.preventDefault();
+
+        // Obtenemos la forma, la tabla y las filas con los ID's declarados en la vista
+        const form = document.getElementById("rutina-form");
+        const table = document.getElementById("tabla-ejercicios");
+        const rows = Array.from(table.querySelectorAll("tr")).slice(1); // Omitir la fila del encabezado
+
+        // Por cada ejercicio en la tabla regresamos
+        const ejercicios = rows.map(row => {
+        const cells = row.querySelectorAll("td");
+        return {
+            // El valor de la primera columna
+            id_ejercicio: cells[0].getAttribute('data-idEjercicio'), 
+            // El contenido de la primera columna
+            nombre: cells[0].innerText,
+            // El valor del input de la segunda columna
+            series: cells[1].querySelector("input").value,
+            // El valor del input de la tercera columna
+            repeticiones: cells[2].querySelector("input").value,
+            // La opcion seleccionada de la cuarta columna
+            dia: cells[3].querySelector("select").value
+        };
+        });
+
+        if(ejercicios.length == 0){
+            alert("Tienes que agregar mínimo un ejercicio para guardar la rutina");
+            return;
+        }
+        else if (!checkEjercicioAttributes(ejercicios)) {
+            return;
+        }
+        else if (!checkRutinasNombres(rutinas, rutinasFavs, nombreRutina.value)){
+            alert('Ya existe una rutina con ese nombre')
+            return;
+        }
+
+        // Creamos un input escondido para que ese sea el que llamamos en el controlador con todos la información que se encuentra en las tablas
+        const ejerciciosInput = document.createElement("input");
+        ejerciciosInput.type = "hidden";
+        ejerciciosInput.id = "ejercicios";
+        ejerciciosInput.name = "ejercicios";
+        ejerciciosInput.value = JSON.stringify(ejercicios);
+        form.appendChild(ejerciciosInput);
+
+        // Esa información es la que se envia en el form
+        form.submit();
+    });
+
+    // Metodos
+    function addEjercicioToTable(ejercicio) {
+        // Creamos una nueva fila
+        const row = document.createElement('tr');
+        // Primera columna: Nombre del ejercicio
+        const nombreCell = document.createElement('td');
+        nombreCell.textContent = ejercicio.descripcion;
+        nombreCell.id = `nombre`;
+        nombreCell.name = `nombre`;
+        nombreCell.setAttribute('data-idEjercicio', ejercicio.id_ejercicio);
+        // Segunda columna: Series
+        const seriesCell = document.createElement('td');
+        const seriesInput = document.createElement('input');
+        seriesInput.type = 'number';
+        seriesInput.min = 0;
+        seriesInput.max = 20;
+        seriesInput.required = true;
+        seriesInput.className = 'input is-info is-small is-rounded';
+        seriesInput.id = `series`;
+        seriesInput.name = `series`;
+        seriesCell.appendChild(seriesInput);
+        // Tercera columna: Repeticiones
+        const repsCell = document.createElement('td');
+        const repsInput = document.createElement('input');
+        repsInput.type = 'number';
+        repsInput.min = 0;
+        repsInput.max = 99;
+        repsInput.required = true;
+        repsInput.className = 'input is-info is-small is-rounded';
+        repsInput.id = `reps`;
+        repsInput.name = `reps`;
+        repsCell.appendChild(repsInput);
+        // Cuarta columna: Dias 
+        const diaCell = document.createElement('td');
+        const diaSelect = document.createElement('select');
+        diaSelect.className = 'select is-info is-small';
+        diaSelect.id = `dia`;
+        diaSelect.name = `dia`;
+        diaSelect.required = true;
+
+        // Opciones del select
+        const dias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'];
+        dias.forEach(dia => {
+            // Agregamos las opciones al HTML
+            const option = document.createElement('option');
+            option.value = dia;
+            option.textContent = dia;
+            diaSelect.appendChild(option);
+        });
+        diaCell.appendChild(diaSelect);
+
+        row.appendChild(nombreCell);
+        row.appendChild(seriesCell);
+        row.appendChild(repsCell);
+        row.appendChild(diaCell);
+
+        // Agregamos todo el codigo al HTML de la tabla 
+        document.getElementById('tabla-ejercicios').querySelector('tbody').appendChild(row);
+
+        nombreCell.addEventListener('click', () => {
+            ejerciciosTable.querySelector('tbody').removeChild(row);
+        });
+    }
+    function checkEjercicioAttributes(ejercicios) {
+        const ejercicioDiaMap = new Map();
+
+        for (const ejercicio of ejercicios) {
+            if (!ejercicio.series || !ejercicio.repeticiones || !ejercicio.dia) {
+                alert("Por favor, complete todos los campos de series, repeticiones y día.");
+                return false;
+            }
+            const ejercicioDiaKey = `${ejercicio.id_ejercicio}_${ejercicio.dia}`;
+            if (ejercicioDiaMap.has(ejercicioDiaKey)) {
+                alert("No se pueden tener dos ejercicios con el mismo nombre y el mismo día");
+                return false;
+            }
+            ejercicioDiaMap.set(ejercicioDiaKey, true);
+        }
+        return true;
+    }
+
+    function checkRutinasNombres(rutinas, rutinasFavs, nombre){
+        for (let rutina of rutinas) {
+            if (rutina.nombre == nombre){
+                return false;
             }
         }
-    </script>
-</div>
-<%- include('../includes/foot.ejs') %>
+        for (let rutina of rutinasFavs) {
+            if (rutina.nombre == nombre){
+                return false;
+            }
+        }
+        return true;
+    }
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+
+    function closePopup(){
+        popup.classList.remove("open-popup")
+    }
+</script>

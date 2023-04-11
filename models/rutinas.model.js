@@ -53,7 +53,7 @@ module.exports = class Rutina {
 
     static fetchOneByNombre(nombre){
         return db.execute(`
-        SELECT r.id_rutina,r.nombre,r.tiporutina,r.descripcion, r.URL_Image
+        SELECT *
         FROM rutina r
         WHERE r.nombre =?
         `, [nombre]);
