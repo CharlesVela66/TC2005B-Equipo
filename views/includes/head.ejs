@@ -8,18 +8,29 @@
         background-color: rgb(20, 20, 20) !important;
         color:rgb(31, 93, 240)
       }
-
-
+      .card {
+        background-color: rgb(29, 29, 29);
+        height:100%;
+      }
       .navbar-item, .navbar-link, .navbar-dropdown{
         color:rgb(216, 216, 216);
       }
+      html{
+        background-color: #17191B;
+      }
 
+      .navbar{
+        background-color: #242527;
+      }
+      
       body
       {
         min-height: 100vh;
       }
-      .card {
-        height: 100%;
+      * { 
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
       }
       .popup{
         width: 400px;
@@ -53,12 +64,16 @@
         position: absolute;
         z-index: 1;
       }
+      .ima{
+        width: 45px;
+        height: 46px;
+      }
     </style>
 </head>
 <body>
   <% if ( isLoggedIn){ %>
     <% if (rol == "Cliente") { %>
-    <nav class="navbar has-background-link-dark" role="navigation" aria-label="main navigation">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="/home">
             <img src="https://picsum.photos/112/28">
@@ -76,45 +91,32 @@
               <a class="navbar-item " href="/home">
                 Bitacora
               </a>
+
+              <a href="/dietas">
+                <img class="ima" src="/Menu_Dietas.png" alt="Dietas">
+              </a>
+
+              <a href="/rutinas">
+                <img class="ima" src="/Menu_workout.png" alt="Rutinas">
+              </a>
+
         
-              <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link has-background-link-dark">
-                  Dietas
-                </a>
-        
-                <div class="navbar-dropdown ">
-                  <a class="navbar-item" href="/dietas">
-                    Ver dietas
-                  </a>
-                </div>
-              </div>
-        
-              <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link has-background-link-dark">
-                  Rutinas
-                </a>
-        
-                <div class="navbar-dropdown">
-                  <a class="navbar-item" href="/rutinas">
-                    Ver rutinas
-                  </a>
-                </div>
-              </div>
-              <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link has-background-link-dark">
-                  Mediciones
-                </a>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                Mediciones
+              </a>
         
                 <div class="navbar-dropdown">
                   <a class="navbar-item" href="/medidas">
                     Registrar medidas
                   </a>
-                </div>
+                  <a class="navbar-item" href="/progreso">
+                  Progreso
+                </a>
+               </div>
               </div>
-              <a class="navbar-item" href="/progreso">
-                Progreso
-              </a>
             </div>
+
         
             <div class="navbar-end">
               <div class="navbar-item">
