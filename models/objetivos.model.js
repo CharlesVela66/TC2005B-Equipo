@@ -23,6 +23,7 @@ module.exports = class Objetivos {
             FROM objetivo
         `);
     }
+
     
     static fetchOne(id_obj){
         return db.execute(`

@@ -91,14 +91,14 @@
             <div class="navbar-start">
               <a class="navbar-item " href="/home">
                 <span class="material-symbols-outlined">
-                  clinical_notes
+                  clinical_notes <!--No Borrar esta palabra-->
                   </span>
                   Bitacora
               </a>
 
               <a class="navbar-item" href="/dietas">
                 <span class="material-symbols-outlined">
-                  restaurant
+                  restaurant <!--No Borrar esta palabra-->
                   </span>
                 Dietas
                 <!-- <img class="ima" src="/Menu_Dietas.png" alt="Dietas" style="height: 48px; width: 50px;"> -->
@@ -106,7 +106,7 @@
 
               <a class="navbar-item" href="/rutinas">
                 <span class="material-symbols-outlined">
-                  avg_time
+                  avg_time <!--No Borrar esta palabra-->
                   </span>
                 Rutinas
                 <!-- <img class="ima" src="/Menu_workout.png" alt="Rutinas"style="margin-top:3px; margin-left:5px"> -->
@@ -114,15 +114,15 @@
 
         
             <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
+              <a class="navbar-link has-background" style="background-color:#242527 ;">
                 <span class="material-symbols-outlined">
-                  monitoring
+                  monitoring <!--No Borrar esta palabra-->
                   </span>
                 Mediciones
               </a>
         
                 <div class="navbar-dropdown">
-                  <a class="navbar-item" href="/medidas">
+                  <a class="navbar-item " href="/medidas">
                     Registrar medidas
                   </a>
                   <a class="navbar-item" href="/progreso">
@@ -246,7 +246,7 @@
         </nav>
       <% } %>
         <% } else if (!isLoggedIn){ %>
-          <nav class="navbar has-background-link-dark" role="navigation" aria-label="main navigation">
+          <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
               <a class="navbar-item" href="/">
                 <img src="https://picsum.photos/112/28">
@@ -261,12 +261,11 @@
             
           <div id="navbarBasicExample" class="navbar-menu">      
             <div class="navbar-end">
-              <div class="navbar-item">
                 <div class="buttons">
                   <a class="button is-info" href="/registrarse">
                     <strong>Registrarse</strong>
                   </a>
-                  <a class="button is-light" href="/iniciar-sesion">
+                  <a class="button is-light" href="/iniciar-sesion" style="margin-right: 35px;">
                     Iniciar Sesión
                   </a>
                 </div>

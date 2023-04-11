@@ -43,8 +43,7 @@
                 <div class="select is-primary">
                     <select name="obj" id="obj">
                         <% for (let objetivo of objetivos) { %>
-                            <option value="<%= objetivo.id_obj %>" <% if(objetivo.nombre = objetivo.id_obj) { %> selected <% } %>>
-                                <%= objetivo.nombre %>
+                            <option value="<%= objetivo.id_obj %>"><%=objetivo.nombre_obj%>
                             </option>
                         <% } %>
                     </select>
