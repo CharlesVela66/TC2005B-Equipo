@@ -3,6 +3,9 @@ const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
 
+function guardar(){
+    alert("entro")
+}
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
@@ -82,16 +85,16 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 // Carga la interfaz de registrarse
 exports.registrarse = (request, response, next) => {
-    Objetivos.fetchAll()
-    .then(([rows,fieldData]) => {
+    //Objetivos.fetchAll()
+   //.then(([rows,fieldData]) => {
         response.render('home/registrarse', {
-            objetivos : rows,
+           // objetivos : rows,
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
             rol: request.session.rol || '',
-        })
-    })
-    .catch((error) => {console.log(error)});
+        }); 
+    //})
+    //.catch((error) => {console.log(error)});
 };
 
 exports.informacion = (request,response,next)=>{

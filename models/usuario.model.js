@@ -4,14 +4,14 @@ const bcrypt = require('bcryptjs');
 module.exports = class Usuario {
 
     constructor(nuevo_usuario) {
-        this.nombre = nuevo_usuario.nombre ;
-        this.apellido = nuevo_usuario.apellido;
         this.nombre_usuario = nuevo_usuario.nombre_usuario;
         this.correo = nuevo_usuario.correo;
         this.contrasena = nuevo_usuario.contrasena;
-        this.foto_perfil = nuevo_usuario.foto_perfil || null;
+        this.nombre = nuevo_usuario.nombre ;
+        this.apellido = nuevo_usuario.apellido;
         this.sexo = nuevo_usuario.sexo;
         this.fecha_nacimiento = nuevo_usuario.fecha_nacimiento;
+        this.foto_perfil = nuevo_usuario.foto_perfil || null;
     }
 
     save() {
@@ -31,12 +31,19 @@ module.exports = class Usuario {
             values (?, ?)
         `, [id_usuario, id_rol]);
     }
-
+/*
+cambie la consulta de fetchOne
+Ver si esta jala
+        SELECT COUNT(*) as conteo
+        FROM usuario
+        WHERE nombre_usuario = ?;
+*/
     static fetchOne(username){
         return db.execute(`
-            SELECT * 
-            FROM usuario
-            WHERE nombre_usuario = ?
+        SELECT * 
+        FROM usuario
+        WHERE nombre_usuario = ?
+
         `, [username]);
     }
 
