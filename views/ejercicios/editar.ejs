@@ -2,7 +2,7 @@
 <%- include('../includes/head.ejs'); %>
 <br>
 <h1 class="title has-text-white-ter">Modificar ejercicio</h1>
-<form action="/ejercicios/editar" method="POST">
+<form action="/ejercicios/editar" method="POST" autocomplete="off">
 <input type="hidden" name="id" value="<%= ejercicio.id_ejercicio %>" >
  
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >

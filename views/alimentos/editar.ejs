@@ -2,7 +2,7 @@
 <%- include('../includes/head.ejs'); %>
 <br>
 <h1 class="title has-text-white-ter">Modificar alimento</h1>
-<form action="/alimentos/editar" method="POST">
+<form action="/alimentos/editar" method="POST" autocomplete="off">
 <input type="hidden" name="id" value="<%= alimento.id_alimento %>" >
  
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
