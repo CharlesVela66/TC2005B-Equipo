@@ -1,6 +1,6 @@
 const ClienteMedidas = require("../models/cliente_medicion.model");
 const Cliente = require("../models/clientes.model");
-
+const Medidas = require('../models/medidas.model');
 
 exports.get_progreso = (request,response,next) => {
     console.log("Progeso :3")
@@ -11,7 +11,7 @@ exports.get_progreso = (request,response,next) => {
     ClienteMedidas.fetchAll(request.session.nombre_usuario)
     .then((rows, fieldData) => {
         // 
-        response.render('progreso/progreso', {
+            response.render('progreso/progreso', {
             registros: rows[0],
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',

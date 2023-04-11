@@ -14,16 +14,22 @@
             $('#seleccion').change(function() {
                 var valorSeleccionado = $(this).val();
                 var tabla = $('#tabla-dinamica');
-                tabla.append('<tr><th>'+registros.registro.nombre+'</th><td>'+valorSeleccionado+'</td></tr>');
-
+                tabla.empty();
+                tabla.append('<tr><th>Fecha</th><th>Medida</th></tr>');
+                registros.forEach(registro => {
+                    if (registro.nombre==valorSeleccionado){
+                        tabla.append('<tr><th>'+registro.fecha+'</th><td>'+registro.medida+'</td></tr>');
+                    }
+                })
         });
-      });
+        });
     </script>
     <label for="seleccion">Selecciona un valor:</label>
     <select id="seleccion">
         <option selected="true" disabled="disabled">Escoga uno</option>
         <% registros.forEach(registro => { %>
-            <option value="<%= registro.nombre %>"><%= registro.nombre %></option>
+            <option value="<%= registro.nombre %>">
+                <%= registro.nombre %></option>
         <% }) %>
     </select>
     <br><br>
