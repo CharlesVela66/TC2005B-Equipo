@@ -2,10 +2,7 @@ const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
-
-function guardar(){
-    alert("entro")
-}
+ 
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
