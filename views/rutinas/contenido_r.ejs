@@ -4,35 +4,36 @@
   <form action="/rutinas/hola" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
   <div class="card">
-    <header class="card-header" style="background-color: aqua;">
-      <p class="card-header-title" style="font-size: 30px;" >
+    <header class="card-header" style="background-color: rgb(31, 134, 134);">
+      <p class="card-header-title has-text-white-ter" style="font-size: 30px;" >
         <%= rutina.nombre%>
       </p>
     </header>
   </div>
-  <div class="box">
-    <p>DESCRIPCION: <%= rutina.descripcion%></p>
-    <p>TIPO RUTINA: <%= rutina.tiporutina %></p>
-    <table class="table" width="100%">
-      <thead>Ejercicios</thead>
+  <div class="box has-background-black-ter">
+    <p class="has-text-white-ter">DESCRIPCION: <%= rutina.descripcion%></p>
+    <p class="has-text-white-ter">TIPO RUTINA: <%= rutina.tiporutina %></p>
+    <br>
+    <table class="table has-background-black-ter" width="100%">
+      <thead><p class="subtitle is-4 has-text-white-ter">Ejercicios</p></thead>
       <thead>
         <tr>
-          <th>Descripcion</th>
-          <th><abbr title="Played">Link</abbr></th>
-          <th><abbr title="Won">Series</abbr></th>
-          <th><abbr title="Won">Repeticiones</abbr></th>
-          <th><abbr title="Won">Día</abbr></th>
+          <th class="has-text-white-ter">Descripcion</th>
+          <th class="has-text-white-ter">Link</th>
+          <th class="has-text-white-ter">Series</th>
+          <th class="has-text-white-ter">Repeticiones</th>
+          <th class="has-text-white-ter">Día</th>
         </tr>
       </thead>
       <tbody>
         <% if (rutina_ejercicio.length > 0) { %>
           <% for (let rutina_ejercicios of rutina_ejercicio) { %>
             <tr>
-            <td><%= rutina_ejercicios.descripcion%></td>
-            <td> <%= rutina_ejercicios.video_ejercicio%></td>
-            <td> <%= rutina_ejercicios.series%></td>
-            <td> <%= rutina_ejercicios.repeticiones%></td>
-            <td> <%= rutina_ejercicios.dia%></td>
+            <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion%></td>
+            <td class="has-text-white-ter"> <%= rutina_ejercicios.video_ejercicio%></td>
+            <td class="has-text-white-ter"> <%= rutina_ejercicios.series%></td>
+            <td class="has-text-white-ter"> <%= rutina_ejercicios.repeticiones%></td>
+            <td class="has-text-white-ter"> <%= rutina_ejercicios.dia%></td>
           </tr>
             <% } %>
         <% } %>
