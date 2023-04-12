@@ -6,21 +6,22 @@ module.exports = class Ejercicio {
     constructor(nuevo_ejercicio) {
         this.id_ejercicio = nuevo_ejercicio.id_ejercicio || 0;
         this.descripcion = nuevo_ejercicio.descripcion || "";
+        this.descripcion_ejercicio = nuevo_ejercicio.descripcion_ejercicio || "";
         this.video_ejercicio = nuevo_ejercicio.video_ejercicio || "";
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-            INSERT INTO ejercicio (descripcion, video_ejercicio) 
-            values (?, ?)
-        `, [this.descripcion, this.video_ejercicio]);
+            INSERT INTO ejercicio (descripcion, descripcion_ejercicio, video_ejercicio) 
+            values (?, ?, ?)
+        `, [this.descripcion, this.descripcion_ejercicio, this.video_ejercicio]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-        SELECT id_ejercicio, descripcion, video_ejercicio
+        SELECT id_ejercicio, descripcion, descripcion_ejercicio, video_ejercicio
         FROM ejercicio
         ORDER BY descripcion ASC
     `);
@@ -28,7 +29,7 @@ module.exports = class Ejercicio {
     static fetchOne(id){
     return db.execute(
         `
-        SELECT id_ejercicio,descripcion, video_ejercicio
+        SELECT id_ejercicio,descripcion, descripcion_ejercicio, video_ejercicio
         FROM ejercicio
         Where id_ejercicio=? 
         `
@@ -44,8 +45,8 @@ module.exports = class Ejercicio {
 
       update() {
         return db.execute(`
-        UPDATE ejercicio SET descripcion=?, video_ejercicio=? WHERE id_ejercicio=?
-        `, [this.descripcion, this.video_ejercicio, this.id_ejercicio]);
+        UPDATE ejercicio SET descripcion=?, descripcion_ejercicio=?, video_ejercicio=? WHERE id_ejercicio=?
+        `, [this.descripcion, this.descripcion_ejercicio, this.video_ejercicio, this.id_ejercicio]);
     }
 
 

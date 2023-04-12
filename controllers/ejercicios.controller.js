@@ -38,6 +38,7 @@ function addHttps(link) {
 
             const ejercicio = new Ejercicio({
                 id_ejercicio: ejercicios_consulta[0].id_ejercicio,
+                descripcion_ejercicio: ejercicios_consulta[0].descripcion_ejercicio,
                 descripcion: ejercicios_consulta[0].descripcion,
                 video_ejercicio: ejercicios_consulta[0].video_ejercicio,
             });
@@ -63,16 +64,17 @@ function addHttps(link) {
 exports.post_editar = (request, response, next) => {
     const id = request.body.id.trim();
     const descripcion = request.body.descripcion.trim();
+    const descripcion_ejercicio = request.body.descripcion_ejercicio.trim();
     const video_ejercicio = request.body.video_ejercicio.trim();
   
-    if (!descripcion || !video_ejercicio) {
-      request.session.mensaje = "Por favor complete ambos campos.";
+    if (!descripcion || !video_ejercicio || !descripcion_ejercicio) {
+      request.session.mensaje = "Por favor complete todos los campos.";
       response.redirect('/ejercicios');
       return;
     }
   
     if (!validarDescripcion(descripcion)) {
-      request.session.mensaje = "La descripción solo puede contener letras y espacios.";
+      request.session.mensaje = "El nombre solo puede contener letras y espacios.";
       response.redirect('/ejercicios');
       return;
     }
@@ -99,6 +101,7 @@ exports.post_editar = (request, response, next) => {
                 const ejercicio = new Ejercicio({
                   id_ejercicio: id,
                   descripcion: descripcion,
+                  descripcion_ejercicio: descripcion_ejercicio,
                   video_ejercicio: nuevoNuevoEnlace,
                 });
                 console.log(id)
@@ -139,16 +142,17 @@ exports.get_ejercicios = (request, response, next) => {
 
 exports.post_ejercicios = (request, response, next) => {
     const descripcion = request.body.descripcion.trim();
+    const descripcion_ejercicio = request.body.descripcion_ejercicio.trim();
     const video_ejercicio = request.body.video_ejercicio.trim();
     
-    if (!descripcion || !video_ejercicio) {
-      request.session.mensaje = "Por favor complete ambos campos.";
+    if (!descripcion || !video_ejercicio || !descripcion_ejercicio) {
+      request.session.mensaje = "Por favor complete todos los campos.";
       response.redirect('/ejercicios');
       return;
     }
   
     if (!validarDescripcion(descripcion)) {
-      request.session.mensaje = "La descripción solo puede contener letras y espacios.";
+      request.session.mensaje = "El nombre solo puede contener letras y espacios.";
       response.redirect('/ejercicios');
       return;
     }
@@ -171,6 +175,7 @@ exports.post_ejercicios = (request, response, next) => {
         } else {
           const ejercicio = new Ejercicio({
             descripcion: descripcion,
+            descripcion_ejercicio: descripcion_ejercicio,
             video_ejercicio: nuevoNuevoEnlace, // Usamos el nuevo enlace de YouTube
           });
           

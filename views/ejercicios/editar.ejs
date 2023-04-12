@@ -1,19 +1,24 @@
 
 <%- include('../includes/head.ejs'); %>
 <br>
-<h1 class="title has-text-white-ter">Modificar ejercicio</h1>
+<h1 class="title has-text-white-ter">Editar ejercicio</h1>
 <form action="/ejercicios/editar" method="POST" autocomplete="off">
 <input type="hidden" name="id" value="<%= ejercicio.id_ejercicio %>" >
  
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-            <label for="descripcion"> <h5 class="title is-5 has-text-white-ter">Descripción:</h5></label> <br>
+            <label for="descripcion"> <h5 class="title is-5 has-text-white-ter">Nombre:</h5></label> <br>
             <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" placeholder="<%= ejercicio.descripcion %>">
     <br><br><br>
+    <label for="descripcion_ejercicio"> <h5 class="title is-5 has-text-white-ter">Descripción del ejercicio:  </label> <br> <br>
+        <input name="descripcion_ejercicio" id="descripcion_ejercicio" class="input is-rounded" type="text" placeholder="">
+     <br><br><br>
             <label for="video_ejercicio"> <h5 class="title is-5 has-text-white-ter">Liga de video explicativo:  </label> <br> <br>
             <input name="video_ejercicio" id="video_ejercicio" class="input is-rounded" type="text" placeholder="">
 
     <br><br><br>
-            <input class="button is-rounded is-success" type="submit" value="Actualizar">
+     
+            <input class="button is-rounded is-success" type="submit" value="Actualizar">  
+                
     </form>
     <br><br>
         <form action="/ejercicios" method="GET">
