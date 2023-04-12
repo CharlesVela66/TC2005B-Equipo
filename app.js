@@ -5,6 +5,13 @@ const session = require('express-session');
 const isAuth = require('./util/is-auth');
 const csrf = require('csurf');
 const multer = require('multer');
+const passport = require('passport');
+
+require('../auth');
+
+function isLoggedIn(request, response, next) {
+    request.user ? next() : resónse.sendStatus(401);
+}
 
 const app = express();
 
@@ -35,6 +42,9 @@ app.use(session({
 
     }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
