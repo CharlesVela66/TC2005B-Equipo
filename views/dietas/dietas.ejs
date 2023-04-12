@@ -47,8 +47,8 @@
                                 </figure>
                             </div>
                             <div class="media-content">
-                                <p class="title is-4"><%= dietaFav.nombre %></p>
-                                <p class="subtitle is-6">Calorías: <%= dietaFav.calorias.toFixed(2) %></p>
+                                <p class="title is-4 has-text-white-ter"><%= dietaFav.nombre %></p>
+                                <p class="subtitle is-6 has-text-white-ter">Calorías: <%= dietaFav.calorias.toFixed(2) %></p>
                             </div>
                         </div>
                     
@@ -104,10 +104,10 @@
                                         </figure>
                                     </div>
                                     <div class="media-content">
-                                        <p class="title is-4">
+                                        <p class="title is-4 has-text-white-ter">
                                             <%= dieta.nombre %>
                                         </p>
-                                        <p class="subtitle is-6">
+                                        <p class="subtitle is-6 has-text-white-ter">
                                             Calorías: <%= dieta.calorias.toFixed(2) %>
                                         </p>
                                     </div>
@@ -150,7 +150,7 @@
             <% } %>
                 <% columns++; %>
                     <div class="column is-3">
-                        <div class="card" data-id="<%= dieta.id_dieta %>">
+                        <div class="card " data-id="<%= dieta.id_dieta %>">
                             <div class="card-image">
                                 <figure class="image is-4by3">
                                     <a href="/dietas/<%= dieta.id_dieta %>"><img src="<%= dieta.Url_image %>"
@@ -166,7 +166,7 @@
                                         </figure>
                                     </div>
                                     <div class="media-content">
-                                        <p class="title is-4">
+                                        <p class="title is-4 has-text-white-ter">
                                             <%= dieta.nombre %>
                                         </p>
                                         <p class="subtitle is-6">
