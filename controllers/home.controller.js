@@ -82,16 +82,12 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 // Carga la interfaz de registrarse
 exports.registrarse = (request, response, next) => {
-    //Objetivos.fetchAll()
-   //.then(([rows,fieldData]) => {
         response.render('home/registrarse', {
-           // objetivos : rows,
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
             rol: request.session.rol || '',
-        }); 
-    //})
-    //.catch((error) => {console.log(error)});
+        })
+    .catch((error) => {console.log(error)});
 };
 
 exports.informacion = (request,response,next)=>{
