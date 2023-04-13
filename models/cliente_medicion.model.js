@@ -14,6 +14,16 @@ module.exports = class RegistroMedida {
         `, [this.id_cliente, this.id_medicion, this.medida]);
     }
 
-
+    static fetchAll(username) {
+        return db.execute(`
+            SELECT DATE_FORMAT(fecha, '%e %M %Y ') AS 'fecha',m.tipo AS 'nombre', medida, m.id_medicion
+            FROM clientemedicion cm, cliente c, usuario u, medicion m
+            WHERE cm.id_cliente = c.id_cliente
+            AND u.id_usuario = c.id_usuario
+            AND cm.id_medicion = m.id_medicion
+            AND u.nombre_usuario = ?
+            ORDER BY m.tipo ASC,fecha DESC;
+        `, [username]);
+    }
 
 }
