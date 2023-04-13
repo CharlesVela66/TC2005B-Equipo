@@ -2,11 +2,11 @@ const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
-
+ 
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
-    response.render('home/inicio', {
+    response.render('home/home', {
         isLoggedIn: request.session.isLoggedIn,
         nombre: request.session.nombre_usuario || '',
         rol: request.session.rol || '',
@@ -82,16 +82,25 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 // Carga la interfaz de registrarse
 exports.registrarse = (request, response, next) => {
-    Objetivos.fetchAll()
-    .then(([rows,fieldData]) => {
         response.render('home/registrarse', {
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol || '',
+        })
+    .catch((error) => {console.log(error)});
+};
+
+exports.informacion = (request,response,next)=>{
+    Objetivos.fetchAll()
+    .then(([rows,fieldData])=> {
+        response.render('home/informacion_personal',{
             objetivos : rows,
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
             rol: request.session.rol || '',
         })
     })
-    .catch((error) => {console.log(error)});
+    .catch((error)=>{console.log(error)});
 };
 
 // Esto pasa cuando el usuario le da click a crear nuevo usuario

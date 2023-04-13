@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs'); %>
+<h1 class="title is-1 has-text-white-ter">DATOS DEL USUARIO</h1>
+<form action="/informacion" method="POST">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+  
+  <div class="box">
+    <div class="columns">
+        <div class="column">
+        <div class="field">
+            <label class="label" for="nombre">Nombre(s)</label>
+            <div class="control">
+            <input class="input" type="text" placeholder="Ingresa tu(s) nombre(s)" size="25" id="nombre" name="nombre">
+            </div>
+        </div>
+        
+        <div class="field">
+            <label class="label" for="apellido">Apellido(s)</label>
+            <div class="control">
+            <input class="input" type="text" placeholder="Ingresa tu(s) apellido(s)" size="25" id="apellido" name="apellido">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="sexo">Sexo</label>
+            <div class="control">
+                <div class="select">
+                    <select id="sexo" name="sexo">
+                    <option disabled selected>Selecciona una opción</option>
+                    <option>M</option>
+                    <option>F</option>
+                    </select>
+                </div>
+                </div>
+            </div>
+        
+            <div class="field">
+                <label class="label" for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+            </div>
+
+            <div class="field">
+                <label class="label" for="obj">Elige tu Objetivo</label>
+                <div class="select is-primary">
+                    <select name="obj" id="obj">
+                        <% for (let objetivo of objetivos) { %>
+                            <option value="<%= objetivo.id_obj %>"><%=objetivo.nombre_obj%>
+                            </option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label" for="foto_perfil" style="margin-left: 250px;">Foto de Perfil</label>
+                    </div>
+                </div>
+    </div>
+    
+          
+
+
+
+  <a href="/home" class="button is-primary">REGISTRAR</a>
+</div>
+</form>

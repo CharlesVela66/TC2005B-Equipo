@@ -16,13 +16,17 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4">Carlos Velasco</p>
-                        <p class="subtitle is-6">Objetivo: Subir Peso</p>
+                        <p class="title is-4 has-text-white-ter">Carlos Velasco</p>
+                        <p class="subtitle is-6 has-text-white-ter">Objetivo: Subir Peso</p>
                     </div>
+                </div>
+                <div class="has-text-centered">
+                    <a class="button is-link" href="/perfil/ver_info">Ver informacion</a>
                 </div>
             </div>
         </div>
     </div>
+    <% if (dieta.length != 0) {%>
     <div class = "column is-4">
         <div class="card">
             <div class="card-image">
@@ -38,8 +42,8 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4"><%= dieta.nombre %></p>
-                        <p class="subtitle is-6"><%= dieta.tipo_dieta %></p>
+                        <p class="title is-4 has-text-white-ter"><%= dieta[0].nombre %></p>
+                        <p class="subtitle is-6 has-text-white-ter"><%= dieta[0].tipo_dieta %></p>
                     </div>
                 </div>
             </div>
@@ -60,14 +64,15 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4"><%= rutina.nombre %></p>
-                        <p class="subtitle is-6"><%= rutina.tiporutina %></p>
+                        <p class="title is-4 has-text-white-ter"><%= rutina[0].nombre %></p>
+                        <p class="subtitle is-6 has-text-white-ter"><%= rutina[0].tiporutina %></p>
                     </div>
                 </div>
             
             </div>
         </div>
     </div>
+    <% } %>
 </div>
 <div class="buttons">
     <a class="button is-danger" href = "/cerrar-sesion">

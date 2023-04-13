@@ -18,16 +18,17 @@
             <% columns++; %>
             <div class="column is-3">
                 <div class="card">
-                    <div class="card-image">                     
+                    <div class="card-image"> 
+                        <a href="/ejercicios/<%= ejercicio.id_ejercicio %>">                 
                     </div>
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
                                 </div>
                                     <div class="media-content">
-                                        <p class="title is-4"><%= ejercicio.descripcion %></p>
-                                        <p class="subtitle is-6"><%= ejercicio.video_ejercicio %></p>                                  
-                                    </div>
+                                        <p class="title is-4 has-text-white-ter"><%= ejercicio.descripcion %></p>  
+                    
+                                     </div>
                                 </div>               
                             </div>
                         </div>
