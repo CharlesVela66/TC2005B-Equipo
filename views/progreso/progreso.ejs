@@ -11,8 +11,34 @@
     <script>
         const registrosStr = "<%- escape(JSON.stringify(registros)) %>";
         const registros = JSON.parse(unescape(registrosStr));
+        //Creamos la tabla dinamica
         $(document).ready(function() {
+            //Creamos la grafica
+            var ctx = document.getElementById('grafico').getContext('2d');
+            var grafico = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Progreso',
+                        data: []
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
             $('#seleccion').change(function() {
+                const fechas = [];
+                const medidas = [];
+
                 var valorSeleccionado = $(this).val();
                 var tabla = $('#tabla-dinamica');
                 tabla.empty();
@@ -20,9 +46,19 @@
                 registros.forEach(registro => {
                     if (registro.nombre==valorSeleccionado){
                         tabla.append('<tr><td class="has-text-white-ter">'+registro.fecha+'</td><td class="has-text-white-ter">'+registro.medida+'</td></tr>');
+                        fechas.push(registro.fecha);
+                        medidas.push(registro.medida);
                     }
                 })
-        });
+                actualizarGrafica(fechas, medidas);   
+                console.log(fechas);
+            });
+
+            function actualizarGrafica(fechas, medidas) {
+                grafico.data.labels = fechas;
+                grafico.data.datasets[0].data = medidas;
+                grafico.update();
+            }
         });
     </script>
     <div class="columns">
@@ -43,32 +79,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>Año</th>
-                        <th>Ventas</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>2016</td>
-                        <td>15000</td>
-                      </tr>
-                      <tr>
-                        <td>2017</td>
-                        <td>18000</td>
-                      </tr>
-                      <tr>
-                        <td>2018</td>
-                        <td>20000</td>
-                      </tr>
-                      <tr>
-                        <td>2019</td>
-                        <td>22000</td>
-                      </tr>
-                      <tr>
-                        <td>2020</td>
-                        <td>25000</td>
-                      </tr>
                 </tbody>
             </table>
         </columns>

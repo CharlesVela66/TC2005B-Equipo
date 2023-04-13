@@ -27,18 +27,3 @@ exports.get_progreso = (request,response,next) => {
 
     
 }
-
-exports.post_progreso = (request,response,next) => {
-    // 
-    Cliente.fetchOne(request.session.nombre_usuario)
-    .then(([rows, fieldData]) => {
-        
-        const registro = new Medidas({
-            descrip_medida: request.body.descrip_medida
-        });
-        
-        
-    })
-    .catch((error) => {console.log(error)});
-
-}
