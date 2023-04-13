@@ -27,6 +27,9 @@
                 options: {
                     scales: {
                         yAxes: [{
+                            scaleLabel: {
+                                label:'Valor'
+                            },
                             ticks: {
                                 beginAtZero: true
                             }
@@ -83,34 +86,10 @@
             </table>
         </columns>
         <columns style="width: 65%;">
-            <script>
-                var ctx = document.getElementById('grafico').getContext('2d');
-                var grafico = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Número',
-                        data: []
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-                });
-            </script>
             <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
-                <h1>Grafica</h1>
                 <div>
                     <canvas class = "has-text-white-ter has-background-black-ter" id="grafico"></canvas>
                 </div>
-                <p>Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
             </section>
         </columns>
     </div>
