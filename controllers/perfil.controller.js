@@ -1,6 +1,8 @@
 const Dieta = require('../models/dietas.model');
 const Rutina = require('../models/rutinas.model')
 const Cliente = require('../models/clientes.model');
+const Objetivo = require('../models/objetivos.model');
+const NivelFisico = require('../models/niveles.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
@@ -26,6 +28,17 @@ exports.post_editar = (request, response, next) => {
     console.log(request.body);
 
 };*/
+
+exports.get_editarP = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([clientes, fieldData]) => {
+        if (clientes.length == 1){
+            const cliente = new Cliente ({
+                f
+            });
+        }
+    })
+}
 
 exports.ver_perfil = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)

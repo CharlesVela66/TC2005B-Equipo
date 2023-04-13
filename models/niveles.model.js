@@ -3,9 +3,10 @@ const db = require('../util/database');
 module.exports = class Niveles {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-    constructor(nuevo_objetivo) {
-        this.nombre_niv = nuevo_objetivo.nombre_niv;
-        this.descripcion_niv = nuevo_objetivo.descripcion_niv;
+    constructor(nuevo_nivel) {
+        this.id_niv = nuevo_nivel.id_niv;
+        this.nombre_niv = nuevo_nivel.nombre_niv;
+        this.descripcion_niv = nuevo_nivel.descripcion_niv;
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
