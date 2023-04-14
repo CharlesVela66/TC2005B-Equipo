@@ -2,24 +2,387 @@
 
 <h1 class="title is-1 has-text-white-ter has-text-centered">Agregar Dietas</h1>
 <br>
-<div class="aligned" style="display: block; margin: 0 auto; width: 30%;">
-    <label for = "nombre"><h5 class="subtitle is-5 has-text-white-ter">Nombre</h5></label>
-    <input class = "input is-rounded" type = "text" id="nombre" name = "nombre" size="20" >
-</div>
-<br>
-<div class="container">
-    <h3 class="title is-3 has-text-white-ter">Alimentos</h3>
-    <table class = "table has-text-white-ter has-background-black-ter is-fullwidth">
-        <thead>
-            <tr>
-                <th class="has-text-white-ter">Nombre</th>
-                <th class="has-text-white-ter">Medida</th>
-                <th class="has-text-white-ter">Cantidades</th>
-            </tr>
-        </thead>
-        <tbody>
+<form action="/dietas/agregar" method="POST" autocomplete="off" id="dieta-form" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <div class="aligned" style="display: block; margin: 0 auto; width: 30%;">
+        <label for = "nombre_dieta"><h5 class="subtitle is-5 has-text-white-ter">Nombre</h5></label>
+        <input class = "input is-rounded has-text-white-ter" type = "text" id="nombre_dieta" name = "nombre_dieta" size="25" maxlength="25" placeholder="Nombre de la dieta" required>
+    </div>
+    <br>
+    <div class="container">
+        <label for = "imagen"><h5 class="subtitle is-5 has-text-white-ter">Imagen</h5></label>
+        <input type="file" id="imagen" name="imagen" required="required">
+        <br> <br>
+        <div class="columns">
+            <div class="column">
+                <label for = "search"><h5 class="subtitle is-5 has-text-white-ter">Alimentos</h5></label>
+                <input type="text" id="search" class="input is-small is-rounded" placeholder="Buscar alimentos">
+                <ul id="suggestions" class="suggestions-list">
+            </div>
+            <div class="column">
+                <br>
+                <div style="max-height: 150px; overflow: auto">
+                <table class = "table has-text-white-ter has-background-black-ter is-fullwidth" id="tabla-alimentos">
+                    <colgroup>
+                        <col span="1" style="width: 40%;">
+                        <col span="1" style="width: 35%;">
+                        <col span="1" style="width: 25%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white-ter">Nombre</th>
+                            <th class="has-text-white-ter">Medida</th>
+                            <th class="has-text-white-ter">Cantidades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="columns">
+            <div class="column" >
+                <label for="tabla-macro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Macronutrientes</h5></label>
+                <table class = "table has-text-white-ter has-background-black-ter" id="tabla-macro">
+                    <colgroup>
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 30%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white-ter">Nombre</th>
+                            <th class="has-text-white-ter">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="has-text-white-ter">Calorías</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.01" id="calorias" name="calorias"  maxlength="9999999.99" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-white-ter">Proteínas</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.01" id="proteinas" name="proteinas" maxlength="9999999.99" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-white-ter">Carbohidratos</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.01" id="carbohidratos" name="carbohidratos" maxlength="9999999.99" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-white-ter">Grasas Totales</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.01" id="grasas" name="grasas" maxlength="9999999.99" min="0" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+                <div class="popup" id="popup">
+                    <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
+                    <button class="button is-success" type = "submit" id="submit-button" name="submit-button" onclick="closePopup()">Confirmar</button>
+                    <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+                </div>
+            </div>
+            <div class="column ">
+                <label for="tabla-micro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Micronutrientes</h5></label>
+                <div style="height: 280px; overflow: auto">
+                <table class = "table has-text-white-ter has-background-black-ter" id="tabla-micro">
+                    <colgroup>
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 30%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white-ter">Nombre</th>
+                            <th class="has-text-white-ter">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ceniza</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="ceniza" name="ceniza" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Fibra Total</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="fibra_total" name="fibra_total" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Calcio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="calcio" name="calcio" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Fosforo</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="fosforo" name="fosforo" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Hierro</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="hierro" name="hierro" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Tiamina</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="tiamina" name="tiamina" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Riboflavina</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="riboflavina" name="riboflavina" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Niacina</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="niacina" name="niacina" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Vitamina C</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="vit_c" name="vit_c" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Vitamina A</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="vit_a" name="vit_a" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Acidos Grasos Min.</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="acgrasosmin" name="acgrasosmin" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Acidos Grasos Poli.</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="acgrasospoli" name="acgrasospoli" maxlength="99999.9" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Acidos Grasos Sat.</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="acgrasossat" name="acgrasossat" maxlength="99999.9" min="0" required> </td>
+                        </tr>
+                        <tr>
+                            <td>Colesterol</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="colesterol" name="colesterol" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Potasio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="potasio" name="potasio" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Sodio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="sodio" name="sodio" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Zinc</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="zinc" name="zinc" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Magnesio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="magnesio" name="magnesio" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Vitamina B6</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="vit_b6" name="vit_b6" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Vitamina B12</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="vit_b12" name="vit_b12" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Acido Folico</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="acfolico" name="acfolico" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Folato Equivalente</td>
+                            <td><input class="input is-small is-rounded" type="number" step="0.1" id="folatoeq" name="folatoeq" maxlength="99999.9" min="0" required></td>
+                          </tr>
+                                                  
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<style>
+    .suggestions-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        max-height: 200px;
+        overflow-y: auto;
+        position: absolute;
+        z-index: 999;
+        width: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .suggestions-list li {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+    .suggestions-list li:hover {
+        background-color: #e2e8f0;
+    }
+</style>
+<script>
+    // Aquí se obtienen todos los alimentos que les pasamos desde el controlador, los transforma en string y luego los guarda en una constante alimentos
+    const alimentosStr = "<%- escape(JSON.stringify(alimentos)) %>";
+    const alimentos = JSON.parse(unescape(alimentosStr));
+    // Obtenemos el elemento de busqueda
+    const searchInput = document.getElementById('search');
+    // Lista que se va a desplegar como parte de la sugerencias
+    const suggestionsList = document.getElementById('suggestions');
+    // Tabla que registrara los alimentos seleccionados
+    const alimentosTable = document.getElementById('tabla-alimentos');
 
-        </tbody>
-    </table>
-</div>
+    // Agregamos a la barra de busqueda un evento cuando se le ingrese texto
+    searchInput.addEventListener('input', (e) => {
+        // El valor de la busqueda ingresada se guarda en searchTerm
+        const searchTerm = e.target.value.toLowerCase();
+        // El HTML de la lista lo declaramos inicialmente como un string vacio
+        suggestionsList.innerHTML = '';
+
+        // Si existe texto dentro de la barra de busqueda...
+        if (searchTerm) {
+            // Filtramos cada alimento de la matriz alimentos para ver los alimentos que incluyen el searchTerm y los que hagan match se guardan en el arreglo de filteredAlimentos
+            const filteredAlimentos = alimentos.filter(alimento => alimento.nombre.toLowerCase().includes(searchTerm));
+
+            //Por cada alimento dentro del arreglo filteredalimentos, creamos un elemento en la lista
+            filteredAlimentos.forEach(alimento => {
+                const listItem = document.createElement('li');
+                // El contenido del elemento será el nombre del alimento
+                listItem.textContent = alimento.nombre;
+                // Le agregamos un evento a cada elemento de la lista por si se le hace click, llamará a la función de agregar alimento a tabla
+                listItem.addEventListener('click', () => {
+                    addAlimentoToTable(alimento);
+                    // Cuando se le haga click a un elemento y se agregue a la tabla, debemos reiniciar la lista y el valor de busqueda
+                    searchInput.value = '';
+                    suggestionsList.innerHTML = '';
+                });
+                // Agregamos el elemento al HTML de la lista
+                suggestionsList.appendChild(listItem);
+            });
+        }
+    });
+    document.getElementById('submit-button').addEventListener('click', function(event){
+        const nombreDieta = document.getElementById('nombre_dieta');
+        const imagenDieta = document.getElementById('imagen');
+
+        const dietasStr = "<%- escape(JSON.stringify(dietas)) %>";
+        const dietas = JSON.parse(unescape(dietasStr));
+
+        const dietasFavStr = "<%- escape(JSON.stringify(dietasFavs)) %>";
+        const dietasFavs = JSON.parse(unescape(dietasFavStr));
+
+        if (!nombreDieta.value || !imagenDieta.value){
+            return;
+        }
+
+        event.preventDefault();
+
+        // Obtenemos la forma, la tabla y las filas con los ID's declarados en la vista
+        const form = document.getElementById("dieta-form");
+        const table = document.getElementById("tabla-alimentos");
+        const rows = Array.from(table.querySelectorAll("tr")).slice(1); // Omitir la fila del encabezado
+
+        const alimentos = rows.map(row => {
+            const cells = row.querySelectorAll("td");
+            return {
+                // El valor de la primera columna
+                id_alimento: cells[0].getAttribute('data-idAlimento'), 
+                // El contenido de la primera columna
+                nombre: cells[0].innerText,
+                // El valor del input de la segunda columna
+                medida: cells[1].innerText,
+                // El valor del input de la tercera columna
+                cantidad: cells[2].querySelector("input").value,
+        };
+        });
+        if(alimentos.length == 0){
+            alert("Tienes que agregar mínimo un alimento para guardar la dieta");
+            return;
+        }
+        else if (!checkAlimentosAttributes(alimentos)){
+            return;
+        }
+        else if (!checkDietasNombres(dietas, dietasFavs, nombreDieta.value)){
+            alert('Ya existe una dieta con ese nombre')
+            return;
+        }
+
+        // Creamos un input escondido para que ese sea el que llamamos en el controlador con todos la información que se encuentra en las tablas
+        const alimentosInput = document.createElement("input");
+        alimentosInput.type = "hidden";
+        alimentosInput.id = "alimentos";
+        alimentosInput.name = "alimentos";
+        alimentosInput.value = JSON.stringify(alimentos);
+        form.appendChild(alimentosInput);
+
+        // Esa información es la que se envia en el form
+        form.submit();
+    });
+
+    // Metodos
+    function addAlimentoToTable(alimento) {
+        // Creamos una nueva fila
+        const row = document.createElement('tr');
+        // Primera columna: Nombre del alimento
+        const nombreCell = document.createElement('td');
+        nombreCell.textContent = alimento.nombre;
+        nombreCell.id = `nombre`;
+        nombreCell.name = `nombre`;
+        nombreCell.setAttribute('data-idAlimento', alimento.id_alimento);
+        // Segunda columna: Medida del alimento
+        const medidaCell = document.createElement('td');
+        medidaCell.textContent = alimento.medida;
+        medidaCell.id = 'medida';
+        medidaCell.name = 'medida';
+        // Tercera columna: Cantidad
+        const cantidadCell = document.createElement('td');
+        const cantidadInput = document.createElement('input');
+        cantidadInput.type = 'number';
+        cantidadInput.min = 0;
+        cantidadInput.max = 999;
+        cantidadInput.required = true;
+        cantidadInput.className = 'input is-info is-small is-rounded';
+        cantidadInput.id = `cantidad`;
+        cantidadInput.name = `cantidad`;
+        cantidadCell.appendChild(cantidadInput);
+
+        row.appendChild(nombreCell);
+        row.appendChild(medidaCell);
+        row.appendChild(cantidadCell);
+
+        // Agregamos todo el codigo al HTML de la tabla 
+        document.getElementById('tabla-alimentos').querySelector('tbody').appendChild(row);
+
+        nombreCell.addEventListener('click', () => {
+            alimentosTable.querySelector('tbody').removeChild(row);
+        });
+    }
+
+    function checkAlimentosAttributes(alimentos) {
+        for (const alimento of alimentos) {
+            if (!alimento.cantidad) {
+                alert("Por favor, complete todos los campos de cantidad");
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    function checkDietasNombres(dietas, dietasFavs, nombre){
+        for (let dieta of dietas) {
+            if (dieta.nombre == nombre){
+                return false;
+            }
+        }
+        for (let dieta of dietasFavs) {
+            if (dieta.nombre == nombre){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function openPopup(){
+        popup.classList.add("open-popup");
+    }
+
+    function closePopup(){
+        popup.classList.remove("open-popup")
+    }
+
+</script>
 <%- include('../includes/foot.ejs'); %>

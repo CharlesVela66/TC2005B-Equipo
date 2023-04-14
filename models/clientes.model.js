@@ -17,14 +17,42 @@ module.exports = class Cliente {
     `, [this.id_usuario, this.id_obj]);
     }
 
+    static saveDieta(dieta, cliente) {
+        return db.execute(
+          `UPDATE cliente SET id_dieta = ? WHERE id_cliente = ?`,
+          [dieta,cliente]
+        );
+    }
+
+    static saveRutina(rutina, cliente){
+        return db.execute(
+            `UPDATE cliente SET id_rutina = ? WHERE id_cliente = ?`,
+            [rutina,cliente]
+        );
+    }
+
+      
+
     // Consulta a la base de datos de la info de un cliente a partir de su username
     static fetchOne(username){
         return db.execute(`
             SELECT *
-            FROM cliente c, usuario u
+            FROM cliente c, usuario u, objetivo o, nivelfisico n
             WHERE u.nombre_usuario = ?
             AND c.id_usuario = u.id_usuario
+            AND c.id_obj=o.id_obj
+            AND c.id_niv=n.id_niv
         `, [username]);
+    }
+
+    //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
+    static getObjetivo(id_cliente) {
+        return db.execute(
+            `
+            SELECT u.id_usuario, c.id_cliente, o.od_obj, o.nombre, o.descripcion
+            FROM usuario u, cliente c, objetivo o
+            WHERE u.id_usuario=c.id_usuario AND c.id_obj=o.id_obj AND c.id_cliente = ?;
+         `, [id_cliente]);
     }
 
 }

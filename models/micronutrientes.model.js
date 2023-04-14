@@ -13,6 +13,7 @@ module.exports = class Micronutrientes {
         this.vit_c = nuevo_micronutrientes.vit_c || 0;
         this.vit_a = nuevo_micronutrientes.vit_a || 0;
         this.acgrasosmin = nuevo_micronutrientes.acgrasosmin || 0;
+        this.acgrasospoli = nuevo_micronutrientes.acgrasospoli || 0;
         this.acgrasossat=  nuevo_micronutrientes.acgrasossat || 0;
         this.colesterol = nuevo_micronutrientes.colesterol || 0;
         this.potasio = nuevo_micronutrientes.potasio || 0;
@@ -26,14 +27,27 @@ module.exports = class Micronutrientes {
     }
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
-
+        return db.execute(`
+            INSERT INTO micronutrientes(ceniza, fibra_total, calcio, fosforo, hierro, tiamina, riboflavina, niacina, vit_c, vit_a, acgrasosmin, acgrasospoli, acgrasossat, colesterol, potasio, sodio, zinc, magnesio, vit_b6, vit_b12, acfolico, folatoeq)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [this.ceniza, this.fibra_total, this.calcio, this.fosforo, this.hierro, this.tiamina, this.riboflavina, this.niacina, this.vit_c, this.vit_a, this.acgrasosmin, this.acgrasospoli, this.acgrasossat, this.colesterol, this.potasio, this.sodio, this.zinc,this.magnesio, this.vit_b6, this.vit_b12, this.acfolico, this.folatoeq]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
-            SELECT *
-            FROM micronutrientes
+        SELECT * from micronutrientes where id_micro = (SELECT id_micro
+            FROM dieta
+            WHERE id_dieta=?)
         `);
+    }
+    static fetchOne(id) {
+        return db.execute(
+            `
+            SELECT * from micronutrientes where id_micro = (SELECT id_micro
+                FROM dieta
+                WHERE id_dieta=?)
+        `, [id])
+
     }
 }
