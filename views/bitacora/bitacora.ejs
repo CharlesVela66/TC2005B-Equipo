@@ -5,6 +5,7 @@
 <div class = "container">
     <form action="/home" method="POST" autocomplete="off">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <div style="max-height: 400px; overflow: auto">
     <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
         <colgroup>
             <col span="1" style="width: 10%;">
@@ -25,7 +26,10 @@
         <% if (registros.length > 0) { %>
                 <% for (let registro of registros) { %>
                     <tr> 
-                    <th class="has-text-white-ter"> <%= registro.fecha %></th>
+                    <th class="has-text-white-ter"> 
+                        <% const fecha = new Date(registro.fecha); %>
+                        <%= fecha.getDate().toString().padStart(2, '0') %>/<%= (fecha.getMonth() + 1).toString().padStart(2, '0') %>/<%= fecha.getFullYear() %>
+                    </th>
                     <td> <%= registro.descripcion_sesion %></td>
                     <td> <%= registro.nivel_satisf %></td>
                     <td> <%= registro.comentarios %></td>
@@ -66,10 +70,11 @@
             </tr>
         </tbody>
     </table>
+    </div>
     <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
     <div class="popup" id="popup">
         <h2 class="title is-2">¿Quieres confirmar tus datos?</h2>
-        <button class="button is-success" type = "submit">Confirmar</button>
+        <button class="button is-success" type = "submit" onclick="closePopup()">Confirmar</button>
         <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
     </div>
     </form>
