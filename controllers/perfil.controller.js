@@ -1,6 +1,8 @@
 const Dieta = require('../models/dietas.model');
 const Rutina = require('../models/rutinas.model')
 const Cliente = require('../models/clientes.model');
+const Objetivo = require('../models/objetivos.model');
+const NivelFisico = require('../models/niveles.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
@@ -27,28 +29,43 @@ exports.post_editar = (request, response, next) => {
 
 };*/
 
+exports.get_editarP = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([clientes, fieldData]) => {
+        if (clientes.length == 1){
+            const cliente = new Cliente ({
+                f
+            });
+        }
+    })
+}
+
 exports.ver_perfil = (request, response, next) => {
-    let dietasRows = new Array;
-    let rutinasRows = new Array;
-    Dieta.fetchAllFavoritas(request.session.nombre_usuario)
-    .then(([rows, fieldData]) => {
-        dietasRows.push(rows);
-        Rutina.fetchAllFavoritas(request.session.nombre_usuario)
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([clientes, fieldData]) => {
+        let dietasRows = new Array;
+        let rutinasRows = new Array;
+        Dieta.fetchAllFavoritas(request.session.nombre_usuario)
         .then(([rows, fieldData]) => {
-            rutinasRows.push(rows);
-            console.log(rutinasRows[0]);
-            console.log(dietasRows[0]);
-            response.render('perfil/perfil', {
-                dieta: dietasRows[0], 
-                rutina: rutinasRows[0],
-                isLoggedIn: request.session.isLoggedIn || false,
-                nombre: request.session.nombre_usuario || '',
-                rol: request.session.rol,
+            dietasRows.push(rows);
+            Rutina.fetchAllFavoritas(request.session.nombre_usuario)
+            .then(([rows, fieldData]) => {
+                rutinasRows.push(rows);
+                console.log(rutinasRows[0]);
+                console.log(dietasRows[0]);
+                response.render('perfil/perfil', {
+                    infoCliente: clientes[0],
+                    dieta: dietasRows[0], 
+                    rutina: rutinasRows[0],
+                    isLoggedIn: request.session.isLoggedIn || false,
+                    nombre: request.session.nombre_usuario || '',
+                    rol: request.session.rol,
+                })
             })
+            .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
     })
-    .catch(error => console.log(error));
 }
 
 exports.verCliente = (request, response, next) =>{

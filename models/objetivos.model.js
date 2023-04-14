@@ -4,6 +4,7 @@ module.exports = class Objetivos {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nuevo_objetivo) {
+        this.id_obj = nuevo_objetivo.id_obj;
         this.nombre_obj = nuevo_objetivo.nombre_obj;
         this.descripcion_obj = nuevo_objetivo.descripcion_obj;
     }
