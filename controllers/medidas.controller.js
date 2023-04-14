@@ -1,6 +1,6 @@
 const Cliente = require("../models/clientes.model");
 const Medida = require("../models/medidas.model");
-const Registro = require("../models/cliente_medicion");
+const Registro = require("../models/cliente_medicion.model");
 
 exports.medida = (request,response,next) =>{
     const mensaje = request.session.mensaje || '';

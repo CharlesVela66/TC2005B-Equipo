@@ -1,44 +1,103 @@
 <%- include('../includes/head.ejs'); %>
-<h1 class="title is-1 has-text-white-ter">Progreso</h1>
-<div class="columns">
-    <div class="column is-two-fifths">
-        <div class = "select">
-            <select id = "medida">
-                <option>Brazo Derecho</option>
-                <option>Brazo Izquierdo</option>
-                <option>Cintura</option>
-                <option>Cuello</option>
-                <option>Pecho</option>
-                <option>Pantorrilla Derecha</option>
-                <option>Pantorrilla Izquierda</option>
-                <option>Peso</option>
-                <option>Pierna Derecha</option>
-                <option>Pierna Izquierda</option>
-            </select>
-        </div>
-        <table class = "table has-text-white-ter has-background-black-ter">
-            <thead>
-                <tr>
-                    <th class="has-text-white-ter">Fecha</th>     
-                    <th class="has-text-white-ter">Brazo Derecho</th>           
-                </tr>
-            </thead>
-            <tbody>
-                <% if (progresos.length > 0) { %>
-                    <% for (let registro of progresos) { %>
-                        <tr> 
-                        <th class="has-text-white-ter"> <%= registro.fecha %></th>
-                        <td> <%= registro.brazo_der %></td>
-    
-                        </tr>
-                    <% } %>
-            <% } %>
-            </tbody>
-        </table>
+<% if (mensaje != '') { %>
+    <div class="notification is-info is-light">
+        <%= mensaje %>
     </div>
-    <div class = "column ml-6 mt-6">
-        <img src = "https://cdn.exceltotal.com/wp-content/uploads/2012/04/formato-personalizado-al-eje-vertical-de-un-grafico-01.png">
-    </div>
-</div>
+<% } %>
+<% if (rol == "Cliente") { %>
+    <h1 class = "title is-1 is-centered has-text-white-ter"> Progreso</h1>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const registrosStr = "<%- escape(JSON.stringify(registros)) %>";
+        const registros = JSON.parse(unescape(registrosStr));
+        //Creamos la tabla dinamica
+        $(document).ready(function() {
+            //Creamos la grafica
+            var ctx = document.getElementById('grafico').getContext('2d');
+            var grafico = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Progreso',
+                        data: []
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                label:'Valor'
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
 
+            $('#seleccion').change(function() {
+                const fechas = [];
+                const medidas = [];
+
+                var valorSeleccionado = $(this).val();
+                var tabla = $('#tabla-dinamica');
+                tabla.empty();
+                tabla.append('<tr><th class="has-text-white-ter">Fecha</th><th class="has-text-white-ter">Medida</th></tr>');
+                registros.forEach(registro => {
+                    if (registro.nombre==valorSeleccionado){
+                        tabla.append('<tr><td class="has-text-white-ter">'+registro.fecha+'</td><td class="has-text-white-ter">'+registro.medida+'</td></tr>');
+                        fechas.push(registro.fecha);
+                        medidas.push(registro.medida);
+                    }
+                })
+                actualizarGrafica(fechas, medidas);   
+                console.log(fechas);
+            });
+
+            function actualizarGrafica(fechas, medidas) {
+                grafico.data.labels = fechas;
+                grafico.data.datasets[0].data = medidas;
+                grafico.update();
+            }
+        });
+    </script>
+    <div class="columns">
+        <columns style="width: 25%;">
+            <label for="seleccion" class="has-text-white-ter">Selecciona un valor:</label>
+            <select id="seleccion">
+                <option selected="true" disabled="disabled">Escoga uno</option>
+                <% medidas.forEach(medida => { %>
+                    <option value="<%= medida.tipo %>"><%= medida.tipo %></option>
+                <% }) %>
+            </select>
+            <br><br>
+            <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter">
+                <thead>
+                    <tr>
+                        <th class="has-text-white-ter">Fecha</th>
+                        <th class="has-text-white-ter">Medida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </columns>
+        <columns style="width: 65%;">
+            <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
+                <div>
+                    <canvas class = "has-text-white-ter has-background-black-ter" id="grafico"></canvas>
+                </div>
+            </section>
+        </columns>
+    </div>
+    
+
+<% }  else if (rol == "Administrador") { %>
+    <h1 class="title  is-1 has-text-white-ter"></h1>
+    <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+<% } %>
 <%- include('../includes/foot.ejs'); %>
+
