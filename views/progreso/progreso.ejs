@@ -37,20 +37,20 @@
                     }
                 }
             });
-
             $('#seleccion').change(function() {
                 const fechas = [];
                 const medidas = [];
-
                 var valorSeleccionado = $(this).val();
                 var tabla = $('#tabla-dinamica');
                 tabla.empty();
                 tabla.append('<tr><th class="has-text-white-ter">Fecha</th><th class="has-text-white-ter">Medida</th></tr>');
                 registros.forEach(registro => {
+                    const fecha = new Date(registro.fecha);
+                    const fechaStr = fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' +fecha.getFullYear();
                     if (registro.nombre==valorSeleccionado){
-                        tabla.append('<tr><td class="has-text-white-ter">'+registro.fecha+'</td><td class="has-text-white-ter">'+registro.medida+'</td></tr>');
-                        fechas.push(registro.fecha);
-                        medidas.push(registro.medida);
+                        tabla.append('<tr><td class="has-text-white-ter">'+fechaStr+'</td><td class="has-text-white-ter">'+registro.medida.toFixed(2)+'</td></tr>');
+                        fechas.unshift(fechaStr);
+                        medidas.unshift(registro.medida);
                     }
                 })
                 actualizarGrafica(fechas, medidas);   
@@ -68,12 +68,13 @@
         <columns style="width: 25%;">
             <label for="seleccion" class="has-text-white-ter">Selecciona un valor:</label>
             <select id="seleccion">
-                <option selected="true" disabled="disabled">Escoga uno</option>
+                <option selected="true" disabled="disabled">Escoja uno</option>
                 <% medidas.forEach(medida => { %>
                     <option value="<%= medida.tipo %>"><%= medida.tipo %></option>
                 <% }) %>
             </select>
             <br><br>
+            <div style="max-height: 400px; overflow: auto">
             <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter">
                 <thead>
                     <tr>
@@ -84,6 +85,7 @@
                 <tbody>
                 </tbody>
             </table>
+            </div>
         </columns>
         <columns style="width: 65%;">
             <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">

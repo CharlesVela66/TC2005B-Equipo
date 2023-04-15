@@ -16,6 +16,7 @@ module.exports = class Medida {
         return db.execute(`
             SELECT *
             FROM medicion
+            ORDER BY tipo
         `);
     }
     //Este método servirá para devolver los objetos del almacenamiento persistente.
