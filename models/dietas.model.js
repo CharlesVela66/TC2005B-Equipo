@@ -25,6 +25,14 @@ module.exports = class Dieta {
         `, [id_cliente, id_dieta]);
     }
 
+    static deleteFavorita(id_cliente, id_dieta) {
+        return db.execute(`
+            DELETE FROM dietasfavoritas 
+            WHERE dietasfavoritas.id_cliente = ?
+            AND dietasfavoritas.id_dieta = ?
+        `, [id_cliente, id_dieta]);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(usuario) {
         return db.execute(`

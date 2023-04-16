@@ -84,6 +84,18 @@ exports.registrar_rutina_favorita = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
+exports.eliminar_rutina_favorita = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([cliente, fieldData]) => {
+        Rutina.deleteFavorita(cliente[0].id_cliente, request.body.id_rutina_fav)
+        .then(([rows, fieldData]) =>{
+            response.redirect('/rutinas');
+        })
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+}
+
 exports.nueva_rutina = (request, response, next) => {
     Ejercicio.fetchAll()
     .then(([rows, fieldData]) => {

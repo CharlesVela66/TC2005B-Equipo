@@ -9,6 +9,9 @@
 
 <h1 class = "title is-1 has-text-white-ter">Dietas Favoritas</h1>
 <% if (dietasFav.length > 0) { %>
+    <form action="/dietas/eliminar_favs" method="POST" autocomplete="off">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <input type="hidden" name="id_dieta_fav" id="id_dieta_fav" value="">
     <div class="columns">
         <% let columns = 0; %>
         <% for (let dietaFav of dietasFav) { %>
@@ -18,10 +21,10 @@
             <% } %>
             <% columns++; %>
             <div class="column is-3">
-                <div class="card">
+                <div class="card" data-id="<%= dietaFav.id_dieta %>">
                     <div class="card-image">
                         <div class="star">
-                            <a> 
+                            <a onclick="delPopup('<%= dietaFav.id_dieta %>')"> 
                                 <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="40" height="40">
                                     <defs>
                                         <image  width="20" height="20" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAAAXNSR0IB2cksfwAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAAMSURBVHicY2CgLgAAAFAAAfMw9yoAAAAASUVORK5CYII="/>
@@ -57,12 +60,18 @@
             </div>
         <% } %>
     </div>
+    <div class="popup" id="del">
+        <h2 class="title is-2">¿Quieres eliminar esta dieta de Favoritos?</h2>
+        <button class="button is-success" type = "submit">Sí</button>
+        <button class="button is-danger" type="button" onclick="closeDelPopup()">No</button>
+    </div>
+    </form>
     <% } %>
     <h1 class="title is-1 has-text-white-ter">Más Dietas</h1>
     <div>
     </div>
     <% if (dietas.length> 0) { %>
-        <form action="/dietas" method="POST" autocomplete="off">
+        <form action="/dietas/agregar_favs" method="POST" autocomplete="off">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
             <input type="hidden" name="id_dieta" id="id_dieta" value="">
         <div class="columns">
@@ -77,7 +86,7 @@
                         <div class="card" data-id="<%= dieta.id_dieta %>">
                             <div class="card-image">
                                 <div class="star">
-                                    <a onclick="openPopup('<%= dieta.id_dieta %>')"> 
+                                    <a onclick="addPopup('<%= dieta.id_dieta %>')"> 
                                     <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="40" height="40">
                                         <defs>
                                             <image  width="20" height="20" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAAAXNSR0IB2cksfwAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAAMSURBVHicY2CgLgAAAFAAAfMw9yoAAAAASUVORK5CYII="/>
@@ -117,25 +126,31 @@
                     </div>
                     <% } %>
         </div>
-        <div class="popup" id="popup">
+        <div class="popup" id="add">
             <h2 class="title is-2">¿Quieres guardar esta dieta en Favoritos?</h2>
             <button class="button is-success" type = "submit">Sí</button>
-            <button class="button is-danger" type="button" onclick="closePopup()">No</button>
+            <button class="button is-danger" type="button" onclick="closeAddPopup()">No</button>
         </div>
     </form>
         <% } else { %>
             <h1 class="has-text-white-ter">No hay dietas registradas</h1>
             <%}%>
 <script>
-    let popup = document.getElementById("popup");
-
-    function openPopup(id){
-        popup.classList.add("open-popup");
+    let add = document.getElementById("add");
+    let del = document.getElementById("del");
+    function addPopup(id){
+        add.classList.add("open-popup");
         document.getElementById("id_dieta").value = id;
     }
-
-    function closePopup(){
-        popup.classList.remove("open-popup")
+    function closeAddPopup(){
+        add.classList.remove("open-popup")
+    }
+    function delPopup(id){
+        del.classList.add("open-popup");
+        document.getElementById("id_dieta_fav").value = id;
+    }
+    function closeDelPopup(){
+        del.classList.remove("open-popup");
     }
 </script>
 <% } else if (rol == "Administrador") { %>
