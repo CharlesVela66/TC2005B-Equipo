@@ -2,6 +2,7 @@ const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
+const { request } = require('express');
  
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
@@ -96,9 +97,22 @@ exports.post_registrarse = (request, response, next)=>{
         contrasena: request.body.contrasena,
     });
     nuevo.save()
-    .then(([rows, fieldData])=>{
-        response.redirect('/');
-    }).catch((error) => {console.log(error)});
+    .then(([rows, fieldData])=>{        
+        Usuario.fetchOne(request.body.nombre_usuario)
+        .then(([infoUsuario, fieldData])=>{
+            nuevo.saveRol(infoUsuario[0].id_usuario,1);
+        })
+        response.redirect('/informacion');
+    })
+};
+
+exports.get_informacion = (request, response, next)=>{
+    Objetivos.fetchAll()
+    .then(([row, fieldData])=>{
+        response.render('home/informacion_personal',{
+            objetivos:rows,           
+        })
+    })
 };
 
 /*
