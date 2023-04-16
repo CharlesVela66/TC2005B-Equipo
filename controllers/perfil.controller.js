@@ -3,6 +3,7 @@ const Rutina = require('../models/rutinas.model')
 const Cliente = require('../models/clientes.model');
 const Objetivo = require('../models/objetivos.model');
 const NivelFisico = require('../models/niveles.model');
+const Usuario = require('../models/usuario.model');
 
 /*exports.get_editar=(request, response, next) =>{
 
@@ -30,10 +31,19 @@ exports.post_editar = (request, response, next) => {
 };*/
 
 exports.get_editarP = (request, response, next) => {
-    Cliente.fetchOne(request.session.nombre_usuario)
-    .then(([clientes, fieldData]) => {
-        if (clientes.length == 1){
-            const cliente = new Cliente ({
+    Usuario.fetchOne(request.session.nombre_usuario)
+    .then(([usuarios, fieldData]) => {
+        if (usuarios.length == 1){
+            const usuario = new Usuario ({
+                id_usuario: usuarios[0].id_usuario,
+                nombre:  usuarios[0].nombre,
+                apellido: usuarios[0].apellido,
+                nombre_usuario: usuarios[0].nombre_usuario,
+                correo: usuarios[0].correo,
+                foto_perfil: usuarios[0].foto_perfil,
+            });
+            Cliente.fetchOne(request.session.nombre_usuario)
+            .then(([clientes, fieldData]) => {
                 f
             });
         }
