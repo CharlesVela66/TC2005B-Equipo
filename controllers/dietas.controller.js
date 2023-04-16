@@ -91,6 +91,18 @@ exports.registrar_dieta_favorita = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
+exports.eliminar_dieta_favorita = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([cliente, fieldData]) => {
+        Dieta.deleteFavorita(cliente[0].id_cliente, request.body.id_dieta_fav)
+        .then(([rows, fieldData]) =>{
+            response.redirect('/dietas');
+        })
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+}
+
 exports.get_nueva = (request, response, next) => {
     Alimentos.fetchAll()
     .then(([rows, fieldData]) => {
