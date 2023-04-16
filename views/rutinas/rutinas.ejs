@@ -70,7 +70,7 @@
 
 <h1 class = "title is-1 has-text-white-ter"> Más Rutinas</h1>
 <% if (rutinas.length > 0) { %>
-    <form action="/rutinas" method="POST" autocomplete="off">
+    <form action="/rutinas/agregar_favs" method="POST" autocomplete="off">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
         <input type="hidden" name="id_rutina" id="id_rutina" value="">
     <div class="columns">
