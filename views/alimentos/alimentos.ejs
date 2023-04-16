@@ -7,6 +7,27 @@
     </div>
 <% } %>
 
+<table class="table has-background-black-ter" width="100%">
+    <thead><p class="subtitle is-4 has-text-white-ter">Ejercicios</p></thead>
+    <thead>
+      <tr>
+        <th class="has-text-white-ter">Nombre</th>
+        <th class="has-text-white-ter">Medidas</th>
+        <th class="has-text-white-ter">Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% if (alimentos.length > 0) { %>
+            <% for (let alimento of alimentos) { %>
+              <tr>
+              <td class="has-text-white-ter"><%= alimento.nombre %></td>
+              <td class="has-text-white-ter"><%= alimento.medida %></td>
+              <td><a href="/alimentos/editar/<%= alimento.id_alimento %>" class="button is-info is-rounded">Editar</a></td>
+            </tr>
+              <% } %>
+          <% } %>
+        </tbody>
+      </table>
 <% if (alimentos.length > 0) { %>
     <div class="columns">
         <% let columns = 0; %>
@@ -16,23 +37,7 @@
     <div class="columns">
             <% } %>
             <% columns++; %>
-            <div class="column is-3">
-                <div class="card">
-                    <div class="card-image">
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4 has-text-white-ter"><%= alimento.nombre %></p>
-                                <p class="subtitle is-6 has-text-white-ter"><%= alimento.medida %></p>
-                                <a href="/alimentos/editar/<%= alimento.id_alimento %>" class="button is-info is-rounded">Modificar</a>
-                            </div>
-                        </div>    
-                    </div>
-                </div>
-            </div>
+           
         <% } %>
     </div>
 <% } else { %>
