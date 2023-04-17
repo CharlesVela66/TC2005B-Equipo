@@ -25,6 +25,14 @@ module.exports = class Rutina {
         `, [id_cliente, id_rutina]);
     }
 
+    static deleteFavorita(id_cliente, id_rutina) {
+        return db.execute(`
+            DELETE FROM rutinasfavoritas 
+            WHERE rutinasfavoritas.id_cliente = ?
+            AND rutinasfavoritas.id_rutina = ?
+        `,[id_cliente, id_rutina])
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(usuario) {
         return db.execute(`
