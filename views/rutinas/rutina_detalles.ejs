@@ -30,7 +30,7 @@
           <% for (let rutina_ejercicios of rutina_ejercicio) { %>
             <tr>
             <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion%></td>
-            <td class="has-text-white-ter"> <%= rutina_ejercicios.video_ejercicio%></td>
+            <td class="has-text-white-ter"> <a class= "yt-video" href="<%= rutina_ejercicios.video_ejercicio%>">Video Demostrativo</a></td>
             <td class="has-text-white-ter"> <%= rutina_ejercicios.series%></td>
             <td class="has-text-white-ter"> <%= rutina_ejercicios.repeticiones%></td>
             <td class="has-text-white-ter"> <%= rutina_ejercicios.dia%></td>

@@ -10,6 +10,8 @@ router.get('/editar', alimentosController.get_alimentos);
 
 router.post('/editar', alimentosController.post_editar);
 
+router.post('/eliminar', alimentosController.eliminar_alimento);
+
 router.get('/', alimentosController.ver_alimentos);
 
 router.get('/agregar_alimentos', alimentosController.get_alimentos);
