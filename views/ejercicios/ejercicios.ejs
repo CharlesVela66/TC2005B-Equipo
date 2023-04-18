@@ -1,12 +1,26 @@
 <%- include('../includes/head.ejs'); %>
 <h1 class = "title is-1 has-text-white-ter">Ejercicios</h1>
 
-<% if (mensaje != '') { %>
-    <div class="notification is-info is-light">
-        <%= mensaje %>
-    </div>
-<% } %>
 
+<% if (mensaje == 'El ejercicio fue registrado exitosamente.') { %>
+    <div class="notification is-success has-text-white">
+      <%= mensaje %>
+      <button class="delete" onclick="cerrarNotificacion()"></button>
+    </div>
+  <% } else if (mensaje == 'El ejercicio fue actualizado exitosamente.') { %>
+      <div class="notification is-success has-text-white">
+        <%= mensaje %>
+        <button class="delete" onclick="cerrarNotificacion()"></button>
+      </div>
+  <% } else if (mensaje != '') { %>
+    <div class="notification is-danger has-text-white">
+      <%= mensaje %>
+      <button class="delete" onclick="cerrarNotificacion()"></button>
+    </div>
+  <% } %>
+
+
+<h3 class="title is-5 has-text-white-ter"> Selecciona un ejercicio para ver mas detalles:</h3>
 <% if (ejercicios.length > 0) { %>
     <div class="columns">
         <% let columns = 0; %>
@@ -38,4 +52,9 @@
 <% } else { %>
     <h1 class="has-text-white-ter">No hay ejercicios registrados</h1>
 <% } %>   
+<script>
+    function cerrarNotificacion() {
+      document.querySelector('.notification').style.display = 'none';
+    }
+  </script>
 <%- include('../includes/foot.ejs'); %>
