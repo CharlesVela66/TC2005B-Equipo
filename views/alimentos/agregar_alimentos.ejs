@@ -6,15 +6,27 @@
             <label for="nombre"> <h5 class="title is-5 has-text-white-ter">Nombre:</h5></label> <br>
             <input required name="nombre" id="nombre" class="input is-rounded" type="text" placeholder="Platano, Manzana, Pollo" maxlength="25">
     <br><br><br>
-            <label for="medida"> <h5 class="title is-5 has-text-white-ter">Medida:</h5></label> <br>
-            <input name="medida" id="medida" class="input is-rounded" type="text" placeholder="Miligramos, Gramos, Onzas, Piezas" maxlength="50">
-
+    <label for="medida">
+        <h5 class="title is-5 has-text-white-ter">Medida:</h5>
+      </label>
+      <br>
+      <div class="select is-rounded">
+        <select name="medida" id="medida">
+                <option value="Kilogramos">Kilogramos</option>
+                <option value="Gramos">Gramos</option>
+                <option value="Miligramos">Miligramos</option>
+                <option value="Onzas">Onzas</option>
+                <option value="Libras">Libras</option>
+                <option value="Piezas">Piezas</option>
+                <option value="Tazas">Tazas</option>
+                <option value="Gramos">Gramos</option>
+                <option value="Litros">Litros</option>
+                <option value="Mililitros">Mililitros</option>
+        </select>
+      </div>
     <br><br><br>
             <input class="button is-rounded is-success" type="submit" value="Agregar" >
     </form>
     <br>
-    <div class="control">
-        <a href="/alimentos"><button class="button is-danger">Cancelar</button></a>
-        </div>
     
 <%- include('../includes/foot.ejs'); %>

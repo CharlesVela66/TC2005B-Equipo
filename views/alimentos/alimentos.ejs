@@ -1,14 +1,21 @@
 <%- include('../includes/head.ejs'); %>
 <h1 class = "title is-1 has-text-white-ter">Alimentos</h1>
 
-<% if (mensaje != '') { %>
-    <div class="notification is-info is-light">
-        <%= mensaje %>
-    </div>
+<% if (mensaje == 'El alimento fue registrado exitosamente.') { %>
+  <div class="notification is-success is-light">
+    <%= mensaje %>
+    <button class="delete" onclick="cerrarNotificacion()"></button>
+  </div>
+<% } else if (mensaje != '') { %>
+  <div class="notification is-danger is-light">
+    <%= mensaje %>
+    <button class="delete" onclick="cerrarNotificacion()"></button>
+  </div>
 <% } %>
 
+
 <table class="table has-background-black-ter" width="100%">
-    <thead><p class="subtitle is-4 has-text-white-ter">Ejercicios</p></thead>
+
     <thead>
       <tr>
         <th class="has-text-white-ter">Nombre</th>
@@ -43,4 +50,10 @@
 <% } else { %>
     <h1 class="has-text-white-ter">No hay alimentos registrados</h1>
 <% } %>   
+<script>
+  function cerrarNotificacion() {
+    document.querySelector('.notification').style.display = 'none';
+  }
+</script>
+
 <%- include('../includes/foot.ejs'); %>
