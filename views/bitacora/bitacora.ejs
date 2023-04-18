@@ -1,11 +1,11 @@
 <%- include('../includes/head.ejs'); %>
 <% if (rol == "Cliente") { %>
-<h1 class = "title is-1 is-centered has-text-white-ter"> Bienvenido a tu bitacora!</h1>
+<h1 class = "title is-1 has-text-centered has-text-white-ter"> Bitácora</h1>
 
 <div class = "container">
     <form action="/home" method="POST" autocomplete="off">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <div style="max-height: 380px; overflow: auto">
+    <div style="max-height: 340px; overflow: auto">
     <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
         <colgroup>
             <col span="1" style="width: 10%;">
@@ -42,14 +42,20 @@
         </tbody>
     </table>
     </div>
-    <table>
-        
+    <br>
+    <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 40%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 40%;">
+         </colgroup>
         <tbody>
                 <tr>
                     <th class="has-text-white-ter"><input type="date" id="fecha" name="fecha" required="required"></th>
                     <td><input type = "text" size = "50" class="input is-info is-small is-rounded" name = "descr_sesion" id = "descr_sesion" required="required" maxlength="1000"></td>
                     <td>
-                        <div class=" is-small is-rounded">
+                        <div class=" is-small is-rounded is-info select-customizado">
                             
                         <select value = "Escribe" name = "nivel_satisf" id = "nivel_satisf">
                             <option selected="true" disabled="disabled">Elige una opción</option>
