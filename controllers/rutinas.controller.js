@@ -1,7 +1,6 @@
 const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
 const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
-//const RutinaFavorita = require('../models/rutinas_favoritas.model');
 const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
@@ -38,7 +37,7 @@ exports.visualizar_rutinas= (request, response, next) => {
                 Ejercicio.fetchOne(request.params.id)
                 .then(([ejercicios, fieldData]) => {
                     //   console.log(macro),
-                        response.render('rutinas/contenido_r', {
+                        response.render('rutinas/rutina_detalles', {
                         rutina: rutinas[0],
                         rutina_ejercicio: rutinas_ejercicios,
                         ejercicio: ejercicios,
@@ -103,7 +102,7 @@ exports.nueva_rutina = (request, response, next) => {
         .then(([rutinas, fieldData]) => {
             Rutina.fetchAllFavoritas(request.session.nombre_usuario)
             .then(([rutinasFavs, fieldData]) => {
-                response.render('rutinas/nueva_rutina',{
+                response.render('rutinas/agregar_rutinas',{
                     ejercicios: rows,
                     rutinas: rutinas,
                     rutinasFavs: rutinasFavs,
