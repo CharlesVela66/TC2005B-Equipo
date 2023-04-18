@@ -2,12 +2,17 @@
 <h1 class = "title is-1 has-text-white-ter">Alimentos</h1>
 
 <% if (mensaje == 'El alimento fue registrado exitosamente.') { %>
-  <div class="notification is-success is-light">
+  <div class="notification is-success has-text-white">
     <%= mensaje %>
     <button class="delete" onclick="cerrarNotificacion()"></button>
   </div>
+<% } else if (mensaje == 'El alimento fue actualizado exitosamente.') { %>
+    <div class="notification is-success has-text-white">
+      <%= mensaje %>
+      <button class="delete" onclick="cerrarNotificacion()"></button>
+    </div>
 <% } else if (mensaje != '') { %>
-  <div class="notification is-danger is-light">
+  <div class="notification is-danger has-text-white">
     <%= mensaje %>
     <button class="delete" onclick="cerrarNotificacion()"></button>
   </div>
