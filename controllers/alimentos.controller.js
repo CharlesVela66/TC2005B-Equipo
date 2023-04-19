@@ -1,4 +1,5 @@
 const Alimento = require('../models/alimentos.model');
+const DietaAlimento = require('../models/dieta_alimento.model');
 
 function validarNombre(nombre) {
     const patron = /^[a-zA-Z\s]*$/;
@@ -10,7 +11,6 @@ function validarNombre(nombre) {
     Alimento.fetchOne(request.params.id)
     .then(([alimentos_consulta, fieldData]) => {
         if (alimentos_consulta.length == 1) {
-
             const alimento = new Alimento({
                 id_alimento: alimentos_consulta[0].id_alimento,
                 nombre: alimentos_consulta[0].nombre,
@@ -18,13 +18,17 @@ function validarNombre(nombre) {
             });
             Alimento.fetchAll()
             .then(([rows, fieldData]) => {
+              DietaAlimento.fetchAll(alimentos_consulta[0].id_alimento)
+              .then(([dietasAli, fieldData]) => {
                 response.render('alimentos/editar', {
-                    alimentos: rows,
-                    isLoggedIn: request.session.isLoggedIn || false,
-                    nombre: request.session.nombre_usuario || '',
-                    rol: request.session.rol,
-                    alimento: alimento|| false,
-                });
+                  alimentos: rows,
+                  isLoggedIn: request.session.isLoggedIn || false,
+                  nombre: request.session.nombre_usuario || '',
+                  rol: request.session.rol,
+                  alimento: alimento|| false,
+                  dietasAli: dietasAli
+              });
+              })
           
             }).catch(error => console.log(error));
 
@@ -168,4 +172,23 @@ exports.ver_alimentos = (request, response, next) => {
         
     })
     .catch(error => console.log(error));
+}
+
+exports.eliminar_alimento = (request, response, next) => {
+  Alimento.delete(request.body.id)
+  .then(([rows, fieldData]) => {
+    Alimento.fetchAll()
+    .then(([rows, fieldData]) => {
+       let mensaje = "Alimento eliminado exitosamente"
+        response.render('alimentos/alimentos', {
+            alimentos: rows,
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+            mensaje: mensaje
+        });
+        
+    })
+  })
+  .catch(error => console.log(error));
 }

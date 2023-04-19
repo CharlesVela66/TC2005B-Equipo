@@ -20,7 +20,13 @@ module.exports = class Dieta_Alimento{
             Where da.id_dieta= ? AND da.id_alimento=a.id_alimento 
         `
         ,[id])
-
+    }
+    static fetchAll(id){
+        return db.execute(`
+            SELECT *
+            FROM dietasalimentos
+            WHERE id_alimento = ?
+        `, [id])
     }
 
 }

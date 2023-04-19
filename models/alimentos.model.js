@@ -17,6 +17,13 @@ module.exports = class Alimento {
         `, [this.nombre, this.medida]);
     }
 
+    static delete(id) {
+        return db.execute(`
+            DELETE FROM alimento
+            WHERE id_alimento = ?
+        `, [id])
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(`
