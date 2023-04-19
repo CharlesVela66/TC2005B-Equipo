@@ -34,8 +34,14 @@
                                 beginAtZero: true
                             }
                         }]
+                    },
+                    plugins: {
+                        legend: {
+                            onClick: null
+                        }
                     }
                 }
+
             });
             $('#seleccion').change(function() {
                 const fechas = [];
@@ -64,17 +70,21 @@
             }
         });
     </script>
-    <div class="columns">
-        <columns style="width: 25%;">
-            <label for="seleccion" class="has-text-white-ter">Selecciona un valor:</label>
-            <select id="seleccion">
-                <option selected="true" disabled="disabled">Escoja uno</option>
-                <% medidas.forEach(medida => { %>
-                    <option value="<%= medida.tipo %>"><%= medida.tipo %></option>
-                <% }) %>
-            </select>
+    <div class="columns is-4-desktop">
+        <columns class="column is-one-quarter">
+            <label for="seleccion" class="has-text-white-ter column is-full">Selecciona un valor:</label>
+            <div  class="column is-full">
+                <div class="select is-rounded is-normal is-info select-customizado">
+                    <select id="seleccion">
+                        <option selected="true" disabled="disabled">Escoja uno</option>
+                        <% medidas.forEach(medida => { %>
+                            <option value="<%= medida.tipo %>"><%= medida.tipo %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
             <br><br>
-            <div style="max-height: 400px; overflow: auto">
+            <div style="max-height: 350px; overflow: auto">
             <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter">
                 <thead>
                     <tr>
@@ -87,8 +97,8 @@
             </table>
             </div>
         </columns>
-        <columns style="width: 65%;">
-            <section class = "has-text-white-ter has-background-black-ter" style="width: 100%;">
+        <columns class="column">
+            <section class = "has-text-white-ter has-background-black-ter">
                 <div>
                     <canvas class = "has-text-white-ter has-background-black-ter" id="grafico"></canvas>
                 </div>

@@ -10,7 +10,9 @@ router.post('/agregar', rutinasController.post_nueva_rutina);
 
 router.get('/', rutinasController.explorar_rutinas);
 
-router.post('/', rutinasController.registrar_rutina_favorita);
+router.post('/agregar_favs', rutinasController.registrar_rutina_favorita);
+
+router.post('/eliminar_favs', rutinasController.eliminar_rutina_favorita);
 
 router.get('/:id', rutinasController.visualizar_rutinas);
 

@@ -99,10 +99,6 @@ const rutasEjercicios = require('./routes/ejercicios.routes');
 
 app.use('/ejercicios', isAuth, rutasEjercicios);
 
-const rutasAlimentos = require('./routes/alimentos.routes');
-
-app.use('/alimentos', isAuth, rutasAlimentos);
-
 const rutasProgreso = require('./routes/progreso.routes');
 
 app.use('/progreso', isAuth, rutasProgreso);

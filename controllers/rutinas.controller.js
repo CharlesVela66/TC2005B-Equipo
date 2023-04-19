@@ -1,7 +1,6 @@
 const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
 const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
-//const RutinaFavorita = require('../models/rutinas_favoritas.model');
 const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
@@ -38,7 +37,7 @@ exports.visualizar_rutinas= (request, response, next) => {
                 Ejercicio.fetchOne(request.params.id)
                 .then(([ejercicios, fieldData]) => {
                     //   console.log(macro),
-                        response.render('rutinas/contenido_r', {
+                        response.render('rutinas/rutina_detalles', {
                         rutina: rutinas[0],
                         rutina_ejercicio: rutinas_ejercicios,
                         ejercicio: ejercicios,
@@ -84,6 +83,18 @@ exports.registrar_rutina_favorita = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
+exports.eliminar_rutina_favorita = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([cliente, fieldData]) => {
+        Rutina.deleteFavorita(cliente[0].id_cliente, request.body.id_rutina_fav)
+        .then(([rows, fieldData]) =>{
+            response.redirect('/rutinas');
+        })
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+}
+
 exports.nueva_rutina = (request, response, next) => {
     Ejercicio.fetchAll()
     .then(([rows, fieldData]) => {
@@ -91,7 +102,7 @@ exports.nueva_rutina = (request, response, next) => {
         .then(([rutinas, fieldData]) => {
             Rutina.fetchAllFavoritas(request.session.nombre_usuario)
             .then(([rutinasFavs, fieldData]) => {
-                response.render('rutinas/nueva_rutina',{
+                response.render('rutinas/agregar_rutinas',{
                     ejercicios: rows,
                     rutinas: rutinas,
                     rutinasFavs: rutinasFavs,
@@ -134,9 +145,6 @@ exports.post_nueva_rutina = (request, response, next) => {
           const newRutinaEjercicio = new RutinaEjercicio({
             id_rutina: id_rutina,
             id_ejercicio: ejercicio.id_ejercicio,
-            series: ejercicio.series,
-            repeticiones: ejercicio.repeticiones,
-            dia: ejercicio.dia
           });
   
           return newRutinaEjercicio.save();

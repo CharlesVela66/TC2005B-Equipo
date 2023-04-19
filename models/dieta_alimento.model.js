@@ -3,24 +3,24 @@ const db= require('../util/database');
 module.exports = class Dieta_Alimento{
     constructor(nuevo_dietaAlimento){
         this.id_dieta = nuevo_dietaAlimento.id_dieta || '';
-        this.id_alimento= nuevo_dietaAlimento.id_alimento || '';
-        this.cantidad = nuevo_dietaAlimento.cantidad || '';
+        this.nombre = nuevo_dietaAlimento.nombre || '';
+        this.medida = nuevo_dietaAlimento.medida || '';
+        this.cantidad = nuevo_dietaAlimento.cantidad || 0;
     }
     save(){
         return db.execute(`
-            INSERT INTO dietasalimentos(id_dieta, id_alimento, cantidad)
-            VALUES (?, ?, ?)
-        `, [this.id_dieta, this.id_alimento, this.cantidad]);
+            INSERT INTO dietasalimentos(id_dieta, nombre, medida, cantidad)
+            VALUES (?, ?, ?, ?)
+        `, [this.id_dieta, this.nombre, this.medida, this.cantidad]);
     }
     static fetchOne(id){
         return db.execute(
             `
-            SELECT a.nombre, a.medida, da.cantidad
-            FROM dietasalimentos da, alimento a
-            Where da.id_dieta= ? AND da.id_alimento=a.id_alimento 
+            SELECT *
+            FROM dietasalimentos
+            WHERE id_dieta = ?
         `
         ,[id])
-
     }
 
 }

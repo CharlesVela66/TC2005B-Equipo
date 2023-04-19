@@ -6,20 +6,18 @@
  
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
             <label for="descripcion"> <h5 class="title is-5 has-text-white-ter">Nombre:</h5></label> <br>
-            <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" placeholder="">
+            <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" placeholder="Squats, Bench Press, Deadlift">
     <br><br><br>
            <label for="descripcion_ejercicio"> <h5 class="title is-5 has-text-white-ter">Descripción del ejercicio:  </label> <br> <br>
-           <input name="descripcion_ejercicio" id="descripcion_ejercicio" class="input is-rounded" type="text" placeholder="">
+           <input name="descripcion_ejercicio" id="descripcion_ejercicio" class="input is-rounded" type="text" placeholder="Un ejercicio que trabaja _____ el cual requiere  ______ y se utiliza ______">
         <br><br><br>
-            <label for="video_ejercicio"> <h5 class="title is-5 has-text-white-ter">Liga de video explicativo:  </label> <br> <br>
+            <label for="video_ejercicio"> <h5 class="title is-5 has-text-white-ter">Liga de video explicativo de Youtube:  </label> <br> <br>
             <input name="video_ejercicio" id="video_ejercicio" class="input is-rounded" type="text" placeholder="">
 
     <br><br><br>
             <input class="button is-rounded is-success" type="submit" value="Registrar">
     </form>
     <br><br>
-    <form action="/ejercicios" method="GET">
-        <button type="submit" class="button is rounded is-danger has-text-white-ter">Cancelar</button>
-      </form>
+
     
 <%- include('../includes/foot.ejs'); %>

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 module.exports = class Usuario {
 
     constructor(nuevo_usuario) {
+        this.id_usuario = nuevo_usuario.id_usuario;
         this.nombre = nuevo_usuario.nombre ;
         this.apellido = nuevo_usuario.apellido;
         this.nombre_usuario = nuevo_usuario.nombre_usuario;
@@ -16,7 +17,7 @@ module.exports = class Usuario {
         return bcrypt.hash(this.contrasena, 12)
         .then((password_cifrado) => {
             return db.execute(`
-            INSERT INTO usuario (nombre, apellido, nombre_usuario, correo, contrasena, foto_perfil)
+                INSERT INTO usuario (nombre, apellido, nombre_usuario, correo, contrasena, foto_perfil)
             values (?, ?, ?, ?, ?, ?)
             `, [this.nombre, this.apellido, this.nombre_usuario, this.correo, password_cifrado, this.foto_perfil]);
         })
