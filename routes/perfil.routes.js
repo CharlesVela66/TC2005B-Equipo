@@ -8,6 +8,8 @@ router.get('/', perfilController.ver_perfil);
 
 router.get('/ver_info', perfilController.verCliente);
 
+router.get('/ver-info', perfilController.verAdministrador);
+
 router.get('/editar/perfil', perfilController.get_editarPerfil);
 router.post('/editar/perfil', perfilController.post_editarPerfil);
 

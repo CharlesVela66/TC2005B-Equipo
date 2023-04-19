@@ -4,6 +4,7 @@ const Cliente = require('../models/clientes.model');
 const Objetivo = require('../models/objetivos.model');
 const NivelFisico = require('../models/niveles.model');
 const Usuario = require('../models/usuario.model');
+const Administrador = require('../models/administrador.model');
 
 //Get
 exports.get_editarPerfil = (request, response, next) => {
@@ -153,3 +154,45 @@ exports.verCliente = (request, response, next) =>{
     .catch(err => console.log(err));
 };
 
+exports.verAdministrador = (request, response, next) => {
+    Administrador.fetchOne(request.session.nombre_usuario)
+    .then(([admins, fieldData]) => {
+        response.render('admin/ver-info', {
+            infoAdmins: admins[0],
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+        });
+    })
+    .catch(err => console.log(err));
+};
+/*
+function verInfo(request, response, next) {
+    if (request.session.id_rol === 1) {
+      Cliente.fetchOne(request.session.nombre_usuario)
+        .then(([clientes, fieldData]) => {
+          response.render('perfil/ver_info', {
+            infoCliente: clientes[0],
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+          });
+        })
+        .catch(err => console.log(err));
+    } else if (request.session.id_rol === 2) {
+      Usuario.fetchOne(request.session.nombre_usuario)
+        .then(([usuarios, fieldData]) => {
+          response.render('perfil/ver_info', {
+            infoUsuario: usuarios[0],
+            isLoggedIn: request.session.isLoggedIn || false,
+            nombre: request.session.nombre_usuario || '',
+            rol: request.session.rol,
+          });
+        })
+        .catch(err => console.log(err));
+    } else {
+      // si el rol no es cliente ni usuario, redirige a una página de acceso no autorizado
+      response.redirect('/acceso-no-autorizado');
+    }
+  }
+  */
