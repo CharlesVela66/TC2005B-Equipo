@@ -2,31 +2,121 @@
 
 <h1 class="title is-1">Información del Usuario</h1>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    border-top-right-radius: 10%;
+    border-top-left-radius: 10%;
+  }
+  .title {
+    color: grey;
+    font-size: 18px;
+  }
+  button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+  }
+
+  button:hover, a:hover {
+    opacity: 0.7;
+  }
+
+  .profile-picture{
+    width: 50%;
+    border-radius: 50%;
+    border: 5px solid #272133;
+    box-shadow: 0 10px 50px rgba(31, 93, 240, 0.7)
+  }
+  .insta-followers-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    z-index: 5;
+    position: relative;
+  }
+  .insta-follow {
+    width: 35%;
+    text-align: center;
+    display: block;
+    margin: 20px 0;
+  }
+  .insta-follow h2 {
+    color: #3372b5;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .insta-follow h2 span {
+    color: #bfc0c5;
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+    font-weight: 300;
+  }
+
+</style>
 <div class="card">
-  <div class="card-content">
-    <div class="media">
-      <div class="media-left">
-        <figure class="image is-200x200">
-          <img src="<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
-        </figure>
+  <br>
+  <img class="profile-picture" src="<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
+  <br><br><p class="title is-4" style="color:azure"><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
+  <p class="subtitle is-6" style="color:rgba(184, 201, 241, 0.8)"><%= infoCliente.nombre_usuario %></p>
+  <% if (infoCliente && infoCliente.hasOwnProperty('nombre_obj') && infoCliente.hasOwnProperty('nombre_niv')) { %>
+    <div class="insta-followers-wrap">
+      <div class="insta-follow">
+        <h2><%= infoCliente.nombre_obj %><span>Objetivo</span></h2>
       </div>
-      <div class="media-content">
-        <p class="title is-4"><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
-        <p class="resaltado" style="font-weight: bold">Username</p>
-        <p class="subtitle is-6"><%= infoCliente.nombre_usuario %></p>
-        <p class="resaltado" style="font-weight: bold">Correo</p>
-        <p class="subtitle is-6"><%= infoCliente.correo %></p>
-        <p class="resaltado" style="font-weight: bold">Sexo</p>
-        <p class="subtitle is-6"><%= infoCliente.sexo %></p>
-        <p class="resaltado" style="font-weight: bold">Fecha de nacimiento</p>
-        <p class="subtitle is-6"><%= new Date(infoCliente.fecha_nacimiento).getDate() %>/<%= new Date(infoCliente.fecha_nacimiento).getMonth()+1 %>/<%= new Date(infoCliente.fecha_nacimiento).getFullYear() %></p>
-        <p class="resaltado" style="font-weight: bold">Objetivo</p>
-        <p class="subtitle is-6"><%= infoCliente.nombre_obj %></p>
-        <p class="resaltado" style="font-weight: bold">Nivel físico</p>
-        <p class="subtitle is-6"><%= infoCliente.nombre_niv %></p>
+      <div class="insta-follow">
+        <h2><%= infoCliente.nombre_niv %><span>Nivel</span></h2>
       </div>
-    </div>
+    </div><br>
+  <% } %>  
+  <p class="title" style="color: azure;">Información personal</p>
+  <div class="info" style="text-align:left;">
+    <p style="color: aliceblue;">
+    <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Correo: </span><%= infoCliente.correo %><br>
+    <% if (infoCliente && infoCliente.hasOwnProperty('fecha_nacimiento')) { %>
+      <% if (infoCliente.fecha_nacimiento !== null) { %>
+        <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Fecha de nacimiento: </span><%= new Date(infoCliente.fecha_nacimiento).getDate() %>/<%= new Date(infoCliente.fecha_nacimiento).getMonth()+1 %>/<%= new Date(infoCliente.fecha_nacimiento).getFullYear() %><br>
+      <% } else if (infoCliente.fecha_nacimiento === null) { %>
+        <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Fecha de nacimiento: </span>Sin especificar<br>
+      <% } %>
+    <% } %>     
+
+    <% if (infoCliente.hasOwnProperty('sexo') && infoCliente.sexo !== null) { %>
+      <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Sexo: </span><%= infoCliente.sexo %><br>
+    <% } else if (infoCliente.hasOwnProperty('sexo') && infoCliente.sexo === null) { %>
+      <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Sexo: </span>Prefiero no decir<br>
+    <% } %>    
+    <br>
+    </p>
   </div>
+  <p><button style="background-color: rgba(31, 93, 240, 0.7);">Editar información</button></p>
 </div>
-  <!--Esta vista muestra la foto de perfil del usuario, su nombre, apellido, nombre de usuario, correo, sexo, fecha de nacimiento y objetivo. La imagen de perfil por defecto es una imagen de perfil genérica en caso de que el usuario no tenga una foto de perfil asociada en la base de datos.-->
+
 <%- include('../includes/foot.ejs'); %>
