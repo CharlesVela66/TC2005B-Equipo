@@ -32,7 +32,7 @@ exports.dieta_detalles = (request, response, next) => {
     Dieta.fetchOne(request.params.id)
         .then(([dieta, fieldData]) => {
             //   console.log(dieta),
-            Dieta_Alimento.fetchOne(request.params.id)
+            DietaAlimento.fetchOne(request.params.id)
             .then(([dieta_alimento, fieldData]) => {
                 //  console.log(dieta_alimento),
                 Macro.fetchOne(request.params.id)
