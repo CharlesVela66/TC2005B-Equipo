@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Bitacora = require("../models/bitacora.model");
 const Cliente = require("../models/clientes.model");
 
@@ -35,7 +36,6 @@ exports.post_bitacora = (request,response,next) => {
     // Obtenemos todos los datos del cliente pasandole como argumento su nombre de usuario
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
-        // Si tiene una rutina, se puede guardar el registro
             // Se crea un nuevo registro de bitacora
             const registro = new Bitacora({
                 id_cliente: rows[0].id_cliente,
@@ -55,5 +55,33 @@ exports.post_bitacora = (request,response,next) => {
         
     })
     .catch((error) => {console.log(error)});
+
+}
+
+exports.editar = (request,response,next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([rows, fieldData]) => {
+            // Se crea un nuevo registro de bitacora
+            const registro = new Bitacora({
+                id_cliente: rows[0].id_cliente,
+                id_rutina: rows[0].id_rutina,
+                fecha: request.body.edit-fecha,
+                descr_sesion: request.body.edit-descr_sesion,
+                nivel_satisf: request.body.edit-nivel_satisf,
+                comentarios: request.body.edit-comentarios,
+            });
+            // Se actualiza en la base de datos
+            registro.update()
+            .then(([rows, fieldData]) => {
+                //Redericciona al usuario a la bitacora
+                response.redirect('/home');
+            })
+            .catch((error) => {console.log(error)});
+        
+    })
+    .catch((error) => {console.log(error)});
+}
+
+exports.eliminar = (request, response, next) => {
 
 }

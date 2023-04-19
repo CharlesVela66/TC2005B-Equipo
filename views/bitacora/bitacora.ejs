@@ -9,9 +9,10 @@
     <table class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
         <colgroup>
             <col span="1" style="width: 10%;">
-            <col span="1" style="width: 40%;">
+            <col span="1" style="width: 37%;">
             <col span="1" style="width: 10%;">
-            <col span="1" style="width: 40%;">
+            <col span="1" style="width: 37%;">
+            <col span="1" style="width: 6%;">
          </colgroup>
         <thead>
             <tr>
@@ -19,6 +20,7 @@
                 <th class="has-text-white-ter">¿Qué hiciste?</th>
                 <th class="has-text-white-ter">¿Cómo te sentiste?</th>
                 <th class="has-text-white-ter">Comentarios adicionales</th>
+                <th class="has-text-white-ter"></th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +35,11 @@
                     <td> <%= registro.descripcion_sesion %></td>
                     <td> <%= registro.nivel_satisf %></td>
                     <td> <%= registro.comentarios %></td>
+                    <td>
+                        <i class="fas fa-edit" onclick="editRow(this)"></i>
+                        <i class="fas fa-times" onclick="openPopup('popup-delete')"></i>
+                        <i class="fas fa-check" style="display:none;" onclick="submitEditForm(this)"></i>
+                    </td>
 
                     </tr>
                 <% } %>
@@ -81,25 +88,125 @@
             </tr>
         </tbody>
     </table>
-    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup('popup')">
     <div class="popup" id="popup">
-        <br>
         <h2 class="title is-4 has-text-white-ter">¿Quieres confirmar tus datos?</h2>
-        <button class="button is-success" type = "submit" onclick="closePopup()">Confirmar</button>
-        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+        <button class="button is-success" type = "submit" onclick="closePopup('popup')">Confirmar</button>
+        <button class="button is-danger" type="button" onclick="closePopup('popup')">Cancelar</button>
     </div>
+    </form>
+    <form action="/home/eliminar" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <div class ="popup" id="popup-delete">
+            <h2 class="title is-4 has-text-white-ter">¿Quieres eliminar este registro?</h2>
+            <button class="button is-success" type = "submit" onclick="closePopup('popup-delete')">Confirmar</button>
+            <button class="button is-danger" type="button" onclick="closePopup('popup-delete')">Cancelar</button>
+        </div>
     </form>
 </div>
 
 <script>
-    let popup = document.getElementById("popup");
+    const csrfToken = '<%= csrfToken %>';
 
-    function openPopup(){
+    function openPopup(popupId) {
+        const popup = document.getElementById(popupId);
         popup.classList.add("open-popup");
     }
 
-    function closePopup(){
-        popup.classList.remove("open-popup")
+    function closePopup(popupId) {
+        const popup = document.getElementById(popupId);
+        popup.classList.remove("open-popup");
+    }
+
+    function editRow(element) {
+        const row = element.closest('tr');
+        const cells = row.querySelectorAll('th, td');
+
+        // Convertir las celdas en inputs
+        const fechaInput = document.createElement('input');
+        fechaInput.type = 'date';
+        fechaInput.value = cells[0].textContent;
+        cells[0].innerHTML = '';
+        cells[0].appendChild(fechaInput);
+
+        const descripcionInput = document.createElement('input');
+        descripcionInput.type = 'text';
+        descripcionInput.maxLength = 1000;
+        descripcionInput.value = cells[1].textContent;
+        cells[1].innerHTML = '';
+        cells[1].appendChild(descripcionInput);
+
+        const nivelSatisfSelect = document.createElement('select');
+        for (let i = 1; i <= 5; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            nivelSatisfSelect.appendChild(option);
+        }
+        nivelSatisfSelect.value = cells[2].textContent;
+        cells[2].innerHTML = '';
+        cells[2].appendChild(nivelSatisfSelect);
+
+        const comentariosInput = document.createElement('input');
+        comentariosInput.type = 'text';
+        comentariosInput.maxLength = 1000;
+        comentariosInput.value = cells[3].textContent;
+        cells[3].innerHTML = '';
+        cells[3].appendChild(comentariosInput);
+
+        // Ocultar iconos de editar y eliminar, y mostrar el de confirmar
+        element.style.display = 'none';
+        row.querySelector('.fa-times').style.display = 'none';
+        row.querySelector('.fa-check').style.display = '';
+    }
+    function submitEditForm(element) {
+        const row = element.closest('tr');
+        const cells = row.querySelectorAll('th, td');
+        const fecha = cells[0].querySelector('input').value;
+        const descripcion = cells[1].querySelector('input').value;
+        const nivelSatisf = cells[2].querySelector('select').value;
+        const comentarios = cells[3].querySelector('input').value;
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/home/editar';
+
+        const tokenInput = document.createElement('input');
+        tokenInput.type = "hidden";
+        tokenInput.name = "_csrf";
+        tokenInput.value = csrfToken;
+        form.appendChild(tokenInput);
+
+        const fechaInput = document.createElement('input');
+        fechaInput.type = 'hidden';
+        fechaInput.id = 'edit-fecha'
+        fechaInput.name = 'edit-fecha'
+        fechaInput.value = fecha;
+        form.appendChild(fechaInput);
+
+        const descripcionInput = document.createElement('input');
+        descripcionInput.type = 'hidden';
+        descripcionInput.id = 'edit-descripcion'
+        descripcionInput.name = 'edit-descripcion'
+        descripcionInput.value = descripcion;
+        form.appendChild(descripcionInput);
+
+        const nivelSatisfInput = document.createElement('input');
+        nivelSatisfInput.type = 'hidden';
+        nivelSatisfInput.id = 'edit-nivelSatisf'
+        nivelSatisfInput.name = 'edit-nivelSatisf'
+        nivelSatisfInput.value = nivelSatisf;
+        form.appendChild(nivelSatisfInput);
+
+        const comentariosInput = document.createElement('input');
+        comentariosInput.type = 'hidden';
+        comentariosInput.id = 'edit-comentarios'
+        comentariosInput.name = 'edit-comentarios'
+        comentariosInput.value = comentarios;
+        form.appendChild(comentariosInput);
+
+        document.body.appendChild(form);
+        form.submit();
     }
 </script>
 <% }  else if (rol == "Administrador") { %>
