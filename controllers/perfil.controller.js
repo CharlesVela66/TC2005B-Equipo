@@ -111,7 +111,7 @@ exports.editarNivelFisico = (request, response, next) => {
         }
     })
     .catch((error) => console.log(error));
-};  
+};
 
 exports.ver_perfil = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
