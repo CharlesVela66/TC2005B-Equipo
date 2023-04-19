@@ -6,6 +6,7 @@ module.exports = class Bitacora {
     constructor(nuevo_registro) {
         this.id_cliente = nuevo_registro.id_cliente;
         this.id_rutina = nuevo_registro.id_rutina || 1;
+        this.created_at = nuevo_registro.created_at;
         this.fecha = nuevo_registro.fecha;
         this.descr_sesion = nuevo_registro.descr_sesion;
         this.nivel_satisf = nuevo_registro.nivel_satisf || null;
@@ -22,11 +23,18 @@ module.exports = class Bitacora {
 
     update(){
         return db.execute(`
-            UPDATE bitacora SET fecha = ?, nivel_satisf = ?, descr_sesion = ?, comentarios = ?
+            UPDATE bitacora SET fecha = ?, nivel_satisf = ?, descripcion_sesion = ?, comentarios = ?
             WHERE id_cliente = ?
-            AND id_rutina = ?
-            AND fecha = ?
-        `, [this.fecha, this.nivel_satisf, this.descr_sesion, this.comentarios, this.id_cliente, this.id_rutina, this.fecha]);
+            AND created_at = ?
+        `, [this.fecha, this.nivel_satisf, this.descr_sesion, this.comentarios, this.id_cliente, this.created_at]);
+    }
+
+    static delete(id_cliente, created_at){
+        return db.execute(`
+            DELETE FROM bitacora
+            WHERE id_cliente = ?
+            AND created_at = ?
+        `, [id_cliente, created_at])
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
