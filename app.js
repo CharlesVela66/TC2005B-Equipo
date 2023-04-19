@@ -65,14 +65,6 @@ const fileFilter = (request, file, callback) => {
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('imagen')); 
 
-app.use((error, request, response, next) => {
-  if (error instanceof multer.MulterError) {
-    response.status(400).send({ message: 'Solo se permiten archivos JPEG, JPG o PNG.' });
-  } else {
-    next(error);
-  }
-});
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.set('view engine', 'ejs');

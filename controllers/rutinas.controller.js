@@ -145,9 +145,6 @@ exports.post_nueva_rutina = (request, response, next) => {
           const newRutinaEjercicio = new RutinaEjercicio({
             id_rutina: id_rutina,
             id_ejercicio: ejercicio.id_ejercicio,
-            series: ejercicio.series,
-            repeticiones: ejercicio.repeticiones,
-            dia: ejercicio.dia
           });
   
           return newRutinaEjercicio.save();
