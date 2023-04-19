@@ -4,11 +4,14 @@
         <%= mensaje %>
     </div>
 <% } %>
-<h1 class = "title is-1 has-text-white-ter"> Registrar Medidas</h1>
-<br>
+<h1 class = "title is-1 has-text-white-ter has-text-centered"> Registrar Medidas</h1>
 <form action="/medidas" method="POST">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    
+    <div class="has-text-centered">
+        <label for="fecha"><h2 class="subtitle is-5 has-text-white-ter">Fecha</h2></label>
+        <input type="date" id="fecha" name="fecha" required="required">
+    </div>
+    <br>
     <% for (let i = 0; i < mediciones.length; i++) { %>
         <% if (i % 4 === 0) { %>
             <div class = "columns">

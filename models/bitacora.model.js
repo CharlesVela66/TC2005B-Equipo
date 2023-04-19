@@ -20,10 +20,19 @@ module.exports = class Bitacora {
         `, [this.id_cliente, this.id_rutina, this.fecha, this.nivel_satisf, this.descr_sesion, this.comentarios]);
     }
 
+    update(){
+        return db.execute(`
+            UPDATE bitacora SET fecha = ?, nivel_satisf = ?, descr_sesion = ?, comentarios = ?
+            WHERE id_cliente = ?
+            AND id_rutina = ?
+            AND fecha = ?
+        `, [this.fecha, this.nivel_satisf, this.descr_sesion, this.comentarios, this.id_cliente, this.id_rutina, this.fecha]);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(username) {
         return db.execute(`
-            SELECT fecha, nivel_satisf, descripcion_sesion, comentarios
+            SELECT *
             FROM bitacora b, cliente c, usuario u
             WHERE b.id_cliente = c.id_cliente
             AND u.id_usuario = c.id_usuario
