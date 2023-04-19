@@ -6,7 +6,7 @@ const homeController = require('../controllers/home.controller');
 
 router.get('/iniciar-sesion', homeController.iniciar_sesion);
 
-router.post('/iniciar-sesion', homeController.post_iniciar_sesion)
+router.post('/iniciar-sesion', homeController.post_iniciar_sesion);
 
 router.get('/registrarse', homeController.get_registrarse);
 
