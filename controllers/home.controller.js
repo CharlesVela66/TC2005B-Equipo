@@ -2,6 +2,7 @@ const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
+const { request } = require('express');
  
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
@@ -80,16 +81,41 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 };
 
+exports.get_registrarse =(request,response, next) =>{
+    response.render('home/registrarse',{
+        isLoggedIn:request.session.isLoggedIn || false,
+        nombre: request.session.nombre || '',
+    });
+};
+
+exports.post_registrarse = (request, response, next)=>{
+    const nuevo = new Usuario({        
+        nombre: request.body.nombre ,
+        apellido: request.body.apellido,
+        nombre_usuario: request.body.nombre_usuario,
+        correo: request.body.correo,
+        contrasena: request.body.contrasena,
+    });
+    nuevo.save()
+    .then(([rows, fieldData])=>{        
+        Usuario.fetchOne(request.body.nombre_usuario)
+        .then(([infoUsuario, fieldData])=>{
+            nuevo.saveRol(infoUsuario[0].id_usuario,1);
+        })
+        response.redirect('/iniciar-sesion');
+    })
+};
+
+
+/*
 // Carga la interfaz de registrarse
 exports.registrarse = (request, response, next) => {
         response.render('home/registrarse', {
             isLoggedIn: request.session.isLoggedIn || false,
             nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol || '',
         })
     .catch((error) => {console.log(error)});
 };
-
 exports.informacion = (request,response,next)=>{
     Objetivos.fetchAll()
     .then(([rows,fieldData])=> {
@@ -102,34 +128,34 @@ exports.informacion = (request,response,next)=>{
     })
     .catch((error)=>{console.log(error)});
 };
-
 // Esto pasa cuando el usuario le da click a crear nuevo usuario
-exports.post_registrarse = (request, response, next) => {
+exports.post_registrarse = (request, response, next) => {   
     Usuario.fetchOne(request.body.nombre_usuario)
     .then(([rows, fieldData]) => {
         // Así aseguramos que no hay un usuario con ese username ya registrado
         if (rows.length == 0){
-            // Un nuevo usuario se crea
-            const usuario = new Usuario({
-                nombre : request.body.nombre,
-                apellido : request.body.apellido,
-                nombre_usuario : request.body.nombre_usuario,
-                correo : request.body.correo,
-                contrasena : request.body.contrasena,
-                sexo : request.body.sexo,
-                fecha_nacimiento : request.body.fecha_nacimiento
-            });  
-            // Ese usuario se guarda en la base de datos
-            usuario.save()
+    // Un nuevo usuario se crea
+    const usuario = new Usuario({
+        nombre : request.body.nombre,
+        apellido : request.body.apellido,
+        nombre_usuario : request.body.nombre_usuario,
+        correo : request.body.correo,
+        contrasena : request.body.contrasena,
+    }); 
+    //Se guarda el Usuario en la Base de Datos
+    usuario.save()
+    .then(([rows, fieldData])=>{
+        request.session.mensaje="Usuario Registrado";
+        response.redirect('/informacion');
+    }).catch((error)=>{console.log(error)});
+            
             .then(([rows, fieldData]) => {
-                // Aquí tenía pensado que en vez de redireccionarlo a iniciar sesion, lo redireccionara a preguntarle cosas su objetivo y nivel fisico
-                // Cuando se haga eso, se guarda ahora si un nuevo cliente y finalmente se le redirecciona a iniciar sesion.
-                // Eso nos ayudaria para automatizar el almacenamiento de un usuario como cliente
+                request.session.mensaje = "Usuario Registrado";
+                // Pedir informacion del Usuario recien registrado
                 Usuario.fetchOne(request.body.nombre_usuario)
                 .then(([infoUsuario, fieldData]) =>{
                     // Guardamos el rol del usuario 
                     usuario.saveRol(infoUsuario[0].id_usuario, 1);
-
                     // Creamos un cliente para guardarlo en la BD
                     const cliente = new Cliente({
                         id_usuario : infoUsuario[0].id_usuario,
@@ -144,14 +170,14 @@ exports.post_registrarse = (request, response, next) => {
                 .catch((error) => {console.log(error)});
             })
             .catch((error) => {console.log(error)});
+         
         }
         else {
             response.redirect('/registrarse');
         }
     })
     .catch((error) => {console.log(error)});
-
-};
+};*/
 
 // En lugar de que la sesión se destruya en la página de inicio, implementé una mejor práctica que cuando el usuario ingrese a su sección de perfil
 // y le de click a cerrar sesión, rápidamente lo redireccione a esta ruta y esta ruta lo unico que hace es destruir la sesion y luego lo 
