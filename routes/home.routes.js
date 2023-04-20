@@ -12,9 +12,6 @@ router.get('/registrarse', homeController.get_registrarse);
 
 router.post('/registrarse', homeController.post_registrarse);
 
-router.get('/informacion', homeController.get_informacion);
-
-router.post('/informacion', homeController.post_informacion);
 
 router.get('/cerrar-sesion', homeController.cerrar_sesion);
 

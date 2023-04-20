@@ -58,5 +58,17 @@ module.exports = class Cliente {
             WHERE u.id_usuario=c.id_usuario AND c.id_obj=o.id_obj AND c.id_cliente = ?;
          `, [id_cliente]);
     }
+    //cree esta consulta
+    static saveObj(id_usuario, id_obj){
+        return db.execute(`
+        INSERT INTO cliente (id_usuario, id_obj)
+        values (?, ?)
+    `,)
+    }
 
-}
+}   /* saveRol(id_usuario, id_rol) {
+    return db.execute(`
+        INSERT INTO usuariorol (id_usuario, id_rol)
+        values (?, ?)
+    `, [id_usuario, id_rol]);
+}*/
