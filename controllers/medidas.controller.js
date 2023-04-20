@@ -10,13 +10,17 @@ exports.medida = (request,response,next) =>{
 
     Medida.fetchAll()
     .then(([rows, fieldData]) => {
-        response.render('medidas/medidas',{
-            mensaje: mensaje,
-            mediciones: rows,
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
+        Registro.fetchAll(request.session.nombre_usuario)
+        .then(([userInfo, fieldData]) => {
+            response.render('medidas/medidas',{
+                userInfo: userInfo,
+                mensaje: mensaje,
+                mediciones: rows,
+                isLoggedIn: request.session.isLoggedIn || false,
+                nombre: request.session.nombre_usuario || '',
+                rol: request.session.rol,
+            });
+        })
     })
     .catch((error) => {console.log(error)});
 

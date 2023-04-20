@@ -132,6 +132,7 @@
         const fechaInput = document.createElement('input');
         fechaInput.type = 'date';
         fechaInput.value = formatDateToInput(cells[0].textContent.trim());
+        fechaInput.required = true;
         fechaInput.setAttribute('id', 'edit_fecha');
         fechaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
         cells[0].innerHTML = '';
@@ -141,6 +142,7 @@
         descripcionInput.type = 'text';
         descripcionInput.maxLength = 1000;
         descripcionInput.value = cells[1].textContent;
+        descripcionInput.required = true;
         descripcionInput.setAttribute('id', 'edit_descr_sesion');
         descripcionInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
         cells[1].innerHTML = '';
@@ -168,6 +170,7 @@
         cells[3].innerHTML = '';
         cells[3].appendChild(comentariosInput);
 
+         setOriginalDataAttributes(row.querySelector('.fa-undo'), fechaInput.value, descripcionInput.value, nivelSatisfSelect.value, comentariosInput.value);
         // Ocultar iconos de editar y eliminar, y mostrar el de confirmar
         element.style.display = 'none';
         row.querySelector('.fa-times').style.display = 'none';
@@ -182,6 +185,11 @@
         const descripcion = document.getElementById('edit_descr_sesion').value;
         const nivelSatisf = document.getElementById('edit_nivel_satisf').value;
         const comentarios = document.getElementById('edit_comentarios').value;
+
+        if (!validateEditForm(fecha, descripcion)) {
+            alert('Completa los campos de fecha y descripción para continuar');
+            return;
+        }
 
         const form = document.createElement('form');
         form.method = 'POST';
@@ -233,24 +241,30 @@
     }
 
     function cancelEdit(element) {
+
+        console.log(element.getAttribute('data-original-fecha'));
+        console.log(element.getAttribute('data-original-descripcion'));
+        console.log(element.getAttribute('data-original-nivelSatisf'));
+        console.log(element.getAttribute('data-original-comentarios'));
+
         const row = element.closest('tr');
         const cells = row.querySelectorAll('th, td');
 
         // Revertir fecha
-        const fechaInput = cells[0].querySelector('input');
-        cells[0].innerHTML = formatDateToDisplay(fechaInput.value);
+        const fecha = element.getAttribute('data-original-fecha');
+        cells[0].innerHTML = formatDateToDisplay(fecha);
 
         // Revertir descripción
-        const descripcionInput = cells[1].querySelector('input');
-        cells[1].innerHTML = descripcionInput.value;
+        const descripcion = element.getAttribute('data-original-descripcion');
+        cells[1].innerHTML = descripcion;
 
         // Revertir nivel de satisfacción
-        const nivelSatisfSelect = cells[2].querySelector('select');
-        cells[2].innerHTML = nivelSatisfSelect.value;
+        const nivelSatisf = element.getAttribute('data-original-nivelSatisf');
+        cells[2].innerHTML = nivelSatisf;
 
         // Revertir comentarios
-        const comentariosInput = cells[3].querySelector('input');
-        cells[3].innerHTML = comentariosInput.value;
+        const comentarios = element.getAttribute('data-original-comentarios');
+        cells[3].innerHTML = comentarios;
 
         // Restaurar los iconos de editar y eliminar
         const editIcons = document.querySelectorAll('.edit-icon');
@@ -273,9 +287,24 @@
     }
 
     function formatDateToDisplay(inputDate) {
-    const [year, month, day] = inputDate.split('-');
-    return `${day}/${month}/${year}`;
-}
+        const [year, month, day] = inputDate.split('-');
+        return `${day}/${month}/${year}`;
+    }
+    
+    function validateEditForm(fecha, descripcion) {
+        if (!fecha || !descripcion) {
+            alert('Por favor, completa los campos de fecha y descripción.');
+            return false;
+        }
+        return true;
+    }
+    function setOriginalDataAttributes(element, fecha, descripcion, nivelSatisf, comentarios) {
+        element.setAttribute('data-original-fecha', fecha);
+        element.setAttribute('data-original-descripcion', descripcion);
+        element.setAttribute('data-original-nivelSatisf', nivelSatisf);
+        element.setAttribute('data-original-comentarios', comentarios);
+    }
+
 </script>
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title is-1 has-text-white-ter"></h1>

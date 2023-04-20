@@ -83,7 +83,6 @@ exports.editar = (request,response,next) => {
                 nivel_satisf: request.body.edit_nivel_satisf,
                 comentarios: request.body.edit_comentarios,
             });
-            console.log(registro);
             // Se actualiza en la base de datos
             registro.update()
             .then(([rows, fieldData]) => {
