@@ -28,7 +28,7 @@
         <% } %>
     <% } %>
     
-    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+    <input class="button is-rounded is-info" type="button" value="Guardar" onclick="validateAndOpenPopup()">
     <div class="popup" id="popup">
         <h2 class="title is-4 has-text-white-ter">¿Quieres confirmar tus datos?</h2>
         <button class="button is-success" type = "submit">Confirmar</button>
@@ -36,6 +36,13 @@
     </div>
 </form>
 <script>
+
+    const medicionesStr = "<%- escape(JSON.stringify(mediciones)) %>";
+    const mediciones = JSON.parse(unescape(medicionesStr));
+
+    const userInfoStr = "<%- escape(JSON.stringify(userInfo)) %>";
+    const userInfo = JSON.parse(unescape(userInfoStr));
+
     const inputs = document.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
         input.addEventListener('input', () => {
@@ -58,6 +65,43 @@
 
     function closePopup(){
         popup.classList.remove("open-popup")
+    }
+
+    function validateAndOpenPopup() {
+        const inputDate = document.getElementById('fecha').value;
+        let duplicateRecord = false;
+        console.log(inputDate)
+
+        // Recorrer el arreglo userInfo
+        for (const register of userInfo) {
+            for (const medida of mediciones) {
+                const inputMeasure = document.getElementById(medida.tipo).value;
+                
+                // Formatear fecha
+                const fecha = register.fecha;
+                const date = new Date(fecha);
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+
+                const fechaRegistro = `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+
+                console.log(fechaRegistro)
+                // Comparar fechas y partes del cuerpo
+                if (fechaRegistro === inputDate && register.nombre === medida.tipo && inputMeasure)  {
+                    duplicateRecord = true;
+                    break;
+                }
+            }
+
+            if (duplicateRecord) break;
+        }
+
+        if (duplicateRecord) {
+            alert('No se puede guardar el registro porque ya hay registros con esa misma fecha para esa parte del cuerpo');
+        } else {
+            openPopup();
+        }
     }
 </script>
 
