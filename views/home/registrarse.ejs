@@ -4,27 +4,40 @@
   <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
   <div class="box">
     <div class="field">
-      <label class="label" for="username">Username</label>
+      <label class="label">Nombre(s)</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Nombre de Usuario">
+        <input required name="nombre" id="nombre" class="input" type="text" placeholder="Escribe tu(s) nombre(s)">
+      </div>
+    </div>
+    
+    <div class="field">
+      <label class="label">Apellido(s)</label>
+      <div class="control">
+        <input name="apellido" id="apellido"  class="input" type="text" placeholder="Escribe tu(s) apellido(s)">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input required name="nombre_usuario" id="nombre_usuario" class="input" type="text" placeholder="Nombre de Usuario">
       </div>
     </div>
 
     <div class="field">
       <label class="label">Email</label>
       <div class="control">
-        <input class="input" type="email" placeholder="e.g. alex@example.com">
+        <input required name="correo" id="correo" class="input" type="email" placeholder="e.g. alex@example.com">
       </div>
     </div>
 
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input class="input" type="password" placeholder="********">
+        <input required name="contrasena" id="contrasena"  class="input" type="password" placeholder="********">
       </div>
     </div>
-
-    <a href="/informacion/" class="button is-primary">SIGUIENTE</a>
+    <input class="button is-primary" type="submit" value="REGISTRAR">
     <a href="/" class="button is-danger">CANCELAR</a>
 
   </div>
