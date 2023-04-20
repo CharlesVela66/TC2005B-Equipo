@@ -26,17 +26,32 @@
                 },
                 options: {
                     scales: {
-                        yAxes: [{
-                            scaleLabel: {
-                                label:'Valor'
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha',
+                                color: 'white',
+                                font: 'Arial'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Medida (cm)',
+                                color: 'white',
+                                font: 'Arial'
                             },
                             ticks: {
-                                beginAtZero: false
+                                beginAtZero: true,
+                                color: 'white'
                             }
-                        }]
+                        }
                     },
                     plugins: {
                         legend: {
+                            labels: {
+                                color: 'white'
+                            },
                             onClick: null
                         }
                     }
@@ -54,7 +69,7 @@
                     const fecha = new Date(registro.fecha);
                     const fechaStr = fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' +fecha.getFullYear();
                     if (registro.nombre==valorSeleccionado){
-                        tabla.append('<tr><td class="has-text-white-ter">'+fechaStr+'</td><td class="has-text-white-ter">'+registro.medida.toFixed(2)+'</td></tr>');
+                        tabla.append('<tr><td class="has-text-white-ter">'+fechaStr+'</td><td class="has-text-white-ter">'+registro.medida.toFixed(1)+'</td></tr>');
                         fechas.unshift(fechaStr);
                         medidas.unshift(registro.medida);
                     }
@@ -85,7 +100,7 @@
             </div>
             <br><br>
             <div style="max-height: 350px; overflow: auto">
-            <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter is-1">
+            <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter">
                 <thead>
                     <tr>
                         <th class="has-text-white-ter">Fecha</th>
@@ -112,4 +127,3 @@
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
 <% } %>
 <%- include('../includes/foot.ejs'); %>
-
