@@ -1,4 +1,5 @@
 const Ejercicio = require('../models/ejercicios.model');
+const RutinaEjercicio= require('../models/rutina_ejercicio.model');
 
 function validarDescripcion(descripcion) {
     const patron = /^[a-zA-Z\s]*$/;
@@ -7,7 +8,7 @@ function validarDescripcion(descripcion) {
 
 function embedLink(link) {
     var newLink = link.replace("watch?v=", "embed/");
-    return newLink;
+    return newLink;h
   } 
 
 function addHttps(link) {
@@ -34,6 +35,7 @@ function addHttps(link) {
 
     Ejercicio.fetchOne(request.params.id)
     .then(([ejercicios_consulta, fieldData]) => {
+      console.log(ejercicios_consulta);
         if (ejercicios_consulta.length == 1) {
 
             const ejercicio = new Ejercicio({
@@ -44,13 +46,17 @@ function addHttps(link) {
             });
             Ejercicio.fetchAll()
             .then(([rows, fieldData]) => {
+              RutinaEjercicio.fetchAlll(ejercicios_consulta[0].id_ejercicio)
+              .then(([rutinasEje, fieldData]) => {
                 response.render('ejercicios/editar', {
                     ejercicios: rows,
                     isLoggedIn: request.session.isLoggedIn || false,
                     nombre: request.session.nombre_usuario || '',
                     rol: request.session.rol,
                     ejercicio: ejercicio || false,
-                });
+                    rutinasEje: rutinasEje
+                  });
+                })
             }).catch(error => console.log(error));
 
         } else {
@@ -194,6 +200,25 @@ exports.post_ejercicios = (request, response, next) => {
       .catch(error => console.log(error));
   };
 
+
+  exports.eliminar_ejercicios = (request, response, next) => {
+    Ejercicio.delete(request.body.id)
+    .then(([rows, fieldData]) => {
+      Ejercicio.fetchAll()
+      .then(([rows, fieldData]) => {
+         let mensaje = "Ejercicio eliminado exitosamente"
+          response.render('ejercicios/ejercicios', {
+              ejercicios: rows,
+              isLoggedIn: request.session.isLoggedIn || false,
+              nombre: request.session.nombre_usuario || '',
+              rol: request.session.rol,
+              mensaje: mensaje
+          });
+  
+      })
+    })
+    .catch(error => console.log(error));
+  }
 
   exports.visualizar = (request, response, next) => {
     console.log(request.params.id);

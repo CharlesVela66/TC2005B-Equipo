@@ -18,4 +18,6 @@ router.post('/agregar_ejercicios', ejerciciosController.post_ejercicios)
 
 router.get('/:id', ejerciciosController.visualizar);
 
+router.post('/eliminar', ejerciciosController.eliminar_ejercicios);
+
 module.exports = router;
