@@ -58,8 +58,8 @@ exports.post_iniciar_sesion = (request, response, next) => {
                         console.log(rows[0].id_usuario)
                         Cliente.getObjetivo(rows[0].id_usuario)
                             .then(([objetivo,fieldData])=>{
-                                console.log("buu")
-                                if (objetivo[0].id_obj ) {
+                                console.log(objetivo)
+                                if (objetivo.length > 0) {
                                     request.session.objetivo=objetivo[0].id_obj
                                     response.redirect("/home")
                                     
@@ -134,6 +134,7 @@ exports.get_informacion = (request, response, next)=>{
             response.render('home/informacion_personal',{
             objetivos:rows,
             isLoggedIn: request.session.isLoggedIn || false,
+            rol: request.session.rol || '',
             nombre:request.session.nombre_usuario || '',       
             })
 
