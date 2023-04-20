@@ -6,12 +6,12 @@ module.exports = class Cliente {
     // Por el momento no tenemos nada en el constructor de cliente porque no tenemos una manera de automatizar la creacion de un cliente a partir de la creacion de un usuario
     constructor(nuevo_cliente) {
         this.id_usuario = nuevo_cliente.id_usuario;
-        this.id_rutina =nuevo_cliente.id_rutina;
-        this.id_dieta= nuevo_cliente.id_dieta;
-        this.id_obj = nuevo_cliente.id_obj;
-        this.id_niv= nuevo_cliente.id_niv;
-        this.sexo= nuevo_cliente.sexo;
-        this.fecha_nacimiento = nuevo_cliente.fecha_nacimiento;
+        this.id_rutina =nuevo_cliente.id_rutina || null;
+        this.id_dieta= nuevo_cliente.id_dieta || null;
+        this.id_obj = nuevo_cliente.id_obj || null;
+        this.id_niv= nuevo_cliente.id_niv || null;
+        this.sexo= nuevo_cliente.sexo || null;
+        this.fecha_nacimiento = nuevo_cliente.fecha_nacimiento || null;
     }
 
     // Por el momento no tenemos nada en el save de cliente porque no tenemos una manera de automatizar que se guarde en la base de datos un cliente a partir de la creacion de un usuario

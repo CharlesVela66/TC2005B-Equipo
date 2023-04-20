@@ -2,7 +2,6 @@ const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const bcrypt = require('bcryptjs');
-const { request, response } = require('express');
  
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
@@ -93,7 +92,7 @@ exports.post_iniciar_sesion = (request, response, next) => {
 
 };
 
-exports.get_registrarse =(request,response, next) =>{
+exports.registrarse =(request,response, next) =>{
     response.render('home/registrarse',{
         isLoggedIn:request.session.isLoggedIn || false,
         nombre: request.session.nombre || '',
@@ -117,15 +116,10 @@ exports.post_registrarse = (request, response, next)=>{
             console.log(infoUsuario);
             nuevo.saveRol(infoUsuario[0].id_usuario,1)
             const cliente= new Cliente({
-                id_usuario: infoUsuario[0].id_usuario,
-                id_obj: request.body.obj,
+                id_usuario: infoUsuario[0].id_usuario
             });
             cliente.save()
             .then(([row,fieldData])=>{
-                Cliente.fetchOne(request.body.id_usuario)
-                .then(([objUsurio,fieldData ])=>{
-                    cliente.saveObj(infoUsuario[0].id_usuario,NULL)
-                })
                 request.session.mensaje = "Usuario Registrado";   
                 response.redirect('/iniciar-sesion');
             }).catch(err=>console(err));
