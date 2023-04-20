@@ -36,6 +36,7 @@ exports.registrar_medida = (request, response, next) => {
                     const registro = new Registro({
                         id_cliente: rows[0].id_cliente,
                         id_medicion: medida.id_medicion,
+                        fecha: request.body.fecha,
                         medida: request.body[medida.tipo]
                     })
                     return registro.save();
