@@ -1,35 +1,44 @@
 const Ejercicio = require('../models/ejercicios.model');
-const RutinaEjercicio= require('../models/rutina_ejercicio.model');
+const RutinaEjercicio = require('../models/rutina_ejercicio.model');
 
 function validarDescripcion(descripcion) {
-    const patron = /^[a-zA-Z\s]*$/;
-    return patron.test(descripcion);
-  }
+  const patron = /^[a-zA-Z\u00C0-\u00FF\s]*$/;
+  return patron.test(descripcion);
+}
+
+//https://www.youtube.com/watch?v=PTO862T8U7Y&ab_channel=EntrenamientoDiferencial
 
 function embedLink(link) {
+  if (link) {
     var newLink = link.replace("watch?v=", "embed/");
-    return newLink;h
-  } 
+    const idIndex = newLink.indexOf("embed/") + 6;
+    if (newLink.length > idIndex + 11) {
+      newLink = newLink.substring(0, idIndex + 11);
+    }
+    return newLink;
+  }
+  return '';
+}
 
 function addHttps(link) {
-    if (!link.includes("https://www.") && !link.includes("http://www.")) {
-      link = "https://www." + link;
-    }
-    return link;
+  if (link && !link.includes("https://www.") && !link.includes("http://www.")) {
+    link = "https://www." + link;
   }
+  return link;
+}
 
- 
-  function validarYoutubeUrl(url) {
-    const expectedPattern = /^https:\/\/www\.youtube\.com\/embed\/[\w-]+$/;
-  
-    if (expectedPattern.test(url)) {
-      // La estructura de la URL es correcta
-      return true;
-    } else {
-      // La estructura de la URL es incorrecta
-      return false;
-    }
+function validarYoutubeUrl(url) {
+  if (url === '') return true; // Si la URL está vacía, no es obligatoria
+  const expectedPattern = /^https:\/\/www\.youtube\.com\/embed\/[\w-]+$/;
+
+  if (expectedPattern.test(url)) {
+    // La estructura de la URL es correcta
+    return true;
+  } else {
+    // La estructura de la URL es incorrecta
+    return false;
   }
+}
 
  exports.get_editar = (request, response, next) => {
 
@@ -73,8 +82,8 @@ exports.post_editar = (request, response, next) => {
     const descripcion_ejercicio = request.body.descripcion_ejercicio.trim();
     const video_ejercicio = request.body.video_ejercicio.trim();
   
-    if (!descripcion || !video_ejercicio || !descripcion_ejercicio) {
-      request.session.mensaje = "Por favor complete todos los campos.";
+    if (!descripcion || !descripcion_ejercicio) {
+      request.session.mensaje = "Por favor complete los campos obligatorios.";
       response.redirect('/ejercicios');
       return;
     }
@@ -87,6 +96,7 @@ exports.post_editar = (request, response, next) => {
     
     const nuevoEnlace = embedLink(video_ejercicio);
   
+    console.log(nuevoEnlace);
     const nuevoNuevoEnlace = addHttps(nuevoEnlace);
 
     if (!validarYoutubeUrl(nuevoNuevoEnlace)) {
@@ -151,8 +161,8 @@ exports.post_ejercicios = (request, response, next) => {
     const descripcion_ejercicio = request.body.descripcion_ejercicio.trim();
     const video_ejercicio = request.body.video_ejercicio.trim();
     
-    if (!descripcion || !video_ejercicio || !descripcion_ejercicio) {
-      request.session.mensaje = "Por favor complete todos los campos.";
+    if (!descripcion || !descripcion_ejercicio) {
+      request.session.mensaje = "Por favor complete los campos obligatorios.";
       response.redirect('/ejercicios');
       return;
     }
@@ -163,9 +173,12 @@ exports.post_ejercicios = (request, response, next) => {
       return;
     }
 
+    console.log(video_ejercicio)
     const nuevoEnlace = embedLink(video_ejercicio);
-
+    
     const nuevoNuevoEnlace = addHttps(nuevoEnlace);
+
+ console.log(nuevoNuevoEnlace);
 
     if (!validarYoutubeUrl(nuevoNuevoEnlace)) {
       request.session.mensaje = "La URL de YouTube no es válida. Debe tener el formato https://www.youtube.com/watch?v=XxXxxXxxXxx o youtube.com/watch?v=XxXxxXxxXxx";
