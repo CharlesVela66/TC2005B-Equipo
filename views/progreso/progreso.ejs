@@ -32,6 +32,9 @@
                                 text: 'Fecha',
                                 color: 'white',
                                 font: 'Arial'
+                            },
+                            ticks: {
+                                color: 'white'
                             }
                         },
                         y: {
@@ -69,7 +72,7 @@
                     const fecha = new Date(registro.fecha);
                     const fechaStr = fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' +fecha.getFullYear();
                     if (registro.nombre==valorSeleccionado){
-                        tabla.append('<tr><td class="has-text-white-ter">'+fechaStr+'</td><td class="has-text-white-ter">'+registro.medida.toFixed(1)+'</td></tr>');
+                        tabla.append('<tr><td>'+fechaStr+'</td><td>'+registro.medida.toFixed(1)+'</td></tr>');
                         fechas.unshift(fechaStr);
                         medidas.unshift(registro.medida);
                     }
