@@ -26,6 +26,14 @@ module.exports = class RegistroRutina {
         `);
     }
 
+    static fetchAlll(id){
+        return db.execute(`
+            SELECT *
+            FROM rutinaejercicio
+            WHERE id_ejercicio = ?
+        `, [id])
+    }
+
     static fetchOne(id_rutina){
         return db.execute(`
         SELECT *
@@ -36,6 +44,8 @@ module.exports = class RegistroRutina {
         );
     }
 
+
+    
     static fetch(id_rutina){
         if (id_rutina){
             return RegistroRutina.fetchOne(id_rutina);
