@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 
 module.exports = class Cliente {
 
-    // Por el momento no tenemos nada en el constructor de cliente porque no tenemos una manera de automatizar la creacion de un cliente a partir de la creacion de un usuario
     constructor(nuevo_cliente) {
         this.id_usuario = nuevo_cliente.id_usuario;
         this.id_rutina =nuevo_cliente.id_rutina;
@@ -14,7 +13,6 @@ module.exports = class Cliente {
         this.fecha_nacimiento = nuevo_cliente.fecha_nacimiento;
     }
 
-    // Por el momento no tenemos nada en el save de cliente porque no tenemos una manera de automatizar que se guarde en la base de datos un cliente a partir de la creacion de un usuario
     save() {
         return db.execute(`       
         INSERT INTO cliente (id_usuario,id_rutina,id_dieta, id_obj, id_niv, sexo, fecha_nacimiento)

@@ -8,21 +8,36 @@ const Administrador = require('../models/administrador.model');
 
 //Get
 exports.get_editarPerfil = (request, response, next) => {
-    Usuario.fetchOne(request.session.nombre_usuario)
-    .then(([usuarios, fieldData]) => {
-        const usuario = usuarios[0];
-        response.render('perfil/editar_info', {
-            usuario: usuario,
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-        });
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([clientes, fieldData]) => {
+        if (clientes.length == 1) {
+            const cliente = new Cliente ({
+                usuario: clientes[0].id_usuario,
+                rutina: clientes[0].id_rutina,
+                dieta: clientes[0].nuevo_cliente.id_dieta,
+                obj: clientes[0].nuevo_cliente.id_obj,
+                niv: clientes[0].nuevo_cliente.id_niv,
+                sexo: clientes[0].nuevo_cliente.sexo,
+                fecha_nacimiento: clientes[0].fecha_nacimiento
+            });
+            Objetivo.fetchAll()
+            .then(([objetivos, fieldData]) => {
+                NivelFisico.fetchAll()
+                .then(([niveles, fieldData]) => {
+                    response.render('editar', {
+                        obj: objetivos,
+                        niv: niveles,
+                        isLoggedIn: request.session.isLoggedIn || false,
+                        cliente: cliente || false,
+                    });
+                }).catch(error => console.log(error));
+            }).catch(error => console.log(error));
+        } 
+        else {
+            return response.redirect('/perfil/editar');
+        }
     })
-    .catch((error) => {
-        console.log(error);
-        response.redirect('/ver_info');
-    });
-};
+}
 //Post
 exports.post_editarPerfil = (request, response, next) => {
     //request.body para poder acceder a los datos del cliente  y almacenarlo en la DB
@@ -166,33 +181,4 @@ exports.verAdministrador = (request, response, next) => {
     })
     .catch(err => console.log(err));
 };
-/*
-function verInfo(request, response, next) {
-    if (request.session.id_rol === 1) {
-      Cliente.fetchOne(request.session.nombre_usuario)
-        .then(([clientes, fieldData]) => {
-          response.render('perfil/ver_info', {
-            infoCliente: clientes[0],
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-          });
-        })
-        .catch(err => console.log(err));
-    } else if (request.session.id_rol === 2) {
-      Usuario.fetchOne(request.session.nombre_usuario)
-        .then(([usuarios, fieldData]) => {
-          response.render('perfil/ver_info', {
-            infoUsuario: usuarios[0],
-            isLoggedIn: request.session.isLoggedIn || false,
-            nombre: request.session.nombre_usuario || '',
-            rol: request.session.rol,
-          });
-        })
-        .catch(err => console.log(err));
-    } else {
-      // si el rol no es cliente ni usuario, redirige a una página de acceso no autorizado
-      response.redirect('/acceso-no-autorizado');
-    }
-  }
-  */
+
