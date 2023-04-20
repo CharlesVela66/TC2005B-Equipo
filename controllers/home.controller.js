@@ -97,9 +97,14 @@ exports.post_registrarse = (request, response, next)=>{
         contrasena: request.body.contrasena,
     });
     nuevo.save()
-    .then(([rows, fieldData])=>{        
-        Usuario.fetchOne(request.body.nombre_usuario)
-        .then(([infoUsuario, fieldData])=>{
+    .then(([rows, fieldData])=>{  
+        request.session.mensaje ="Usuario Registrado.";
+        //Loguear Usuario      
+        Usuario.fetch(request.body.id_usuario)
+        .then(([rows,fieldData])=>{
+            if(rows.length>0){
+                bcrypt.compare(request.body.pasw)
+            }
             nuevo.saveRol(infoUsuario[0].id_usuario,1);
         })
         response.redirect('/iniciar-sesion');

@@ -54,6 +54,9 @@ Ver si esta jala
             AND ur.id_rol = r.id_rol
             AND u.nombre_usuario = ?
         `, [username]);
+    }    
+    static fetch(id_usuario){
+        return db.execute('SELECT * FROM usuario WHERE id_usuario = ?', [id_usuario]);
     }
 
 }
