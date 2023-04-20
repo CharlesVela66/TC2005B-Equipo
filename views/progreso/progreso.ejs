@@ -34,8 +34,14 @@
                                 beginAtZero: false
                             }
                         }]
+                    },
+                    plugins: {
+                        legend: {
+                            onClick: null
+                        }
                     }
                 }
+
             });
             $('#seleccion').change(function() {
                 const fechas = [];
@@ -68,7 +74,7 @@
         <columns class="column is-one-quarter">
             <label for="seleccion" class="has-text-white-ter column is-full">Selecciona un valor:</label>
             <div  class="column is-full">
-                <div class="select is-rounded is-normal is-primary">
+                <div class="select is-rounded is-normal is-info select-customizado">
                     <select id="seleccion">
                         <option selected="true" disabled="disabled">Escoja uno</option>
                         <% medidas.forEach(medida => { %>

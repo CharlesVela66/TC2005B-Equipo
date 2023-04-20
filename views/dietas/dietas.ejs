@@ -51,7 +51,7 @@
                             </div>
                             <div class="media-content">
                                 <p class="title is-4 has-text-white-ter"><%= dietaFav.nombre %></p>
-                                <p class="subtitle is-6 has-text-white-ter">Calorías: <%= dietaFav.calorias.toFixed(2) %></p>
+                                <p class="subtitle is-6 has-text-white-ter">Calorías: <%= dietaFav.calorias.toFixed(0) %></p>
                             </div>
                         </div>
                     
@@ -61,7 +61,7 @@
         <% } %>
     </div>
     <div class="popup" id="del">
-        <h2 class="title is-2">¿Quieres eliminar esta dieta de Favoritos?</h2>
+        <h2 class="title is-4 has-text-white-ter">¿Quieres eliminar esta dieta de Favoritos?</h2>
         <button class="button is-success" type = "submit">Sí</button>
         <button class="button is-danger" type="button" onclick="closeDelPopup()">No</button>
     </div>
@@ -127,7 +127,7 @@
                     <% } %>
         </div>
         <div class="popup" id="add">
-            <h2 class="title is-2">¿Quieres guardar esta dieta en Favoritos?</h2>
+            <h2 class="title is-4 has-text-white-ter">¿Quieres guardar esta dieta en Favoritos?</h2>
             <button class="button is-success" type = "submit">Sí</button>
             <button class="button is-danger" type="button" onclick="closeAddPopup()">No</button>
         </div>
@@ -184,8 +184,8 @@
                                         <p class="title is-4 has-text-white-ter">
                                             <%= dieta.nombre %>
                                         </p>
-                                        <p class="subtitle is-6">
-                                            Calorías: <%= dieta.calorias.toFixed(2) %>
+                                        <p class="subtitle is-6 has-text-white-ter">
+                                            Calorías: <%= dieta.calorias.toFixed(0) %>
                                         </p>
                                     </div>
                                 </div>
@@ -195,7 +195,7 @@
                     <% } %>
         </div>
         <div class="popup" id="popup">
-            <h2 class="title is-2">¿Quieres guardar esta dieta en Favoritos?</h2>
+            <h2 class="title is-4 has-text-white-ter">¿Quieres guardar esta dieta en Favoritos?</h2>
             <button class="button is-success" type = "submit">Sí</button>
             <button class="button is-danger" type="button" onclick="closePopup()">No</button>
         </div>

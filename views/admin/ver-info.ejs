@@ -1,0 +1,70 @@
+<%- include('../includes/head.ejs'); %>
+
+<h1 class="title is-1">Información del Administrador</h1>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    border-top-right-radius: 10%;
+    border-top-left-radius: 10%;
+  }
+  .title {
+    color: grey;
+    font-size: 18px;
+  }
+  button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+  }
+
+  button:hover, a:hover {
+    opacity: 0.7;
+  }
+
+  .profile-picture{
+    width: 50%;
+    border-radius: 50%;
+    border: 5px solid #272133;
+    box-shadow: 0 10px 50px rgba(31, 93, 240, 0.7)
+  }
+</style>
+
+<div class="card">
+  <br>
+  <img class="profile-picture" src="<%= infoAdmins.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
+  <br><br><p class="title is-4" style="color:azure"><%= infoAdmins.nombre %> <%= infoAdmins.apellido %></p>
+  <p class="subtitle is-6" style="color:rgba(184, 201, 241, 0.8);"><%= infoAdmins.nombre_usuario %></p>
+  <p class="title" style="color: azure; padding-top: 15px;">Información personal</p>
+  <div class="info" style="text-align:left;">
+    <p style="color: aliceblue;">
+        <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Correo: </span><%= infoAdmins.correo %><br>  
+    </p>
+  </div><br>
+  <p><button style="background-color: rgba(31, 93, 240, 0.7);">Editar información</button></p>
+</div>
+<br>
+<div class="buttons">
+    <a class="button is-danger" href = "/cerrar-sesion">
+      <strong>Cerrar Sesión</strong>
+    </a>
+</div>
+
+<%- include('../includes/foot.ejs'); %>

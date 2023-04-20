@@ -4,6 +4,7 @@
     <title>Pagina web navegable</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
       .navbar-item:hover, .navbar-link:hover, .navbar-dropdown{
         background-color: rgb(20, 20, 20) !important;
@@ -13,6 +14,9 @@
         background-color: rgb(58, 58, 58);
         height:100%;
       }
+      .mi-color-personalizado {
+  background-color: hsl(222, 87%, 53%);
+}
       .navbar-item, .navbar-link, .navbar-dropdown{
         color:rgb(216, 216, 216);
       }
@@ -60,23 +64,24 @@
           padding: 0;
           box-sizing: border-box;
       }
-      .popup{
+      .popup {
         width: 400px;
-        background: #fff;
+        background: #2c2c2c;
         border-radius: 6px;
         position: fixed;
         top: 0;
         left: 50%;
         transform: translate(-50%, -50%) scale(0.1);
         text-align: center;
-        padding: 0 30px 30 px;
-        color: #333;
+        padding: 0 30px 30px;
+        color: #ffffff;
         visibility: hidden;
         transition: transform 0.4s, top 0.4s;
         z-index: 10;
       }
-      .popup button{
-        color: #fff;
+      .popup button {
+        color: #ffffff;
+        background: #4a4a4a;
         border: 0;
         outline: 0;
         font-size: 18px;
@@ -84,10 +89,14 @@
         cursor: pointer;
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
       }
-      .open-popup{
+      .open-popup {
         visibility: visible;
         top: 50%;
         transform: translate(-50%, -50%) scale(1);
+      }
+      .notification button.delete {
+        margin-top: 15px;
+        margin-right: 15px;
       }
       .star{
         position: absolute;
@@ -97,6 +106,54 @@
         width: 45px;
         height: 46px;
       }
+      .yt-video{
+        color: white;
+        text-decoration: underline;
+      }
+      .yt-video:hover {
+        color: rgb(148, 148, 148);
+      }
+      .notif {
+        width: 50%;
+        border-radius: 6px;
+        position: fixed;
+        top: 10%;
+        left: 50%;
+        opacity: 0;
+        text-align: center;
+        padding: 10px;
+        color: #ffffff;
+        background-color: #dc3545;
+        visibility: hidden;
+        transition: opacity 0.4s, visibility 0s 0.4s;
+        z-index: 10;
+      }
+
+      .open-noti {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.4s, visibility 0s;
+      }
+      .select-customizado select {
+        background-color: hsl(0, 0%, 14%);
+        border-radius: 290486px;
+        color: #ffffff;
+        border: 1px solid #dbdbdb;
+      }
+
+      .select-customizado select:focus {
+        outline: none;
+        border-color: #3273dc;
+        box-shadow: 0 0 0.5em rgba(50, 115, 220, 0.25);
+      }
+
+      .custom-button {
+          background-color: transparent;
+          border: none;
+          text-align: right;
+          cursor: pointer;
+      }
+
     </style>
 </head>
 <body>
@@ -230,23 +287,6 @@
               <div class="navbar-item has-dropdown is-hoverable ">
                 <a class="navbar-link has-background" style="background-color: #242527;">
                   <span class="material-symbols-outlined">
-                    set_meal
-                    </span>
-                  Alimentos
-                </a>
-                <div class="navbar-dropdown">
-                  <a class="navbar-item " href = "/alimentos/agregar_alimentos">
-                    Agregar alimentos
-                  </a>
-                  <a class="navbar-item" href="/alimentos">
-                    Todos los alimentos
-                  </a>
-                </div>
-              </div>
-  
-              <div class="navbar-item has-dropdown is-hoverable ">
-                <a class="navbar-link has-background" style="background-color: #242527;">
-                  <span class="material-symbols-outlined">
                     exercise
                     </span>
                   Ejercicios
@@ -282,7 +322,7 @@
             <div class="navbar-end">
               <div class="navbar-item">
                 <div class="buttons">
-                  <a class="button" href = "/perfil">
+                  <a class="button" href = "/perfil/ver-info">
                     <img src = https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png>
                   </a>
                 </div>

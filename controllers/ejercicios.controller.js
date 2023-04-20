@@ -89,12 +89,12 @@ exports.post_editar = (request, response, next) => {
         return;
       }
    console.log(id)
-    Ejercicio.fetchOneByDescripcion(descripcion)
-      .then(([rows, fieldData]) => {
-        if (rows.length > 0) {
-          request.session.mensaje = "Ya existe un ejercicio con la misma descripción.";
-          response.redirect('/ejercicios');
-        } else {
+   Ejercicio.fetchOneByDescripcion(descripcion)
+   .then(([rows, fieldData]) => {
+     if (rows.length > 0 && rows[0].id_ejercicio != id) {
+       request.session.mensaje = "Ya existe otro ejercicio con la misma descripción.";
+       response.redirect('/ejercicios');
+     } else {
           Ejercicio.fetchOne(id)
             .then(([ejercicios_consulta, fieldData]) => {
               if (ejercicios_consulta.length == 1) {

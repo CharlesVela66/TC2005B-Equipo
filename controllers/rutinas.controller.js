@@ -1,7 +1,6 @@
 const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
 const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
-//const RutinaFavorita = require('../models/rutinas_favoritas.model');
 const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
@@ -38,7 +37,7 @@ exports.visualizar_rutinas= (request, response, next) => {
                 Ejercicio.fetchOne(request.params.id)
                 .then(([ejercicios, fieldData]) => {
                     //   console.log(macro),
-                        response.render('rutinas/contenido_r', {
+                        response.render('rutinas/rutina_detalles', {
                         rutina: rutinas[0],
                         rutina_ejercicio: rutinas_ejercicios,
                         ejercicio: ejercicios,
@@ -103,7 +102,7 @@ exports.nueva_rutina = (request, response, next) => {
         .then(([rutinas, fieldData]) => {
             Rutina.fetchAllFavoritas(request.session.nombre_usuario)
             .then(([rutinasFavs, fieldData]) => {
-                response.render('rutinas/nueva_rutina',{
+                response.render('rutinas/agregar_rutinas',{
                     ejercicios: rows,
                     rutinas: rutinas,
                     rutinasFavs: rutinasFavs,
@@ -126,7 +125,7 @@ exports.post_nueva_rutina = (request, response, next) => {
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,
       tiporutina: request.body.tiporutina,
-      URL_Image: request.file.filename
+      URL_Image: request.file ? request.file.filename : ''
     });
   
     // Verificar si existe una rutina con el mismo nombre
@@ -138,7 +137,6 @@ exports.post_nueva_rutina = (request, response, next) => {
       .then(([rows, fieldData]) => {
         // Obtén el ID de la nueva rutina insertada
         const id_rutina = rows.insertId;
-  
         // Recorre los ejercicios enviados en el formulario
         const ejercicios = JSON.parse(request.body.ejercicios);
         const promises = ejercicios.map(ejercicio => {
@@ -146,9 +144,6 @@ exports.post_nueva_rutina = (request, response, next) => {
           const newRutinaEjercicio = new RutinaEjercicio({
             id_rutina: id_rutina,
             id_ejercicio: ejercicio.id_ejercicio,
-            series: ejercicio.series,
-            repeticiones: ejercicio.repeticiones,
-            dia: ejercicio.dia
           });
   
           return newRutinaEjercicio.save();
