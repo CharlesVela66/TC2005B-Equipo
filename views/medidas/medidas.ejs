@@ -19,7 +19,7 @@
         
         <div class = "column">
             <label for = "<%= mediciones[i].tipo %>"><h5 class="subtitle is-5 has-text-white-ter"><%= mediciones[i].tipo %></h5></label>
-            <input class = "input is-rounded" type = "number" step="0.1" id="<%= mediciones[i].tipo %>" name = "<%= mediciones[i].tipo %>">
+            <input class = "input is-rounded" type = "number" step="0.1" id="<%= mediciones[i].tipo %>" name = "<%= mediciones[i].tipo %>" min="0.1" max="9999.9" placeholder="Medida en cm">
         </div>
         
         <% if (i % 4 === 3 || i === mediciones.length - 1) { %>
