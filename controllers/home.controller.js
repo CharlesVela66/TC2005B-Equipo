@@ -53,16 +53,21 @@ exports.post_iniciar_sesion = (request, response, next) => {
                     Usuario.fetchRol(rows[0].nombre_usuario)
                     .then(([consultaRol, fieldData]) => {
                         console.log("hola")
-                        console.log(consultaRol[0].nombre)
                         request.session.rol=consultaRol[0].nombre;
                         console.log(request.session.rol)
                         console.log(rows[0].id_usuario)
                         Cliente.getObjetivo(rows[0].id_usuario)
                             .then(([objetivo,fieldData])=>{
-                                    if (objetivo.length > 0) {
+                                console.log(objetivo)
+                                    if (objetivo.length > 0 && consultaRol[0].nombre=="Cliente") {
                                         request.session.objetivo=objetivo[0].id_obj
                                         response.redirect("/home")
-                                    }else{
+                                    }
+                                        if(consultaRol[0].nombre=="Administrador"){
+                                            console.log("buuu")
+                                            console.log(consultaRol[0].nombre)
+                                            response.redirect("/home")
+                                        }else{
                                         response.redirect("/informacion")
                                     }
                         // Guardamos el rol en una variable de sesion
