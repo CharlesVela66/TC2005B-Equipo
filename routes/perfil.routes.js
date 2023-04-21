@@ -10,7 +10,10 @@ router.get('/ver_info', perfilController.verCliente);
 
 router.get('/ver-info', perfilController.verAdministrador);
 
-router.get('/editar/perfil', perfilController.get_editarPerfil);
-router.post('/editar/perfil', perfilController.post_editarPerfil);
+//router.get('/editar_info', perfilController.get_editarPerfil);
+//router.post('/editar_info', perfilController.post_editarPerfil);
+
+router.get('/editar-info', perfilController.get_editarPerfilAdmin);
+router.post('/editar-info', perfilController.post_editarPerfilAdmin);
 
 module.exports = router;

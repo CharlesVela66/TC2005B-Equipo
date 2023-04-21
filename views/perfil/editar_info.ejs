@@ -1,3 +1,37 @@
-<%- include('includes/head.ejs') %>
+<%- include('../includes/head.ejs'); %>
 
-<h1>Hola</h1>
+<h1>Editar información de cliente</h1>
+<% if (cliente) { %>
+  <form method="POST" action="/perfil/editar_info">
+
+    <label for="nombre">Nombre de usuario</label>
+    <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" required>
+
+    <label for="apellido">Apellido de usuario</label>
+    <input type="text" id="apellido" name="apellido" value="<%= usuario.apellido %>" required>
+
+    <label for="foto_perfil">Foto de perfil</label>
+    <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
+
+    <label for="sexo">Sexo:</label>
+    <select name="sexo" id="sexo">
+        <option value="M" <% if (cliente.sexo === 'M') { %> selected <% } %>>Masculino</option>
+        <option value="F" <% if (cliente.sexo === 'F') { %> selected <% } %>>Femenino</option>
+    </select><br><br>
+
+    <label for="alturaInic">Altura (m):</label>
+    <input type="number" name="alturaInic" id="alturaInic" placeholder="<%= cliente.alturaInic.toFixed(2) %>" value="<%= cliente.alturaInic.toFixed(2) %>" step="0.05" min="1.00" max="3.99"><br><br>
+
+    <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<%= cliente.fecha_nacimiento.toISOString().substr(0,10) %>"><br><br>
+
+    <input type="submit" value="Guardar cambios">
+</form>
+<% } else { %>
+  <p>No se pudo encontrar la información del cliente.</p>
+<% } %>
+
+<br><br>
+<a href="/">Volver al inicio</a>
+
+<%- include('../includes/foot.ejs'); %>

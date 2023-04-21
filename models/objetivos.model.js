@@ -33,5 +33,8 @@ module.exports = class Objetivos {
             WHERE id_obj =?
         `, [id_obj]);
     }
-
+    
+    static fetchById(id_obj) {
+        return db.execute('SELECT * FROM objetivo WHERE id_obj = ?', [id_obj]);
+    }
 }
