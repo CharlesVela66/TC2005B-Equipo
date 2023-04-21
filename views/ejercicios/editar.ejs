@@ -6,6 +6,8 @@
     No se puede eliminar este ejercicio porque este ejercicio existe en una rutina
   </div>
 
+
+
 <h1 class="title has-text-white-ter">Editar ejercicio</h1>
 <form action="/ejercicios/editar" method="POST" autocomplete="off">
 <input type="hidden" name="id" value="<%= ejercicio.id_ejercicio %>" >
@@ -39,7 +41,7 @@
         </div>
       </form>
     <br><br>
-   
+    <% } %>   
 
           <script>
             let popup = document.getElementById("popup");
