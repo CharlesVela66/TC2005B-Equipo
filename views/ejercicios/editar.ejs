@@ -1,12 +1,17 @@
 
 <%- include('../includes/head.ejs'); %>
 <br>
+
+<div class="notif has-background-danger" id="notification">
+    No se puede eliminar este ejercicio porque este ejercicio existe en una rutina
+  </div>
+
 <h1 class="title has-text-white-ter">Editar ejercicio</h1>
 <form action="/ejercicios/editar" method="POST" autocomplete="off">
 <input type="hidden" name="id" value="<%= ejercicio.id_ejercicio %>" >
- 
+ h
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-            <label for="descripcion"> <h5 class="title is-5 has-text-white-ter">Nombre:</h5></label> <br>
+            <label for="descripcion"> <h5 class= "title is-5 has-text-white-ter">Nombre:</h5></label> <br>
             <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" value="<%= ejercicio.descripcion %>">
     <br><br><br>
     <label for="descripcion_ejercicio"> <h5 class="title is-5 has-text-white-ter">Descripción del ejercicio:  </label> <br> <br>
@@ -17,11 +22,44 @@
 
     <br><br><br>
      
-            <input class="button is-rounded is-success" type="submit" value="Actualizar">  
-                
+            <input class="button is-rounded is-success" type="submit" value="Actualizar">            
+              <% if (rutinasEje.length == 0){ %>
+            <input class="button is-danger is-rounded" type="button" value="Eliminar" onclick="openPopup()">
+            <% } else { %>
+            <input class="button is-danger is-rounded" type="button" value="Eliminar" onclick="showNotification()">
+            <% } %>
     </form>
+    <form action="/ejercicios/eliminar" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <input type="hidden" id = "id"name="id" value="<%= ejercicio.id_ejercicio %>" >
+        <div class="popup" id="popup">
+          <h2 class="title is-4 has-text-centered has-text-white-ter">¿Seguro que quieres eliminar este ejercicio?</h2>
+          <button class="button is-success" type = "submit">Confirmar</button>
+          <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+        </div>
+      </form>
     <br><br>
-        <form action="/ejercicios" method="GET">
-            <button type="submit" class="button is rounded is-danger has-text-white-ter">Cancelar</button>
-          </form>
+   
+
+          <script>
+            let popup = document.getElementById("popup");
+            let noti = document.getElementById("notification");
+            let timeoutId;
+            function openPopup() {
+              popup.classList.add("open-popup");
+            }
+            function closePopup() {
+              popup.classList.remove("open-popup");
+            }
+            function showNotification() {
+              noti.classList.add("open-noti");
+              // Limpia el temporizador actual antes de configurar uno nuevo
+              clearTimeout(timeoutId);
+              // Reinicia el temporizador cada vez que se hace clic en el botón de eliminar
+              timeoutId = setTimeout(function () {
+                noti.classList.remove("open-noti");
+                document.querySelector(".notification").style.display = "none";
+              }, 4000);
+            }
+            </script>
 <%- include('../includes/foot.ejs'); %>

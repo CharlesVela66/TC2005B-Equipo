@@ -26,10 +26,11 @@ module.exports = class Ejercicio {
         ORDER BY descripcion ASC
     `);
     }
+    
     static fetchOne(id){
     return db.execute(
         `
-        SELECT id_ejercicio,descripcion, descripcion_ejercicio, video_ejercicio
+        SELECT *
         FROM ejercicio
         Where id_ejercicio=? 
         `
@@ -42,6 +43,13 @@ module.exports = class Ejercicio {
         return db.execute('SELECT * FROM ejercicio WHERE descripcion = ?', [descripcion]);
       }
 
+
+      static delete(id) {
+        return db.execute(`
+            DELETE FROM ejercicio
+            WHERE id_ejercicio = ?
+        `, [id])
+    }
 
       update() {
         return db.execute(`
