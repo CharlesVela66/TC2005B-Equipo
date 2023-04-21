@@ -2,11 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 
+const hasCreate = require('../util/has-create');
+
 const dietasController = require('../controllers/dietas.controller');
 
-router.get('/agregar', dietasController.get_nueva);
+router.get('/agregar', hasCreate, dietasController.get_nueva);
 
-router.post('/agregar', dietasController.post_nueva);
+router.post('/agregar',  hasCreate, dietasController.post_nueva);
 
 router.post('/agregar_favs', dietasController.registrar_dieta_favorita);
 
