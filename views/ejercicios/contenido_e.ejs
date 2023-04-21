@@ -12,11 +12,7 @@
         </div>
         <div class="box"style="background-color:RGB(40, 40, 40)">
           <table class="tablee" width="100%" style="background-color:RGB(40, 40, 40)">
-            <thead>
-              <tr>
-                <th class="has-text-white-ter">Video explicativo:</th>
-              </tr>
-            </thead>
+    
             <tbody>
               <% if (ejercicios.length > 0) { %>
                 <% for (let ejercicio of ejercicios) { %>
@@ -27,11 +23,21 @@
                     <p><%= ejercicio.descripcion_ejercicio.substring(81, 160) %></p>
                     <p><%= ejercicio.descripcion_ejercicio.substring(161, 240) %></p> <br>
                   </div>
-                  <th><<%= ejercicio.video_ejercicio %></th>
-                  <br>
-                  <iframe width="630" height="345" style="border-radius: 10px;"
-                    src="<%= ejercicio.video_ejercicio %>">
-                  </iframe>
+
+                  <% if (ejercicio.video_ejercicio == '') { %>
+                  <div class="has-text-white-ter">
+                    <h2 class="has-text-weight-bold">Video explicativo:</h2>
+                    <p class="has-text-white-ter">Agrega un video en el boton de editar. </p>
+                  </div>
+                  <% } %>
+                   
+                  <% if (ejercicio.video_ejercicio) { %>
+                    <th><<%= ejercicio.video_ejercicio %></th>
+                    <br> 
+                    <iframe width="630" height="345" style="border-radius: 10px;"
+                      src="<%= ejercicio.video_ejercicio %>">
+                    </iframe>
+                  <% } %>
                 <% } %>
               <% } %>
             </tbody>
