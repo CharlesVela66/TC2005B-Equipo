@@ -27,7 +27,7 @@
             <tr>
             <td><%= dieta_alimento.nombre%></td>
             <td> <%= dieta_alimento.medida%></td>
-            <td> <%= dieta_alimento.cantidad.toFixed(0)%></td>
+            <td> <%= dieta_alimento.cantidad%></td>
           </tr>
             <% } %>
         <% } %>
@@ -46,16 +46,16 @@
               <% for (let macro of macronutriente) { %>
               <tr>
               <th class="has-text-white-ter">Calorias</th>
-                <td class="has-text-white-ter"><%= macro.calorias.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= macro.calorias%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Proteinas</th>
-                <td class="has-text-white-ter"><%= macro.proteinas.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= macro.proteinas%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Carbohidratos</th>
-                <td class="has-text-white-ter"> <%= macro.carbohidratos.toFixed(0)%></td>
+                <td class="has-text-white-ter"> <%= macro.carbohidratos%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Grasas</th>
-                <td class="has-text-white-ter">  <%= macro.grasas.toFixed(0)%></td>
+                <td class="has-text-white-ter">  <%= macro.grasas%></td>
               </tr>
                 <% } %>
             <% } %>
@@ -96,70 +96,70 @@
               <% for (let micro of micronutriente) { %>
               <tr>
               <th class="has-text-white-ter">Ceniza</th>
-                <td class="has-text-white-ter"><%= micro.ceniza.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.ceniza%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Total de Fibra</th>
-                <td class="has-text-white-ter"><%= micro.fibra_total.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.fibra_total%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Calcio</th>
-                <td class="has-text-white-ter"> <%= micro.calcio.toFixed(0)%></td>
+                <td class="has-text-white-ter"> <%= micro.calcio%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Fosforo</th>
-                <td class="has-text-white-ter"><%= micro.fosforo.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.fosforo%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Hierro</th>
-                <td class="has-text-white-ter"><%= micro.hierro.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.hierro%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Tiamina</th>
-                <td class="has-text-white-ter"><%= micro.tiamina.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.tiamina%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Riboflavina</th>
-                <td class="has-text-white-ter"><%= micro.riboflavina.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.riboflavina%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Niacina</th>
-                <td class="has-text-white-ter"> <%= micro.niacina.toFixed(0)%></td>
+                <td class="has-text-white-ter"> <%= micro.niacina%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Vitamina C</th>
-                <td class="has-text-white-ter"><%= micro.vit_c.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.vit_c%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Vitamina A</th>
-                <td class="has-text-white-ter"><%= micro.vit_a.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.vit_a%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Ácidos Grasos Mínimos</th>
-                <td class="has-text-white-ter"> <%= micro.acgrasosmin.toFixed(0)%></td>
+                <td class="has-text-white-ter"> <%= micro.acgrasosmin%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Ácidos Grasos Poliinsaturados</th>
-                <td class="has-text-white-ter"><%= micro.acgrasospoli.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.acgrasospoli%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Ácidos  Grasos Saturados</th>
-                <td class="has-text-white-ter"><%= micro.acgrasossat.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.acgrasossat%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Colesterol</th>
-                <td class="has-text-white-ter"><%= micro.colesterol.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.colesterol%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Potasio</th>
-                <td class="has-text-white-ter"><%= micro.potasio.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.potasio%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Sodio</th>
-                <td class="has-text-white-ter"><%= micro.sodio.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.sodio%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Zinc</th>
-                <td class="has-text-white-ter"><%= micro.zinc.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.zinc%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Magnesio</th>
-                <td class="has-text-white-ter"> <%= micro.magnesio.toFixed(0)%></td>
+                <td class="has-text-white-ter"> <%= micro.magnesio%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Vitamina B6</th>
-                <td class="has-text-white-ter"><%= micro.vit_b6.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.vit_b6%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Vitamina B12</th>
-                <td class="has-text-white-ter"><%= micro.vit_b12.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.vit_b12%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Ácido Fólicos</th>
-                <td class="has-text-white-ter"> <%= micro.acfolico.toFixed(0)%></td>
+                <td class="has-text-white-ter"> <%= micro.acfolico%></td>
                 <tr></tr>
                 <th class="has-text-white-ter">Folato</th>
-                <td class="has-text-white-ter"><%= micro.folatoeq.toFixed(0)%></td>
+                <td class="has-text-white-ter"><%= micro.folatoeq%></td>
               </tr>
                 <% } %>
             <% } %>
