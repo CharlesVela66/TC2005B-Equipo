@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
+const Administrador= require('../models/administrador.model');
 const bcrypt = require('bcryptjs');
  
 // Cargamos la interfaz del inicio
@@ -58,18 +59,20 @@ exports.post_iniciar_sesion = (request, response, next) => {
                         console.log(rows[0].id_usuario)
                         Cliente.getObjetivo(rows[0].id_usuario)
                             .then(([objetivo,fieldData])=>{
-                                console.log(objetivo)
-                                if (objetivo.length > 0) {
-                                    request.session.objetivo=objetivo[0].id_obj
-                                    response.redirect("/home")
-                                    
-                                }else{
-                                    response.redirect("/informacion")
-
-                                }
+                                    if (objetivo.length > 0) {
+                                        request.session.objetivo=objetivo[0].id_obj
+                                        response.redirect("/home")
+                                    }else{
+                                        response.redirect("/informacion")
+                                    }
                         // Guardamos el rol en una variable de sesion
                         // Redireccionamos al usuario a la bitacora (esto lo tendriamos que cambiar si el usuario es o no un cliente)
                         })
+                        Administrador.getObj(rows[0].id_usuario)
+                        .then(([objetivo,fieldData])=>{
+                            console.log(objetivo)
+                        })
+
                     });
                     // Si la contraseña no es la misma...
                 } else {

@@ -22,5 +22,13 @@ module.exports = class Administrador {
             AND a.id_usuario = u.id_usuario
         `, [username]);
     }
+    static getObj(id_admin) {
+        return db.execute(
+            `
+            SELECT u.id_usuario, a.id_admin, o.id_obj
+            FROM usuario u, administrador a, objetivo o
+            WHERE u.id_usuario=a.id_usuario AND a.id_obj=o.id_obj AND a.id_admin = ?;
+         `, [id_admin]);
+    }
 
 }
