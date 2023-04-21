@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs'); %>
+<% if (rol == "Administrador") { %>
 <div class="hero is-fullheight">
   <div class="hero-body is-justify-content-center is-align-items-center">
     <div class='columns is-flex is-flex-direction-column box ' style='background-color: RGB(40, 40, 40)'>
@@ -59,4 +60,9 @@
     </div>
   </div>
 </div>
+
+<% }  else if (rol == "Cliente") { %>
+  <h1 class="title is-1 has-text-white-ter">No puedes entrar aquí.</h1>
+ 
+<% } %>
 <%- include('../includes/foot.ejs'); %>

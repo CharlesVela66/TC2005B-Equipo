@@ -1,5 +1,6 @@
 
 <%- include('../includes/head.ejs'); %>
+<% if (rol == "Administrador") { %>
 <br>
 
 <div class="notif has-background-danger" id="notification">
@@ -9,7 +10,7 @@
 <h1 class="title has-text-white-ter">Editar ejercicio</h1>
 <form action="/ejercicios/editar" method="POST" autocomplete="off">
 <input type="hidden" name="id" value="<%= ejercicio.id_ejercicio %>" >
- h
+ 
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
             <label for="descripcion"> <h5 class= "title is-5 has-text-white-ter">Nombre:</h5></label> <br>
             <input required name="descripcion" id="descripcion" class="input is-rounded" type="text" value="<%= ejercicio.descripcion %>">
@@ -62,4 +63,9 @@
               }, 4000);
             }
             </script>
+
+<% }  else if (rol == "Cliente") { %>
+  <h1 class="title is-1 has-text-white-ter">No puedes entrar aquí.</h1>
+ 
+<% } %>
 <%- include('../includes/foot.ejs'); %>
