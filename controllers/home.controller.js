@@ -130,26 +130,28 @@ exports.post_registrarse = (request, response, next)=>{
             .then(([row,fieldData])=>{
                 request.session.mensaje = "Usuario Registrado";   
                 response.redirect('/iniciar-sesion');
-            }).catch(err=>console(err));
-        }).catch(err=>console(err));
-    }).catch(err=>console(err));
+            })
+        })
+    })
 
 };
 
 exports.get_informacion = (request, response, next)=>{
-    Objetivos.fetchAll()
-        .then(([rows,fieldData])=>{    
+        Objetivos.fetchAll()
+        .then(([rows,fieldData])=>{
+            console.log("INFO");
+            //  console.log(infoCliente);
             response.render('home/informacion_personal',{
             objetivos:rows,
             isLoggedIn: request.session.isLoggedIn || false,
             rol: request.session.rol || '',
             nombre:request.session.nombre_usuario || '',       
             })
-
         })
 };
+
 exports.post_informacion =(request,response,next)=>{
-    const cliente= new Cliente({
+   const cliente= new Cliente({
         id_usuario: request.body.id_usuario,
         //id_rutina: request.body.id_rutina,
        // id_dieta: request.body.id_dieta,
@@ -157,12 +159,13 @@ exports.post_informacion =(request,response,next)=>{
        // id_niv:request.body.id_niv,
         sexo:request.body.sexo,
         fecha_nacimiento:request.body.fecha_nacimiento,
+        //alturaInc:request.body.alturaInc,
+        //pesoInc: request.body.pesoInc,
 
     });
-    
-    console.log(id_usuario);
+    console.log("Informacion")
+    console.log(id_usuario)
 
-    cliente.save()
     .then(([rows,fieldData])=>{
         response.redirect('/iniciar_sesion')
     })
