@@ -125,7 +125,7 @@ exports.post_nueva_rutina = (request, response, next) => {
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,
       tiporutina: request.body.tiporutina,
-      URL_Image: request.file.filename
+      URL_Image: request.file ? request.file.filename : ''
     });
   
     // Verificar si existe una rutina con el mismo nombre
@@ -137,7 +137,6 @@ exports.post_nueva_rutina = (request, response, next) => {
       .then(([rows, fieldData]) => {
         // Obtén el ID de la nueva rutina insertada
         const id_rutina = rows.insertId;
-  
         // Recorre los ejercicios enviados en el formulario
         const ejercicios = JSON.parse(request.body.ejercicios);
         const promises = ejercicios.map(ejercicio => {

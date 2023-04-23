@@ -1,8 +1,11 @@
 <%- include('../includes/head.ejs'); %>
+
+<% if (rol == "Administrador") { %>
+
 <h1 class = "title is-1 has-text-white-ter">Ejercicios</h1>
 
 
-<% if (mensaje == 'El ejercicio fue registrado exitosamente.') { %>
+<% if (mensaje == 'El ejercicio fue registrado exitosamente.' || mensaje == 'Ejercicio eliminado exitosamente') { %>
     <div class="notification is-success has-text-white">
       <%= mensaje %>
       <button class="delete" onclick="cerrarNotificacion()"></button>
@@ -57,4 +60,10 @@
       document.querySelector('.notification').style.display = 'none';
     }
   </script>
+
+<% }  else if (rol == "Cliente") { %>
+  <h1 class="title is-1 has-text-white-ter">No puedes entrar aquí.</h1>
+ 
+<% } %>
+
 <%- include('../includes/foot.ejs'); %>

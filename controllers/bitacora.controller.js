@@ -61,14 +61,27 @@ exports.post_bitacora = (request,response,next) => {
 exports.editar = (request,response,next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
+
+            const originalCreatedAt = request.body.edit_created_at;
+            const date = new Date(originalCreatedAt);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+            const second = String(date.getSeconds()).padStart(2, '0');
+
+            const created_at = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
             // Se crea un nuevo registro de bitacora
             const registro = new Bitacora({
                 id_cliente: rows[0].id_cliente,
                 id_rutina: rows[0].id_rutina,
-                fecha: request.body.edit-fecha,
-                descr_sesion: request.body.edit-descr_sesion,
-                nivel_satisf: request.body.edit-nivel_satisf,
-                comentarios: request.body.edit-comentarios,
+                created_at: created_at,
+                fecha: request.body.edit_fecha,
+                descr_sesion: request.body.edit_descr_sesion,
+                nivel_satisf: request.body.edit_nivel_satisf,
+                comentarios: request.body.edit_comentarios,
             });
             // Se actualiza en la base de datos
             registro.update()
@@ -83,5 +96,26 @@ exports.editar = (request,response,next) => {
 }
 
 exports.eliminar = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([rows, fieldData]) => {
+            const originalCreatedAt = request.body.delete_created_at;
+            const date = new Date(originalCreatedAt);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+            const second = String(date.getSeconds()).padStart(2, '0');
 
+            const created_at = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+            // Se elimina de la base de datos
+            Bitacora.delete(rows[0].id_cliente, created_at)
+            .then(([rows, fieldData]) => {
+                //Redericciona al usuario a la bitacora
+                response.redirect('/home');
+            })
+            .catch((error) => {console.log(error)});
+        
+    })
+    .catch((error) => {console.log(error)});
 }

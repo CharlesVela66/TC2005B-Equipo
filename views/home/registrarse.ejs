@@ -12,13 +12,15 @@
   transition: color .3s ease;
 }
 </style>
+
+
 <div class="hero is-fullheigt">
   <div class="hero-body is-justify-content-center is-align-items-center">
     <div class="columns is-flex is-flex-direction-column box">
       <form action="/registrarse" method="POST">
       <span class="title">REGISTRATE</span>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-      <div class="column">     
+      <div class="column">    
          <label class="label">Nombre(s)</label>
          <input required name="nombre" id="nombre" class="input" type="text" placeholder="Escribe tu(s) nombre(s)">
       </div>

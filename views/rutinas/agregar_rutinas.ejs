@@ -21,7 +21,7 @@
                         <p class="title is-4 has-text-white-ter ">
                             Imagen
                         </p>
-                        <input type="file" id="imagen" name="imagen" required="required">
+                        <input type="file" id="imagen" name="imagen">
     
             </div>
             <div class="column">
@@ -148,7 +148,6 @@
         const nombreRutina = document.getElementById("nombre_rutina");
         const tipoRutina = document.getElementById("tiporutina");
         const descripcion = document.getElementById("descripcion");
-        const imagen = document.getElementById("imagen");
 
         const rutinasStr = "<%- escape(JSON.stringify(rutinas)) %>";
         const rutinas = JSON.parse(unescape(rutinasStr));
@@ -156,7 +155,8 @@
         const rutinasFavStr = "<%- escape(JSON.stringify(rutinasFavs)) %>";
         const rutinasFavs = JSON.parse(unescape(rutinasFavStr));
 
-        if (!nombreRutina.value || tipoRutina.value == "Elige una opción" || !descripcion.value || !imagen.value){
+        if (!nombreRutina.value || tipoRutina.value == "Elige una opción" || !descripcion.value){
+            alert("Por favor llena todos los campos de nombre, descripcion y tipo de la rutina");
             return;
         }
 

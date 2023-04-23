@@ -3,7 +3,7 @@ const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const Administrador= require('../models/administrador.model');
 const bcrypt = require('bcryptjs');
- 
+
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
@@ -13,22 +13,18 @@ exports.inicio = (request, response, next) => {
         rol: request.session.rol || '',
     });
 }
-
 // Cargamos la interfaz de iniciar sesion
 exports.iniciar_sesion = (request,response,next) => {
     const mensaje = request.session.mensaje || '';
-
     if (request.session.mensaje) {
         request.session.mensaje  = '';
     }
-
     response.render('home/iniciar_sesion', {
         mensaje: mensaje,
         isLoggedIn: request.session.isLoggedIn || false,
         nombre: request.session.nombre_usuario || '',
     });
 }
-
 // Esto es lo que sucede cuando el usuario le da click a 'Ingresar'
 exports.post_iniciar_sesion = (request, response, next) => {
     // Obtenemos toda la informacion del usuario pasando como argumento lo que escribio en el input de "Username"
@@ -53,25 +49,24 @@ exports.post_iniciar_sesion = (request, response, next) => {
                     Usuario.fetchRol(rows[0].nombre_usuario)
                     .then(([consultaRol, fieldData]) => {
                         console.log("hola")
+                        console.log(consultaRol[0].nombre)
                         request.session.rol=consultaRol[0].nombre;
                         console.log(request.session.rol)
                         console.log(rows[0].id_usuario)
                         Cliente.getObjetivo(rows[0].id_usuario)
                             .then(([objetivo,fieldData])=>{
-                                console.log(objetivo)
-                                    if (objetivo.length > 0 && consultaRol[0].nombre=="Cliente") {
+                                    if (objetivo.length > 0) {
                                         request.session.objetivo=objetivo[0].id_obj
                                         response.redirect("/home")
-                                    }
-                                        if(consultaRol[0].nombre=="Administrador"){
-                                            console.log("buuu")
-                                            console.log(consultaRol[0].nombre)
-                                            response.redirect("/home")
-                                        }else{
+                                    }else{
                                         response.redirect("/informacion")
                                     }
                         // Guardamos el rol en una variable de sesion
                         // Redireccionamos al usuario a la bitacora (esto lo tendriamos que cambiar si el usuario es o no un cliente)
+                        })
+                        Administrador.getObj(rows[0].id_usuario)
+                        .then(([objetivo,fieldData])=>{
+                            console.log(objetivo)
                         })
 
                     });
@@ -93,16 +88,13 @@ exports.post_iniciar_sesion = (request, response, next) => {
     .catch((error) => {
         console.log(error);
     });
-
 };
-
 exports.registrarse =(request,response, next) =>{
     response.render('home/registrarse',{
         isLoggedIn:request.session.isLoggedIn || false,
         nombre: request.session.nombre || '',
     });
 };
-
 exports.post_registrarse = (request, response, next)=>{
     const nuevo = new Usuario({        
         nombre: request.body.nombre ,
@@ -111,7 +103,6 @@ exports.post_registrarse = (request, response, next)=>{
         correo: request.body.correo,
         contrasena: request.body.contrasena,
     });
-
     nuevo.save()
     .then(([rows, fieldData])=>{   
         console.log("save");   
@@ -126,16 +117,22 @@ exports.post_registrarse = (request, response, next)=>{
             .then(([row,fieldData])=>{
                 request.session.mensaje = "Usuario Registrado";   
                 response.redirect('/iniciar-sesion');
-            })
-        })
+            }).catch(err=>console(err));
+        }).catch(err=>console(err));
+    }).catch((error)=>{    
+        if(error.code === "ER_DUP_ENTRY"){
+            response.redirect('/home')
+        }else{
+            request.session.mensaje= "Usuario o Correo ya existentes.";
+            console.log(request.session.mensaje);
+            response.redirect('/registrarse')
+                
+        }   
     })
-
 };
-
 exports.get_informacion = (request, response, next)=>{
-        Objetivos.fetchAll()
-        .then(([rows,fieldData])=>{
-            console.log("INFO");
+    Objetivos.fetchAll()
+        .then(([rows,fieldData])=>{    
             response.render('home/informacion_personal',{
             objetivos:rows,
             isLoggedIn: request.session.isLoggedIn || false,
@@ -144,9 +141,8 @@ exports.get_informacion = (request, response, next)=>{
             })
         })
 };
-
 exports.post_informacion =(request,response,next)=>{
-   const cliente= new Cliente({
+    const cliente= new Cliente({
         id_usuario: request.body.id_usuario,
         //id_rutina: request.body.id_rutina,
        // id_dieta: request.body.id_dieta,
@@ -154,18 +150,14 @@ exports.post_informacion =(request,response,next)=>{
        // id_niv:request.body.id_niv,
         sexo:request.body.sexo,
         fecha_nacimiento:request.body.fecha_nacimiento,
-        //alturaInc:request.body.alturaInc,
-        //pesoInc: request.body.pesoInc,
-
     });
-    console.log("Informacion")
-    console.log(id_usuario)
-
+    
+    console.log(id_usuario);
+    cliente.save()
     .then(([rows,fieldData])=>{
         response.redirect('/iniciar_sesion')
     })
 };
-
 /*
 // Carga la interfaz de registrarse
 exports.registrarse = (request, response, next) => {
@@ -175,7 +167,6 @@ exports.registrarse = (request, response, next) => {
         })
     .catch((error) => {console.log(error)});
 };
-
 exports.informacion = (request,response,next)=>{
     Objetivos.fetchAll()
     .then(([rows,fieldData])=> {
@@ -188,14 +179,12 @@ exports.informacion = (request,response,next)=>{
     })
     .catch((error)=>{console.log(error)});
 };
-
 // Esto pasa cuando el usuario le da click a crear nuevo usuario
 exports.post_registrarse = (request, response, next) => {   
     Usuario.fetchOne(request.body.nombre_usuario)
     .then(([rows, fieldData]) => {
         // Así aseguramos que no hay un usuario con ese username ya registrado
         if (rows.length == 0){
-
     // Un nuevo usuario se crea
     const usuario = new Usuario({
         nombre : request.body.nombre,
@@ -216,7 +205,6 @@ exports.post_registrarse = (request, response, next) => {
                 .then(([infoUsuario, fieldData]) =>{
                     // Guardamos el rol del usuario 
                     usuario.saveRol(infoUsuario[0].id_usuario, 1);
-
                     // Creamos un cliente para guardarlo en la BD
                     const cliente = new Cliente({
                         id_usuario : infoUsuario[0].id_usuario,
@@ -238,9 +226,7 @@ exports.post_registrarse = (request, response, next) => {
         }
     })
     .catch((error) => {console.log(error)});
-
 };*/
-
 // En lugar de que la sesión se destruya en la página de inicio, implementé una mejor práctica que cuando el usuario ingrese a su sección de perfil
 // y le de click a cerrar sesión, rápidamente lo redireccione a esta ruta y esta ruta lo unico que hace es destruir la sesion y luego lo 
 // redirecciona al usuario a la pagina de inicio. Todo pasa de volada y ni siquiera se puede ver cuando la pagina pasa por esta ruta.
