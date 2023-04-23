@@ -140,7 +140,6 @@ exports.get_informacion = (request, response, next)=>{
         Objetivos.fetchAll()
         .then(([rows,fieldData])=>{
             console.log("INFO");
-            //  console.log(infoCliente);
             response.render('home/informacion_personal',{
             objetivos:rows,
             isLoggedIn: request.session.isLoggedIn || false,

@@ -11,8 +11,6 @@
   color: #0066ff;
   transition: color .3s ease;
 }
-
-
 </style>
 <div class="hero is-fullheigt">
   <div class="hero-body is-justify-content-center is-align-items-center">
@@ -44,6 +42,10 @@
         <label class="label">Password</label>
         <input required name="contrasena" id="contrasena"  class="input" type="password" placeholder="********">
       </div>
+      <div class="column">
+        <label class="label">Confirmar Password</label>
+        <input required name="confirmar-contrasena" id="confirmar-contrasena"  class="input" type="password" placeholder="********">
+      </div>
       <br>
       <div class="field is-grouped">
         <div class="control">
@@ -62,6 +64,7 @@
 </div>
 </div>
 </div>
+
 
 
 <%- include('../includes/foot.ejs'); %>
