@@ -73,10 +73,6 @@ exports.post_iniciar_sesion = (request, response, next) => {
                         // Guardamos el rol en una variable de sesion
                         // Redireccionamos al usuario a la bitacora (esto lo tendriamos que cambiar si el usuario es o no un cliente)
                         })
-                        Administrador.getObj(rows[0].id_usuario)
-                        .then(([objetivo,fieldData])=>{
-                            console.log(objetivo)
-                        })
 
                     });
                     // Si la contraseña no es la misma...
