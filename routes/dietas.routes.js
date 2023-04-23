@@ -6,6 +6,8 @@ const hasCreate = require('../util/has-create');
 
 const dietasController = require('../controllers/dietas.controller');
 
+router.get('/buscar/:valor', dietasController.get_buscar);
+
 router.get('/agregar', hasCreate, dietasController.get_nueva);
 
 router.post('/agregar',  hasCreate, dietasController.post_nueva);
