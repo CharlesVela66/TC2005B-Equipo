@@ -55,18 +55,17 @@ exports.post_iniciar_sesion = (request, response, next) => {
                         console.log(rows[0].id_usuario)
                         Cliente.getObjetivo(rows[0].id_usuario)
                             .then(([objetivo,fieldData])=>{
-                                    if (objetivo.length > 0) {
+                                    if (objetivo.length > 0 && consultaRol[0].nombre == "Cliente") {
                                         request.session.objetivo=objetivo[0].id_obj
+                                        response.redirect("/home")
+                                    }
+                                    if (consultaRol[0].nombre=="Administrador"){
                                         response.redirect("/home")
                                     }else{
                                         response.redirect("/informacion")
                                     }
                         // Guardamos el rol en una variable de sesion
                         // Redireccionamos al usuario a la bitacora (esto lo tendriamos que cambiar si el usuario es o no un cliente)
-                        })
-                        Administrador.getObj(rows[0].id_usuario)
-                        .then(([objetivo,fieldData])=>{
-                            console.log(objetivo)
                         })
 
                     });

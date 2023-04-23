@@ -3,13 +3,16 @@
   .form-section {
   padding: 16px;
   font-size: .85rem;
-  background-color: #e0ecfb;
+  background-color: #242424;
   box-shadow: rgb(0 0 0 / 8%) 0 -1px;
   }
   .form-section a {
   font-weight: bold;
   color: #0066ff;
   transition: color .3s ease;
+}
+.box {
+  background-color: #242424;
 }
 </style>
 
@@ -18,34 +21,34 @@
   <div class="hero-body is-justify-content-center is-align-items-center">
     <div class="columns is-flex is-flex-direction-column box">
       <form action="/registrarse" method="POST">
-      <span class="title">REGISTRATE</span>
+      <span class="title" style="color: antiquewhite;">REGISTRATE</span>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
       <div class="column">    
-         <label class="label">Nombre(s)</label>
+         <label class="label" style="color: antiquewhite;">Nombre(s)</label>
          <input required name="nombre" id="nombre" class="input" type="text" placeholder="Escribe tu(s) nombre(s)">
       </div>
       <div class="column">      
-        <label class="label">Apellido(s)</label>
+        <label class="label" style="color: antiquewhite;">Apellido(s)</label>
         <input name="apellido" id="apellido"  class="input" type="text" placeholder="Escribe tu(s) apellido(s)">
       </div>
 
       <div class="column">
-        <label class="label">Username</label>
+        <label class="label" style="color: antiquewhite;">Username</label>
         <input required name="nombre_usuario" id="nombre_usuario" class="input" type="text" placeholder="Nombre de Usuario">
 
       </div>
       <div class="column">     
-        <label class="label">Email</label>
+        <label class="label" style="color: antiquewhite;">Email</label>
         <input required name="correo" id="correo" class="input" type="email" placeholder="e.g. alex@example.com">
 
       </div>
 
       <div class="column">
-        <label class="label">Password</label>
+        <label class="label" style="color: antiquewhite;">Password</label>
         <input required name="contrasena" id="contrasena"  class="input" type="password" placeholder="********">
       </div>
       <div class="column">
-        <label class="label">Confirmar Password</label>
+        <label class="label" style="color: antiquewhite;">Confirmar Password</label>
         <input required name="confirmar-contrasena" id="confirmar-contrasena"  class="input" type="password" placeholder="********">
       </div>
       <br>
