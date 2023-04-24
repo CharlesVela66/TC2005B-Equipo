@@ -4,6 +4,17 @@ const Macro = require('../models/macro.model');
 const Micro = require('../models/micronutrientes.model');
 const Cliente = require('../models/clientes.model');
 
+exports.get_buscar = (request, response, next) => {
+    Dieta.find(request.params.valor)
+    .then(([rows, fieldData]) => {
+        response.status(200).json({dietas: rows});
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({message: "Internal Server Enrror"});
+    });
+}
+
 exports.explorar_dietas = (request, response, next) => {
     const mensaje = request.session.mensaje || '';
     if (request.session.mensaje) {

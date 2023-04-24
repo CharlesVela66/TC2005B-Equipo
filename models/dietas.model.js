@@ -18,6 +18,16 @@ module.exports = class Dieta {
         `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
     }
 
+    static find(valor) {
+        return db.execute(`
+            SELECT *
+            FROM dieta d, macronutrientes m
+            WHERE d.id_macro = m.id_macro
+            AND calorias <= ?
+            ORDER BY calorias DESC
+        `, [valor]);
+    }
+
     static saveFavorita(id_cliente, id_dieta) {
         return db.execute(`
             INSERT INTO dietasfavoritas (id_cliente, id_dieta)

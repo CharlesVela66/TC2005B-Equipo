@@ -2,11 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 
+const hasCreate = require('../util/has-create');
+
 const rutinasController = require('../controllers/rutinas.controller');
 
-router.get('/agregar', rutinasController.nueva_rutina);
+router.get('/agregar', hasCreate, rutinasController.nueva_rutina);
 
-router.post('/agregar', rutinasController.post_nueva_rutina);
+router.post('/agregar', hasCreate, rutinasController.post_nueva_rutina);
 
 router.get('/', rutinasController.explorar_rutinas);
 
