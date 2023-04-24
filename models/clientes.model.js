@@ -37,6 +37,16 @@ module.exports = class Cliente {
         );
     }
 
+    //Actualizar datos del cliente
+    static updateClienteData(data) {
+        return db.execute(
+            `UPDATE cliente c JOIN usuario u ON c.id_usuario = u.id_usuario
+             SET u.nombre = ?, u.apellido = ?, c.sexo = ?, c.fecha_nacimiento = ?, c.alturaInic = ?, u.foto_perfil = ?, c.id_obj = ?, c.id_niv = ?
+             WHERE c.id_usuario = ?`,
+            [data.nombre, data.apellido, data.sexo, data.fecha_nacimiento, data.alturaInic, data.foto_perfil, data.id_obj, data.id_niv, data.id_usuario]
+        );
+    }
+    
       
 
     // Consulta a la base de datos de la info de un cliente a partir de su username
@@ -51,6 +61,15 @@ module.exports = class Cliente {
         `, [username]);
     }
 
+    static getCliente(nombre_usuario){
+        return db.excecute(`
+            SELECT c.id_cliente
+            FROM cliente c, usuario u
+            WHERE u.nombre_usuario = ?
+            AND c.id_usuario = u.id_usuario
+        `)
+    }
+
     //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
     static getObjetivo(id_cliente) {
         return db.execute(
@@ -61,11 +80,11 @@ module.exports = class Cliente {
          `, [id_cliente]);
     }
     //cree esta consulta
-    static saveObj(id_usuario, id_obj){
+    static saveObj(id_usuario, id_obj) {
         return db.execute(`
-        INSERT INTO cliente (id_usuario, id_obj)
-        values (?, ?)
-    `,)
+            INSERT INTO cliente (id_usuario, id_obj)
+            values (?, ?)
+        `, [id_usuario, id_obj]);
     }
 
 }   /* saveRol(id_usuario, id_rol) {

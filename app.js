@@ -5,8 +5,13 @@ const session = require('express-session');
 const isAuth = require('./util/is-auth');
 const csrf = require('csurf');
 const multer = require('multer');
+const morgan = require('morgan')
 
+//Inicializador
 const app = express();
+
+//Settings
+app.set('port', process.env.PORT || 3000);
 
 // Middleware para actualizar la hora de última actividad de la sesión
 app.use(function(req, res, next) {
@@ -25,6 +30,9 @@ app.use(function(req, res, next) {
       next();
     }
   });
+
+//Middleware para crear logs o mensajes de las peticiones. Parámetro dev, para que me muestre un determinado tipo de mensaje por consola
+app.use(morgan('dev'));
 
 app.use(session({
     secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste', 
@@ -78,6 +86,8 @@ app.use((request, response, next) => {
     next();
 });
 
+
+//Routes 
 const rutasHome = require('./routes/home.routes');
 
 app.use('/', rutasHome);
@@ -123,4 +133,7 @@ app.use((request, response, next) => {
     response.send('Lo sentimos, esta ruta no existe');
 });
 
-app.listen(3000);
+//Inicializar el servidor
+app.listen(app.get('port'), () => {
+  console.log('Servidor en el puerto ', app.get('port'));
+});

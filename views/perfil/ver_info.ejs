@@ -108,6 +108,13 @@
       <% } %>
     <% } %>     
 
+    <% if (infoCliente.hasOwnProperty('fecha_nacimiento') && infoCliente.fecha_nacimiento !== null) { %>
+      <% const diffInMs = Date.now() - new Date(infoCliente.fecha_nacimiento) %>
+      <% const ageDate = new Date(diffInMs) %>
+      <% const age = Math.abs(ageDate.getUTCFullYear() - 1970) %>
+      <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Edad: </span><%= age %> años<br>
+    <% } %>
+
     <% if (infoCliente.hasOwnProperty('sexo') && infoCliente.sexo !== null) { %>
       <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Sexo: </span><%= infoCliente.sexo %><br>
     <% } else if (infoCliente.hasOwnProperty('sexo') && infoCliente.sexo === null) { %>
@@ -116,9 +123,10 @@
     <br>
     </p>
   </div>
-  <p class="has-text-centered">
-    <a class="button" style="background-color: rgba(31, 93, 240, 0.7); border-color:rgba(31, 93, 240, 0.7);  color: white;" href="">Editar información</a>
-    <!--/perfil/editar_info-->
+  <p>
+    <a href="/perfil/editar_info">
+      <button style="background-color: rgba(31, 93, 240, 0.7); color: white; border: none; padding: 10px 20px; border-radius: 5px;">Editar información</button>
+    </a>
   </p>
   <!--
   <p>

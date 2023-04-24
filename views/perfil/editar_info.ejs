@@ -1,37 +1,180 @@
 <%- include('../includes/head.ejs'); %>
 
-<h1>Editar información de cliente</h1>
-<% if (cliente) { %>
-  <form method="POST" action="/perfil/editar_info">
+<style>
+  .card-profile{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    border-top-right-radius: 5%;
+    border-top-left-radius: 5%;
+    background-color: rgb(58, 58, 58);  
+  }
+  .title {
+    color: grey;
+    font-size: 18px;
+  }
+  button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
 
-    <label for="nombre">Nombre de usuario</label>
-    <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" required>
+  a {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+  }
 
-    <label for="apellido">Apellido de usuario</label>
-    <input type="text" id="apellido" name="apellido" value="<%= usuario.apellido %>" required>
+  button:hover, a:hover {
+    opacity: 0.7;
+  }
 
-    <label for="foto_perfil">Foto de perfil</label>
-    <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
+  .form-group {
+    text-align: left;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 
-    <label for="sexo">Sexo:</label>
-    <select name="sexo" id="sexo">
-        <option value="M" <% if (cliente.sexo === 'M') { %> selected <% } %>>Masculino</option>
-        <option value="F" <% if (cliente.sexo === 'F') { %> selected <% } %>>Femenino</option>
-    </select><br><br>
+  label {
+    display: block;
+    font-weight: bold;
+    color: #3372b5;
+    margin-bottom: 5px;
+  }
 
-    <label for="alturaInic">Altura (m):</label>
-    <input type="number" name="alturaInic" id="alturaInic" placeholder="<%= cliente.alturaInic.toFixed(2) %>" value="<%= cliente.alturaInic.toFixed(2) %>" step="0.05" min="1.00" max="3.99"><br><br>
+  input, select {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 0 0 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
 
-    <label for="fecha_nacimiento">Fecha de nacimiento:</label>
-    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<%= cliente.fecha_nacimiento.toISOString().substr(0,10) %>"><br><br>
+  input[type="submit"] {
+    width: 100%;
+    background-color: rgba(31, 93, 240, 0.7);
+    color: white;
+    padding: 14px 20px; 
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
 
-    <input type="submit" value="Guardar cambios">
-</form>
-<% } else { %>
-  <p>No se pudo encontrar la información del cliente.</p>
-<% } %>
+  input[type="submit"]:hover {
+    opacity: 0.7;
+  }
 
-<br><br>
-<a href="/">Volver al inicio</a>
+  a {
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+  }
 
-<%- include('../includes/foot.ejs'); %>
+  a:hover {
+    opacity: 0.7;
+  }
+
+  .back-button{
+    color: rgb(142, 137, 137);
+    font-weight: bold;
+    font-size: larger;
+  }
+
+</style>
+<br>
+<a href="/perfil/ver_info" class="back-button"> < Volver atrás</a>
+<div class="card-profile">
+  <h1 class="title is-2" style="color: aliceblue;">Editar información de cliente</h1>
+
+  <% if (cliente) { %>
+    <form method="POST" action="/perfil/editar_info" onsubmit="return confirmarCambios();">
+
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
+      <div class="form-group">
+        <label for="nombre">Nombre de usuario</label>
+        <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" placeholder="<%= usuario.nombre %>"required>
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido de usuario</label>
+        <input type="text" id="apellido" name="apellido" value="<%= usuario.apellido %>" placeholder="<%= usuario.apellido %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="foto_perfil">Foto de perfil</label>
+        <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label for="sexo">Sexo:</label>
+        <select name="sexo" id="sexo">
+            <option value="M" <% if (cliente.sexo === 'M') { %> selected <% } %>>Masculino</option>
+            <option value="F" <% if (cliente.sexo === 'F') { %> selected <% } %>>Femenino</option>
+        </select><br><br>
+      </div>
+
+      <div class="form-group">
+        <label for="alturaInic">Altura (m):</label>
+      <% if (cliente.alturaInic) { %>
+        <input type="number" name="alturaInic" id="alturaInic" placeholder="<%= cliente.alturaInic.toFixed(2) %>" value="<%= cliente.alturaInic.toFixed(2) %>" step="0.01" min="1.00" max="3.99"><br><br>
+      <% } else { %>
+        <input type="number" name="alturaInic" id="alturaInic" placeholder="Altura" step="0.01" min="1.00" max="3.99"><br><br>
+      <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+        <% if (cliente.fecha_nacimiento) { %>
+          <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<%= cliente.fecha_nacimiento.toISOString().substr(0,10) %>"><br><br>
+        <% } else { %>
+          <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value=""><br><br>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="objetivo">Objetivo:</label>
+        <select name="objetivo" id="objetivo">
+          <% objetivos.forEach(function(objetivo) { %>
+            <option value="<%= objetivo.id_obj %>" <% if (cliente.id_obj === objetivo.id_obj) { %> selected <% } %>>
+              <%= objetivo.nombre_obj %>
+            </option>
+          <% }); %>
+        </select><br><br>
+      </div>
+
+      <div class="form-group">
+        <label for="nivelFisico">Escoge la opción que más te describa:</label>
+        <select name="nivelFisico" id="nivelFisico">
+          <% nivelesFisicos.forEach(function(nivelFisico) { %>
+            <option value="<%= nivelFisico.id_niv %>" <% if (cliente.id_niv === nivelFisico.id_niv) { %> selected <% } %>>
+              <%= nivelFisico.descripcion_niv %>
+            </option>
+            <% }); %>
+        </select><br><br>
+      </div>
+
+      <input type="submit" value="Guardar cambios">
+    </form>
+    <% } else { %>
+      <p>No se pudo encontrar la información del cliente.</p>
+    <% } %>
+  </card>
+
+  <script>
+    function confirmarCambios() {
+      return confirm("¿Estás seguro de guardar los cambios?");
+    }
+  </script>
+  
+<%- include('../includes/foot.ejs');  %>

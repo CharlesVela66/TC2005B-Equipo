@@ -780,7 +780,7 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `nombre_usuario`, `co
 (18, 'Carla', 'Martinez', 'carla_martinez', 'carla.martinez@example.com', 'S@1dN6tJ', NULL),
 (19, 'Tomas', 'Diaz', 'tomas_diaz', 'tomas.diaz@example.com', 'V8b#4mFp', NULL),
 (20, 'Lucia', 'Ortiz', 'lucia_ortiz', 'lucia.ortiz@example.com', 'G#9nH4jK', NULL),
-(25, 'Carlos', 'Velasco', 'Carlos123', 'carlos@carlos.com', '$2a$12$KWLqReEuXZ9ijV4zYX3pp.9vAmmTTOnCHfyn81sNFjaIikmgarrq.', NULL),
+(25, 'Carlos', 'Velasco', 'Carlos123', 'carlos@carlos.com', '$2a$12$KWLqReEuX Z9ijV4zYX3pp.9vAmmTTOnCHfyn81sNFjaIikmgarrq.', NULL),
 (26, 'Diego', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$NimnvQgSqXHcfo/iileb1exuE1N70sdVohBRNGxgP289qSy0Squc.', NULL),
 (27, 'Diego ', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$fSZM0IYJzT9ATVnTbcsa7.zdxlgEj5uebtEgRd5chRl1f8PQFTQYa', NULL),
 (28, 'Diego', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$sDVFkomJC.NC0pxIJmfVSuKiQqwmd0SDQjLnps0.C9lqJBsw.XeGK', NULL),
