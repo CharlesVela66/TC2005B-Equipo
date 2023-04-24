@@ -87,6 +87,7 @@ exports.get_editarPerfil = (request, response, next) => {
   }).catch((error) => console.log(error));
 };
 
+/*
 exports.post_editarPerfil = (request, response, next) => {
   //const { nombre, apellido, sexo, alturaInic, fecha_nacimiento, objetivo, nivelFisico } = request.body;
   const nombre = request.body.nombre;
@@ -100,6 +101,7 @@ exports.post_editarPerfil = (request, response, next) => {
   const id_usuario = request.session.id_usuario;
   const foto_perfil = request.file ? request.file.filename : '';
 
+  Cliente.fetchOne(request.session.nombre_usuario)
   // Actualizar los datos del cliente
   Cliente.updateClienteData({
       id_usuario: id_usuario,
@@ -116,6 +118,73 @@ exports.post_editarPerfil = (request, response, next) => {
       // Redireccionar a la página de edición del perfil 
       response.redirect('/perfil');
   }).catch((error) => console.log(error));
+};*/
+
+
+exports.post_editarPerfil = (request, response, next) => {
+  const nombre_usuario = request.session.nombre_usuario;
+  const nombre = request.body.nombre;
+  const apellido = request.body.apellido;
+  const sexo = request.body.sexo;
+  const fecha_nacimiento = request.body.fecha_nacimiento;
+  const alturaInic = parseFloat(request.body.alturaInic);
+  const id_obj = parseInt(request.body.objetivo);
+  const id_niv = parseInt(request.body.nivelFisico);
+  const foto_perfil = request.file ? request.file.filename : '';
+
+  Usuario.fetchOne(nombre_usuario)
+    .then(([usuarios, fieldData]) => {
+      if (usuarios.length > 0) {
+        const usuario = usuarios[0];
+        const updatedUsuario = new Usuario({
+          id_usuario: usuario.id_usuario,
+          nombre_usuario: usuario.nombre_usuario,
+          nombre: nombre,
+          apellido: apellido,
+          foto_perfil: foto_perfil,
+          // Agregar las propiedades faltantes del Usuario si es necesario
+        });
+
+        updatedUsuario.updateUsuarioData()
+          .then(() => {
+            return Cliente.fetchOne(nombre_usuario);
+          })
+          .then(([clientes, fieldData]) => {
+            if (clientes.length > 0) {
+              const cliente = clientes[0];
+              const updatedCliente = new Cliente({
+                id_usuario: cliente.id_usuario,
+                id_rutina: cliente.id_rutina,
+                id_dieta: cliente.id_dieta,
+                id_obj: id_obj,
+                id_niv: id_niv,
+                sexo: sexo,
+                fecha_nacimiento: fecha_nacimiento,
+                alturaInic: alturaInic,
+                pesoInic: cliente.pesoInic,
+                // Agregar las propiedades faltantes
+              });
+
+              return updatedCliente.updateClienteData();
+            } else {
+              throw new Error('Cliente no encontrado');
+            }
+          })
+          .then(() => {
+            response.redirect('/perfil/ver_info');
+          })
+          .catch((error) => {
+            console.log(error);
+            response.redirect('/perfil/editar_info');
+          });
+      } else {
+        response.redirect('/perfil/editar_info');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      response.redirect('/perfil/editar_info');
+    });
 };
 
 // Ruta para mostrar la vista de edición del perfil de administrador

@@ -59,4 +59,13 @@ Ver si esta jala
         return db.execute('SELECT * FROM usuario WHERE id_usuario = ?', [id_usuario]);
     }
 
+    //Actualizar datos del cliente
+    updateClienteData() {
+        return db.execute(
+            `UPDATE usuario
+             SET nombre = ?, apellido = ?, foto_perfil = ?
+             WHERE c.id_usuario = ?`,
+            [this.nombre, this.apellido, this.foto_perfil, this.id_usuario]
+        );
+    }
 }

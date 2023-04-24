@@ -37,13 +37,14 @@ module.exports = class Cliente {
         );
     }
 
+    
     //Actualizar datos del cliente
-    static updateClienteData(data) {
+    updateClienteData() {
         return db.execute(
-            `UPDATE cliente c JOIN usuario u ON c.id_usuario = u.id_usuario
-             SET u.nombre = ?, u.apellido = ?, c.sexo = ?, c.fecha_nacimiento = ?, c.alturaInic = ?, u.foto_perfil = ?, c.id_obj = ?, c.id_niv = ?
+            `UPDATE cliente 
+             SET sexo = ?, fecha_nacimiento = ?, alturaInic = ?, id_obj = ?, id_niv = ?
              WHERE c.id_usuario = ?`,
-            [data.nombre, data.apellido, data.sexo, data.fecha_nacimiento, data.alturaInic, data.foto_perfil, data.id_obj, data.id_niv, data.id_usuario]
+            [this.nombre, this.apellido, this.sexo, this.fecha_nacimiento, this.alturaInic, this.foto_perfil, this.id_obj, this.id_niv, this.id_usuario]
         );
     }
     
