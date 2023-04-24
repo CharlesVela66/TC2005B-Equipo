@@ -190,7 +190,6 @@
             return result.json();
         })
         .then(data => {
-            console.log(data);
             // Se llama el metodo de displayDietas para mostrar las dietas que cumplen con la condicion al usuario
             displayDietas(data.dietas);
         })

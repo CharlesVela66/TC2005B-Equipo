@@ -23,6 +23,4 @@ exports.get_progreso = (request,response,next) => {
         })
     }) 
     .catch((error) => {console.log(error)});
-
-    
 }

@@ -81,6 +81,10 @@
                 console.log(fechas);
             });
 
+            function editRow(element){
+                console.log("Hola")
+            }
+
             function actualizarGrafica(fechas, medidas) {
                 grafico.data.labels = fechas;
                 grafico.data.datasets[0].data = medidas;
@@ -100,8 +104,8 @@
                         <% }) %>
                     </select>
                 </div>
+                
             </div>
-            <br><br>
             <div style="max-height: 350px; overflow: auto">
             <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter">
                 <thead>
@@ -123,8 +127,6 @@
             </section>
         </columns>
     </div>
-    
-
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title  is-1 has-text-white-ter"></h1>
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
