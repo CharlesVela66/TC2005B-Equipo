@@ -31,6 +31,17 @@ module.exports = class Cliente {
           [dieta,cliente]
         );
     }
+    static findById(id_usuario) {
+        return db.execute('SELECT * FROM cliente WHERE id_usuario = ?', [id_usuario]);
+    }
+
+    update(){
+        return db.execute(
+            'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic=?, pesoInic=? WHERE id_usuario = ?',
+            [this.id_obj, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic, this.id_usuario]
+        );
+
+     }
 
     static saveRutina(rutina, cliente){
         return db.execute(
@@ -59,7 +70,7 @@ module.exports = class Cliente {
             `
             SELECT u.id_usuario, c.id_cliente, o.id_obj
             FROM usuario u, cliente c, objetivo o
-            WHERE u.id_usuario=c.id_usuario AND c.id_obj=o.id_obj AND c.id_cliente = ?;
+            WHERE u.id_usuario = c.id_usuario AND c.id_obj=o.id_obj AND c.id_usuario = ?;
          `, [id_cliente]);
     }
     //cree esta consulta
@@ -68,13 +79,6 @@ module.exports = class Cliente {
         INSERT INTO cliente (id_usuario, id_obj)
         values (?, ?)
     `,)
-    }
-    static update (id_usuario){
-        return db.execute(`
-        UPDATE cliente (id_obj, sexo, fecha_nacimiento,alturaInic,pesoInic)
-        Where id_usuario = ?
-        values (?, ?,?,?,?)
-    `,[id_usuario])
     }
 
 }   /* saveRol(id_usuario, id_rol) {

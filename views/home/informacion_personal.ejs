@@ -4,6 +4,21 @@
   <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
   
   <div class="box">
+    <div class="columns">
+        <div class="column">
+        <div class="field">
+            <label class="label" for="obj">Elige tu Objetivo</label>
+            <div class="select is-primary">
+                 <select name="obj" id="obj">
+                    <% for(let objetivo of objetivos){ %>
+                        <option value="<%=objetivo.id_obj %>">
+                            <%=objetivo.nombre_obj %>
+                        </option>
+
+                    <%}%>
+                 </select>
+            </div>
+        </div>
         <div class="field">
             <label class="label" for="sexo">Selecciona tú Sexo</label>
             <div class="control">
@@ -16,23 +31,23 @@
                 </div>
                 </div>
             </div>
-            <div class="field">
-                <label class="label" for="obj">Elige tu Objetivo</label>
-                <div class="select is-primary">
-                     <select name="obj" id="obj">
-                        <% for(let objetivo of objetivos){ %>
-                            <option value="<%=objetivo.id_obj %>">
-                                <%=objetivo.nombre_obj %>
-                            </option>
-
-                        <%}%>
-                     </select>
-                </div>
-            </div>
         <div class="field">
             <label class="label" for="fecha_nacimiento">Fecha de Nacimiento</label>
             <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
         </div>
+    </div>
+    <div class="column">
+        <div class="field">
+            <label class="label" for="altura">Ingresa tu Estatura (Metros)</label>
+            <input type="number" id="alturaInic" name="alturaInic">
+        </div>
+        <div class="field">
+            <label class="label" for="peso">Ingresa tu Peso (KG)</label>
+            <input type="number" id="pesoInic" name="pesoInic">
+        </div>
+
+    </div>
+    </div>
         <input class="button is-primary" type="submit" value="REGISTRAR">
     </div>
     
