@@ -5,21 +5,21 @@ module.exports = class Cliente {
 
     constructor(nuevo_cliente) {
         this.id_usuario = nuevo_cliente.id_usuario;
-        this.id_rutina =nuevo_cliente.id_rutina;
-        this.id_dieta= nuevo_cliente.id_dieta;
-        this.id_obj = nuevo_cliente.id_obj;
-        this.id_niv= nuevo_cliente.id_niv;
-        this.sexo= nuevo_cliente.sexo;
-        this.fecha_nacimiento = nuevo_cliente.fecha_nacimiento;
-        this.alturaInic = nuevo_cliente.alturaInic;
-        this.pesoInic = nuevo_cliente.pesoInic;
+        this.id_rutina =nuevo_cliente.id_rutina || null;
+        this.id_dieta= nuevo_cliente.id_dieta || null;
+        this.id_obj = nuevo_cliente.id_obj || null;
+        this.id_niv= nuevo_cliente.id_niv || null;
+        this.sexo= nuevo_cliente.sexo || null;
+        this.fecha_nacimiento = nuevo_cliente.fecha_nacimiento || null;
+        this.alturaInic=nuevo_cliente.alturaInic || null;
+        this.pesoInic=nuevo_cliente.pesoInic || null;
     }
 
     save() {
         return db.execute(`       
-        INSERT INTO cliente (id_usuario,id_rutina,id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic)
+        INSERT INTO cliente (id_usuario, id_rutina, id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic)
         VALUES (?,?,?,?,?,?,?,?,?)
-    `, [this.id_usuario, this.id_rutina,this.id_dieta, this.id_obj, this.id_niv, this.sexo,this.fecha_nacimiento,this.alturaInic,this.pesoInic]);
+    `, [this.id_usuario, this.id_rutina, this.id_dieta, this.id_obj, this.id_niv, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic]);
     }
 
 
@@ -29,6 +29,17 @@ module.exports = class Cliente {
           [dieta,cliente]
         );
     }
+    static findById(id_usuario) {
+        return db.execute('SELECT * FROM cliente WHERE id_usuario = ?', [id_usuario]);
+    }
+
+    update(){
+        return db.execute(
+            'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic=?, pesoInic=?, id_niv=? WHERE id_usuario = ?',
+            [this.id_obj, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic,this.id_niv, this.id_usuario]
+        );
+
+     }
 
     static saveRutina(rutina, cliente){
         return db.execute(
@@ -76,7 +87,7 @@ module.exports = class Cliente {
             `
             SELECT u.id_usuario, c.id_cliente, o.id_obj
             FROM usuario u, cliente c, objetivo o
-            WHERE u.id_usuario=c.id_usuario AND c.id_obj=o.id_obj AND c.id_cliente = ?;
+            WHERE u.id_usuario = c.id_usuario AND c.id_obj=o.id_obj AND c.id_usuario = ?;
          `, [id_cliente]);
     }
     //cree esta consulta
