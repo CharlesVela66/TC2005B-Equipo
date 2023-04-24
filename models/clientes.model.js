@@ -19,9 +19,9 @@ module.exports = class Cliente {
     // Por el momento no tenemos nada en el save de cliente porque no tenemos una manera de automatizar que se guarde en la base de datos un cliente a partir de la creacion de un usuario
     save() {
         return db.execute(`       
-        INSERT INTO cliente (id_usuario,id_rutina,id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic)
+        INSERT INTO cliente (id_usuario, id_rutina, id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic)
         VALUES (?,?,?,?,?,?,?,?,?)
-    `, [this.id_usuario, this.id_rutina,this.id_dieta, this.id_obj, this.id_niv, this.sexo,this.fecha_nacimiento,this.alturaInic,this.pesoInic]);
+    `, [this.id_usuario, this.id_rutina, this.id_dieta, this.id_obj, this.id_niv, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic]);
     }
 
 
@@ -37,8 +37,8 @@ module.exports = class Cliente {
 
     update(){
         return db.execute(
-            'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic=?, pesoInic=? WHERE id_usuario = ?',
-            [this.id_obj, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic, this.id_usuario]
+            'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic=?, pesoInic=?, id_niv=? WHERE id_usuario = ?',
+            [this.id_obj, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic,this.id_niv, this.id_usuario]
         );
 
      }

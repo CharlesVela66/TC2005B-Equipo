@@ -46,6 +46,20 @@
             <input type="number" id="pesoInic" name="pesoInic">
         </div>
 
+          <div class="field">
+            <label class="label" for="niv">Escoge la opción que más te describa: </label>
+            <div class="select is-primary">
+                 <select name="niv" id="niv">
+                    <% for(let nivelfisico of niveles){ %>
+                        <option value="<%=nivelfisico.id_niv %>">
+                            <%=nivelfisico.descripcion_niv %>
+                        </option>
+
+                    <%}%>
+                 </select>
+            </div>
+        </div>
+
     </div>
     </div>
         <input class="button is-primary" type="submit" value="REGISTRAR">

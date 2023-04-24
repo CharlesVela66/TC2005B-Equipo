@@ -81,6 +81,8 @@ exports.seleccionar_dieta =(request,response, next) =>{
 exports.registrar_dieta_favorita = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente, fieldData]) => {
+        console.log("HOLA SOY EL CLIENTE")
+        console.log(cliente);
         Dieta.saveFavorita(cliente[0].id_cliente, request.body.id_dieta)
         .then(([rows, fieldData]) =>{
             response.redirect('/dietas');

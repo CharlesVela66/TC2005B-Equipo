@@ -2,6 +2,8 @@ const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const Administrador= require('../models/administrador.model');
+const Nivel= require('../models/niveles.model');
+
 const bcrypt = require('bcryptjs');
 
 // Cargamos la interfaz del inicio
@@ -48,8 +50,6 @@ exports.post_iniciar_sesion = (request, response, next) => {
                     // Obtenemos el rol del usuario para ver qué interfaz debe ver
                     Usuario.fetchRol(rows[0].nombre_usuario)
                     .then(([consultaRol, fieldData]) => {
-                        console.log("hola")
-                        console.log(consultaRol[0].nombre)
                         request.session.rol=consultaRol[0].nombre;
                         //borrar si no jala
                         request.session.id_usuario = rows[0].id_usuario;
@@ -117,13 +117,9 @@ exports.post_registrarse = (request, response, next)=>{
     });
     nuevo.save()
     .then(([rows, fieldData])=>{
-        //Borrar si no sirve
-        //borrar si no sirve
         console.log("save");
         Usuario.fetchOne(request.body.nombre_usuario)
         .then(([infoUsuario,fieldData])=>{
-            //borrar
-            //borrar
             console.log(infoUsuario);
             nuevo.saveRol(infoUsuario[0].id_usuario,1)
             const cliente= new Cliente({
@@ -147,15 +143,19 @@ exports.post_registrarse = (request, response, next)=>{
     })
 };
 exports.get_informacion = (request, response, next)=>{
+    Nivel.fetchAll()
+    .then(([row,fieldData])=>{
     Objetivos.fetchAll()
         .then(([rows,fieldData])=>{    
             response.render('home/informacion_personal',{
             objetivos:rows,
+            niveles:row,
             isLoggedIn: request.session.isLoggedIn || true,
             rol: request.session.rol || '',
             nombre:request.session.nombre_usuario || '',       
             })
         })
+    })
 };
 exports.post_informacion =(request,response,next)=>{
     if (!request.session.id_usuario) {
@@ -172,6 +172,7 @@ exports.post_informacion =(request,response,next)=>{
         const cliente= new Cliente({
             id_usuario: rows[0].id_usuario,
             id_obj: rows[0].id_obj,
+            id_niv: rows[0].id_niv,
             sexo: rows[0].sexo,
             fecha_nacimiento:rows[0].fecha_nacimiento,
             alturaInic: rows[0].alturaInic,
@@ -184,6 +185,7 @@ exports.post_informacion =(request,response,next)=>{
         cliente.fecha_nacimiento=request.body.fecha_nacimiento;
         cliente.alturaInic=request.body.alturaInic;
         cliente.pesoInic=request.body.pesoInic;
+        cliente.id_niv=request.body.niv;
 
         return cliente.update();
 
