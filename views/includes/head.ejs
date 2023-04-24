@@ -28,7 +28,7 @@
           color: rgb(255, 255, 255) !important;
       }
 
-      input[type="date"], input[type="text"], input[type="number"], input:hover, select {
+      input[type="date"],input[type="text"], input[type="number"],input[type="password"],input[type="email"], input:hover, select {
         color: white;
         background-color : #464646; 
         border-style: none;
@@ -161,8 +161,10 @@
     <% if (rol == "Cliente") { %>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="navbar-item" href="/home">
-            <img src="https://picsum.photos/112/28">
+          <span class="navbar-item">
+            <span class="material-symbols-outlined">
+              ONYX <!--No Borrar esta palabra-->
+              </span>
           </a>
       
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -232,8 +234,10 @@
       <% } else if (rol == "Administrador") { %>
         <nav class="navbar" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
-            <a class="navbar-item" href="/home">
-              <img src="https://picsum.photos/112/28">
+            <a class="navbar-item">            
+              <span class="material-symbols-outlined">
+              ONYX <!--No Borrar esta palabra-->
+              </span>
             </a>
         
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -334,8 +338,10 @@
         <% } else if (!isLoggedIn){ %>
           <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-              <a class="navbar-item" href="/">
-                <img src="https://picsum.photos/112/28">
+              <a class="navbar-item">
+                <span class="material-symbols-outlined">
+                  ONYX <!--No Borrar esta palabra-->
+                  </span>
               </a>
           
               <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
