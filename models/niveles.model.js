@@ -33,5 +33,7 @@ module.exports = class Niveles {
         `, [id_niv]);
     }
     
-
+    static fetchById(id_niv) {
+        return db.execute('SELECT * FROM nivelfisico WHERE id_niv = ?', [id_niv]);
+    }
 }

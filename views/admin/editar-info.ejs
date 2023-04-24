@@ -1,0 +1,61 @@
+<%- include('../includes/head.ejs'); %>
+
+<style>
+    .card{
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+      border-top-right-radius: 10%;
+      border-top-left-radius: 10%;
+      border-bottom-right-radius: 10%;
+      border-bottom-left-radius: 10%;
+    }
+    .title {
+      color: grey;
+      font-size: 18px;
+    }
+    button {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+  
+    a {
+      text-decoration: none;
+      font-size: 22px;
+      color: black;
+    }
+  
+    button:hover, a:hover {
+      opacity: 0.7;
+    }
+</style>
+
+<div class="card" style="margin-top: 50px;">
+    <form action="/editar-info" method="post">
+
+        <p class="title is-2" style="color: rgb(255, 255, 255); padding-top: 15px;">Información personal editable</p>
+
+        <div class="info" style="text-align:left; padding-left: 20px;">
+            <label for="nombre" class="title is-4" style="color:rgba(31, 93, 240, 0.7)">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" class="title is-4" style="color:aliceblue" required maxlength="30"><br>
+
+            <label for="apellido" class="title is-4" style="color:rgba(31, 93, 240, 0.7)">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" value="<%= usuario.apellido %>" class="title is-4" style="color:aliceblue" required maxlength="30"><br>
+
+            <label for="foto_perfil" class="title is-4" style="color:rgba(31, 93, 240, 0.7)">Foto de perfil:</label>
+            <input type="file" id="foto_perfil" name="foto_perfil"><br>
+        </div>
+        <br><br>
+        <input type="submit" value="Guardar cambios" style="font-size: larger; background-color: rgba(31, 93, 240, 0.7); color: aliceblue;" ><br><br>
+    </form>
+</div>
+<%- include('../includes/foot.ejs'); %>
