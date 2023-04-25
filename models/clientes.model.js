@@ -43,8 +43,8 @@ module.exports = class Cliente {
         return db.execute(
             `UPDATE cliente 
              SET sexo = ?, fecha_nacimiento = ?, alturaInic = ?, id_obj = ?, id_niv = ?
-             WHERE c.id_usuario = ?`,
-            [this.nombre, this.apellido, this.sexo, this.fecha_nacimiento, this.alturaInic, this.foto_perfil, this.id_obj, this.id_niv, this.id_usuario]
+             WHERE id_usuario = ?`,
+            [this.sexo, this.fecha_nacimiento, this.alturaInic, this.id_obj, this.id_niv, this.id_usuario]
         );
     }
     
@@ -62,14 +62,34 @@ module.exports = class Cliente {
         `, [username]);
     }
 
+    static fetchIdCliente(id_usuario){
+        return db.execute(`
+            SELECT *
+            FROM cliente c, usuario u, objetivo o, nivelfisico n
+            WHERE c.id_usuario = ?
+            AND c.id_usuario = u.id_usuario
+            AND c.id_obj=o.id_obj
+            AND c.id_niv=n.id_niv
+        `, [id_usuario]);
+    }
+
     static getCliente(nombre_usuario){
-        return db.excecute(`
+        return db.execute(`
             SELECT c.id_cliente
             FROM cliente c, usuario u
             WHERE u.nombre_usuario = ?
             AND c.id_usuario = u.id_usuario
-        `)
+        ` , [nombre_usuario]);
     }
+
+    /*static getIdCliente(nombre_usuario){
+        return db.execute(`
+        SELECT u.id_usuario
+        FROM cliente c, usuario u
+        WHERE u.nombre_usuario = ?
+        AND c.id_usuario = u.id_usuario
+        `[nombre_usuario]);
+    }*/
 
     //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
     static getObjetivo(id_cliente) {
@@ -88,9 +108,4 @@ module.exports = class Cliente {
         `, [id_usuario, id_obj]);
     }
 
-}   /* saveRol(id_usuario, id_rol) {
-    return db.execute(`
-        INSERT INTO usuariorol (id_usuario, id_rol)
-        values (?, ?)
-    `, [id_usuario, id_rol]);
-}*/
+}  

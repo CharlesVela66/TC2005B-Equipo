@@ -97,14 +97,33 @@
   <h1 class="title is-2" style="color: aliceblue;">Editar información de cliente</h1>
 
   <% if (cliente) { %>
-    <form method="POST" action="/perfil/editar_info" onsubmit="return confirmarCambios();">
+    <form method="POST" action="/perfil/editar_info" enctype="multipart/form-data" onsubmit="return confirmarCambios();">
 
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
       <div class="form-group">
-        <label for="nombre">Nombre de usuario</label>
-        <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" placeholder="<%= usuario.nombre %>"required>
+      <input type="hidden" name="id" value="<%= id %>" >
       </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre de usuario</label>
+        <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" placeholder="<%= usuario.nombre %>" maxlength="30" required>
+        <span id="nombre-error" style="display: none; color: red;">El nombre no puede tener más de 30 caracteres.</span>
+      </div>
+    
+      <script>
+        const nombreInput = document.getElementById("nombre");
+        const nombreError = document.getElementById("nombre-error");
+        nombreInput.addEventListener("input", () => {
+            if (nombreInput.value.length > 30) {
+                nombreInput.value = nombreInput.value.substring(0, 30);
+                nombreError.style.display = "inline";
+            } else {
+                nombreError.style.display = "none";
+            }
+        });
+      </script>
+    
 
       <div class="form-group">
         <label for="apellido">Apellido de usuario</label>
@@ -112,8 +131,8 @@
       </div>
 
       <div class="form-group">
-        <label for="foto_perfil">Foto de perfil</label>
-        <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
+        <label for="imagen">Foto de perfil</label>
+        <input type="file" id="imagen" name="imagen">
       </div>
 
       <div class="form-group">

@@ -46,6 +46,15 @@ Ver si esta jala
         `, [username]);
     }
 
+    static fetchId(id_usuario){
+        return db.execute(`
+        SELECT * 
+        FROM usuario
+        WHERE id_usuario = ?
+
+        `, [id_usuario]);
+    }
+
     static fetchRol(username){
         return db.execute(`
             SELECT r.nombre
@@ -60,12 +69,13 @@ Ver si esta jala
     }
 
     //Actualizar datos del cliente
-    updateClienteData() {
+    updateUsuarioData() {
         return db.execute(
             `UPDATE usuario
              SET nombre = ?, apellido = ?, foto_perfil = ?
-             WHERE c.id_usuario = ?`,
-            [this.nombre, this.apellido, this.foto_perfil, this.id_usuario]
+             WHERE nombre_usuario = ?`,
+            [this.nombre, this.apellido, this.foto_perfil, this.nombre_usuario]
         );
+        
     }
 }

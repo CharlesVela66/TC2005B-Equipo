@@ -20,4 +20,10 @@ router.get('/:id', rutinasController.visualizar_rutinas);
 
 router.post('/:id',rutinasController.seleccionar_rutinas);
 
+//router.get('/editar/:id', hasCreate, rutinasController.get_editarRutina);
+
+//router.get('/editar', hasCreate, rutinasController.get_nuevaRutina);
+
+//router.post('/editar', hasCreate, rutinasController.post_editarRutina);
+
 module.exports = router;
