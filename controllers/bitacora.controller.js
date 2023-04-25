@@ -1,4 +1,3 @@
-const { response } = require("express");
 const Bitacora = require("../models/bitacora.model");
 const Cliente = require("../models/clientes.model");
 
