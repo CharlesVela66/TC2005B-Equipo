@@ -9,7 +9,7 @@ module.exports = class Usuario {
         this.apellido = nuevo_usuario.apellido;
         this.nombre_usuario = nuevo_usuario.nombre_usuario;
         this.correo = nuevo_usuario.correo;
-        this.contrasena = nuevo_usuario.contrasena;
+        this.contrasena = nuevo_usuario.contrasena ;
         this.foto_perfil = nuevo_usuario.foto_perfil || null;
     }
 
@@ -44,6 +44,15 @@ Ver si esta jala
         WHERE nombre_usuario = ?
 
         `, [username]);
+    }
+
+    static fetchCorreo(correo){
+        return db.execute(`
+        SELECT * 
+        FROM usuario
+        WHERE correo = ?
+
+        `, [correo]);
     }
 
     static fetchRol(username){
