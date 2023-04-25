@@ -1,68 +1,110 @@
 <%- include('../includes/head.ejs'); %>
-<h1 class="title is-1 has-text-white-ter">DATOS PERSONALES</h1>
-<form action="/informacion" method="POST">
-  <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-  
-  <div class="box">
-    <div class="columns">
-        <div class="column">
-        <div class="field">
-            <label class="label" for="obj">Elige tu Objetivo</label>
-            <div class="select is-primary">
-                 <select name="obj" id="obj">
-                    <% for(let objetivo of objetivos){ %>
-                        <option value="<%=objetivo.id_obj %>">
-                            <%=objetivo.nombre_obj %>
-                        </option>
+<style>
+    body {
+        background-color: black;
+    }
 
-                    <%}%>
-                 </select>
-            </div>
-        </div>
-        <div class="field">
-            <label class="label" for="sexo">Selecciona tú Sexo</label>
-            <div class="control">
-                <div class="select">
-                    <select id="sexo" name="sexo">
-                    <option disabled selected>Selecciona una opción</option>
-                    <option>M</option>
-                    <option>F</option>
-                    </select>
+    .form-section {
+        padding: 16px;
+        font-size: .85rem;
+        background-color: #242424;
+        box-shadow: rgb(0 0 0 / 8%) 0 -1px;
+        border-radius: 8px;
+    }
+
+    .form-section a {
+        font-weight: bold;
+        color: #0066ff;
+        transition: color .3s ease;
+    }
+
+    .box {
+        background-color: #242424;
+    }
+
+    .title {
+        color: antiquewhite;
+        margin-bottom: 1rem;
+    }
+
+    .label {
+        color: antiquewhite;
+    }
+
+    .columns {
+        margin-top: 1rem;
+    }
+
+    .column {
+        margin-bottom: 1rem;
+    }
+
+    .submit-btn {
+        margin-top: 1rem;
+    }
+</style>
+
+<div class="hero is-fullheight">
+    <div class="hero-body is-justify-content-center is-align-items-center">
+        <div class="columns is-flex is-flex-direction-column box form-section">
+            <form action="/informacion" method="POST">
+                <span class="title">INGRESA TUS DATOS</span>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                <div class="column">
+                    <label class="label">Elige tu Objetivo</label>
+                    <div class="select is-primary">
+                        <select name="obj" id="obj">
+                            <% for(let objetivo of objetivos){ %>
+                                <option value="<%=objetivo.id_obj %>">
+                                    <%=objetivo.nombre_obj %>
+                                </option>
+                            <%}%>
+                        </select>
+                    </div>
                 </div>
+
+                <div class="column">
+                    <label class="label">Selecciona tú Sexo</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="sexo" name="sexo">
+                                <option disabled selected>Selecciona una opción</option>
+                                <option>M</option>
+                                <option>F</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        <div class="field">
-            <label class="label" for="fecha_nacimiento">Fecha de Nacimiento</label>
-            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
-        </div>
-    </div>
-    <div class="column">
-        <div class="field">
-            <label class="label" for="altura">Ingresa tu Estatura (Metros)</label>
-            <input type="number" id="alturaInic" name="alturaInic">
-        </div>
-        <div class="field">
-            <label class="label" for="peso">Ingresa tu Peso (KG)</label>
-            <input type="number" id="pesoInic" name="pesoInic">
-        </div>
 
-          <div class="field">
-            <label class="label" for="niv">Escoge la opción que más te describa: </label>
-            <div class="select is-primary">
-                 <select name="niv" id="niv">
-                    <% for(let nivelfisico of niveles){ %>
-                        <option value="<%=nivelfisico.id_niv %>">
-                            <%=nivelfisico.descripcion_niv %>
-                        </option>
+                <div class="column">
+                    <label class="label">Ingresa tú Altura(m) 1 - 3.99</label>
+                    <input type="number" id="alturaInic" name="alturaInic" step="0.01" min="1" max="3.99">
+                </div>
 
-                    <%}%>
-                 </select>
-            </div>
+                <div class="column">
+                    <label class="label">Ingresa tú peso (KG) 50 - 200</label>
+                    <input type="number" id="pesoInic" name="pesoInic" step="0.01" min="50" max="200">
+                </div>
+
+                <div class="column">
+                    <label class="label">Escoje la opción que más te describa:</label>
+                    <div class="select is-primary">
+                        <select name="niv" id="niv">
+                            <% for(let nivelfisico of niveles){ %>
+                                <option                          value="<%=nivelfisico.id_niv %>">
+                                    <%=nivelfisico.descripcion_niv %>
+                                </option>
+                            <%}%>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="submit-btn">
+                    <input class="button is-primary" type="submit" value="REGISTRAR">
+                </div>
+
+            </form>
         </div>
-
     </div>
-    </div>
-        <input class="button is-primary" type="submit" value="REGISTRAR">
-    </div>
-    
-</form>
+</div>

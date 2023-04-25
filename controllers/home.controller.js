@@ -96,14 +96,29 @@ exports.post_iniciar_sesion = (request, response, next) => {
     });
 };
 exports.registrarse =(request,response, next) =>{
+    const mensaje =request.session.mensaje;
+    let usuarioData=request.session.usuarioData;
+    request.session.mensaje=null;
+    request.session.usuarioData=null;
+
     response.render('home/registrarse',{
         isLoggedIn:request.session.isLoggedIn || false,
         nombre: request.session.nombre || '',
+        mensaje:mensaje,
+        usuarioData:usuarioData
     });
 };
 exports.post_registrarse = (request, response, next)=>{
     if (request.body.contrasena !== request.body.confirmar_contrasena) {
         request.session.mensaje = "Las contraseñas no coinciden.";
+        //Borrar
+        request.session.usuarioData={
+            nombre: request.body.nombre,
+            apellido: request.body.apellido,
+            nombre_usuario:request.body.nombre_usuario,
+            correo: request.body.correo
+        };
+        //Borrar
         console.log(request.session.mensaje)
         response.redirect('/registrarse');
         return;
@@ -136,6 +151,11 @@ exports.post_registrarse = (request, response, next)=>{
             response.redirect('/home')
         }else{
             request.session.mensaje= "Usuario o Correo ya existentes.";
+            request.session.usuarioData={
+                nombre: request.body.nombre,
+                apellido: request.body.apellido
+                
+            };
             console.log(request.session.mensaje);
             response.redirect('/registrarse')
                 
@@ -150,7 +170,7 @@ exports.get_informacion = (request, response, next)=>{
             response.render('home/informacion_personal',{
             objetivos:rows,
             niveles:row,
-            isLoggedIn: request.session.isLoggedIn || true,
+            isLoggedIn: request.session.isLoggedIn || false,
             rol: request.session.rol || '',
             nombre:request.session.nombre_usuario || '',       
             })
