@@ -6,6 +6,7 @@ const Nivel= require('../models/niveles.model');
 
 const bcrypt = require('bcryptjs');
 
+
 // Cargamos la interfaz del inicio
 exports.inicio = (request, response, next) => {
     response.clearCookie("consultas");
@@ -96,6 +97,7 @@ exports.post_iniciar_sesion = (request, response, next) => {
     });
 };
 exports.registrarse =(request,response, next) =>{
+
     const mensaje =request.session.mensaje;
     let usuarioData=request.session.usuarioData;
     request.session.mensaje=null;
@@ -109,6 +111,10 @@ exports.registrarse =(request,response, next) =>{
     });
 };
 exports.post_registrarse = (request, response, next)=>{
+    console.log("Comienza el post HOLAA MOTHERFACKAR")
+    request.session.flagOne = true;
+    request.session.flagTwo = true;
+     
     if (request.body.contrasena !== request.body.confirmar_contrasena) {
         request.session.mensaje = "Las contraseñas no coinciden.";
         //Borrar
@@ -130,38 +136,80 @@ exports.post_registrarse = (request, response, next)=>{
         correo: request.body.correo,
         contrasena: request.body.contrasena,
     });
-    nuevo.save()
-    .then(([rows, fieldData])=>{
-        console.log("save");
-        Usuario.fetchOne(request.body.nombre_usuario)
-        .then(([infoUsuario,fieldData])=>{
-            console.log(infoUsuario);
-            nuevo.saveRol(infoUsuario[0].id_usuario,1)
-            const cliente= new Cliente({
-                id_usuario: infoUsuario[0].id_usuario
-            });
-            cliente.save()
-            .then(([row,fieldData])=>{
-                request.session.mensaje = "Usuario Registrado";   
-                response.redirect('/iniciar-sesion');
-            }).catch(err=>console(err));
-        }).catch(err=>console(err));
-    }).catch((error)=>{    
-        if(error.code === "ER_DUP_ENTRY"){
-            response.redirect('/home')
-        }else{
-            request.session.mensaje= "Usuario o Correo ya existentes.";
-            request.session.usuarioData={
-                nombre: request.body.nombre,
-                apellido: request.body.apellido
-            };
-            
-            console.log(request.session.mensaje);
-            response.redirect('/registrarse')
-                
-        }   
+    Usuario.fetchOne(request.body.nombre_usuario)
+    .then(([row,fieldData])=>{
+        if (row.length > 0) {request.session.flagOne = false};
+        
+        
+        Usuario.fetchCorreo(request.body.correo)
+        .then(([rows,fieldData])=>{
+            if (rows.length > 0) {request.session.flagTwo = false;}
+            console.log("1", request.session.flagOne);
+            console.log("2", request.session.flagTwo);
+            if (!request.session.flagOne && request.session.flagTwo){
+                request.session.mensaje="Usuario ya existente.";
+                request.session.usuarioData={
+                    nombre: request.body.nombre,
+                    apellido: request.body.apellido,
+                    correo: request.body.correo
+                };
+                //Borrar
+                console.log(request.session.mensaje)
+                response.redirect('/registrarse');
+                return;
+
+            }else if(!request.session.flagTwo && request.session.flagOne){
+                request.session.mensaje="Correo ya existente.";
+                request.session.usuarioData={
+                    nombre: request.body.nombre,
+                    apellido: request.body.apellido,
+                    nombre_usuario:request.body.nombre_usuario,
+                };
+                //Borrar
+                console.log(request.session.mensaje)
+                response.redirect('/registrarse');
+                return;
+            }else if(!request.session.flagOne && !request.session.flagTwo){
+                request.session.mensaje="Usuario y correo ya existente.";
+                request.session.usuarioData={
+                    nombre: request.body.nombre,
+                    apellido: request.body.apellido,
+                };
+                //Borrar
+                console.log(request.session.mensaje)
+                response.redirect('/registrarse');
+                return;
+            }
+
+            nuevo.save()
+                .then(([rows, fieldData])=>{
+                    console.log("save");
+                    Usuario.fetchOne(request.body.nombre_usuario)
+                    .then(([infoUsuario,fieldData])=>{
+                        console.log(infoUsuario);
+                        nuevo.saveRol(infoUsuario[0].id_usuario,1)
+                        const cliente= new Cliente({
+                            id_usuario: infoUsuario[0].id_usuario
+                        });
+                        cliente.save()
+                        .then(([row,fieldData])=>{
+                            request.session.mensaje = "Usuario Registrado";   
+                            response.redirect('/iniciar-sesion');
+                        }).catch(err=>console(err));
+                    }).catch(err=>console(err));
+                }).catch((error)=>{
+                    console.log(error) 
+                })
+
+        }).catch(error=>{
+            console.log(error);
+        })
+    }).catch(error=>{
+        console.log(error);
     })
+    
 };
+
 exports.get_informacion = (request, response, next)=>{
     Nivel.fetchAll()
     .then(([row,fieldData])=>{
@@ -187,7 +235,7 @@ exports.post_informacion =(request,response,next)=>{
     Cliente.findById(request.session.id_usuario)
     .then(([rows])=>{
         if(rows.length === 0){
-            throw new Error("Cliente no encontrado");
+            throw new Error("Cliente no encontrado");   
         }
         const cliente= new Cliente({
             id_usuario: rows[0].id_usuario,
