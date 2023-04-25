@@ -154,8 +154,8 @@ exports.post_registrarse = (request, response, next)=>{
             request.session.usuarioData={
                 nombre: request.body.nombre,
                 apellido: request.body.apellido
-                
             };
+            
             console.log(request.session.mensaje);
             response.redirect('/registrarse')
                 
