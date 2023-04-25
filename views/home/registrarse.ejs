@@ -54,32 +54,32 @@
 
                 <div class="column">
                     <label class="label">Nombre(s)</label>
-                    <input required name="nombre" id="nombre" class="input" type="text" maxlength="30" pattern="[a-zA-Z]{2,}" title="Ingrese un nombre válido con 3 letras y sin números" value="<%= usuarioData ? usuarioData.nombre : '' %>" placeholder="Escribe tu(s) nombre(s)">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="nombre" id="nombre" class="input" type="text" maxlength="30" pattern="[a-zA-Z]{2,}" title="Ingrese un nombre válido con 3 letras y sin números" value="<%= usuarioData ? usuarioData.nombre : '' %>" placeholder="Escribe tu(s) nombre(s)">
                 </div>
 
                 <div class="column">
                     <label class="label">Apellido(s)</label>
-                    <input name="apellido" id="apellido" class="input" type="text" maxlength="30" pattern="[a-zA-Z]{2,}" title="Ingrese un apellido mayor a 2 letras y sin números" value="<%= usuarioData ? usuarioData.apellido : '' %>" placeholder="Escribe tu(s) apellido(s)">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" name="apellido" id="apellido" class="input" type="text" maxlength="30" pattern="[a-zA-Z]{2,}" title="Ingrese un apellido mayor a 2 letras y sin números" value="<%= usuarioData ? usuarioData.apellido : '' %>" placeholder="Escribe tu(s) apellido(s)">
                 </div>
 
                 <div class="column">
                     <label class="label">Username</label>
-                    <input required name="nombre_usuario" id="nombre_usuario" maxlength="40"  pattern="[a-zA-Z0-9]{4,}" title="Ingrese nombre de Usuario minimo de 4 letras y sin caracteres especiales" class="input" value="<%= usuarioData ? usuarioData.nombre_usuario : '' %>" type="text" placeholder="Nombre de Usuario">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="nombre_usuario" id="nombre_usuario" maxlength="40"  pattern="[a-zA-Z0-9]{4,}" title="Ingrese nombre de Usuario minimo de 4 letras y sin caracteres especiales" class="input" value="<%= usuarioData ? usuarioData.nombre_usuario : '' %>" type="text" placeholder="Nombre de Usuario">
                 </div>
 
                 <div class="column">
                     <label class="label">Email</label>
-                    <input required name="correo" id="correo" class="input" type="email" value="<%= usuarioData ? usuarioData.correo : '' %>" placeholder="e.g. alex@example.com">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="correo" id="correo" class="input" type="email" value="<%= usuarioData ? usuarioData.correo : '' %>" placeholder="e.g. alex@example.com">
                 </div>
 
                 <div class="column">
                     <label class="label">Password</label>
-                    <input required name="contrasena" id="contrasena" class="input" maxlength="400" type="password" placeholder="********">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="contrasena" id="contrasena" class="input" maxlength="400" min="5" type="password" placeholder="********">
                 </div>
 
                 <div class="column">
                     <label class="label">Confirmar Password</label>
-                    <input required name="confirmar_contrasena" id="confirmar_contrasena" maxlength="400" class="input" type="password" placeholder="********">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="confirmar_contrasena" id="confirmar_contrasena" maxlength="400" class="input" type="password" placeholder="********">
                 </div>
 
                 <% if (mensaje) { %>
@@ -92,7 +92,7 @@
                 <div class="submit-btn">
                     <div class="field is-grouped">
                         <div class="control">
-                            <input class="button is-info" type="submit" value="REGISTRAR">
+                            <input class="button is-info" style="margin-left: 10px;" type="submit" value="REGISTRAR">
                         </div>
                         <div class="control">
                             <a href="/" class="button is-link is-light">CANCELAR</a>
