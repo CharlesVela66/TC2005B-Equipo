@@ -86,7 +86,6 @@ app.use((request, response, next) => {
     next();
 });
 
-
 //Routes 
 const rutasHome = require('./routes/home.routes');
 
