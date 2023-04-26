@@ -48,13 +48,14 @@ module.exports = class Cliente {
         );
     }
 
+    
     //Actualizar datos del cliente
-    static updateClienteData(data) {
+    updateClienteData() {
         return db.execute(
-            `UPDATE cliente c JOIN usuario u ON c.id_usuario = u.id_usuario
-             SET u.nombre = ?, u.apellido = ?, c.sexo = ?, c.fecha_nacimiento = ?, c.alturaInic = ?, u.foto_perfil = ?, c.id_obj = ?, c.id_niv = ?
-             WHERE c.id_usuario = ?`,
-            [data.nombre, data.apellido, data.sexo, data.fecha_nacimiento, data.alturaInic, data.foto_perfil, data.id_obj, data.id_niv, data.id_usuario]
+            `UPDATE cliente 
+             SET sexo = ?, fecha_nacimiento = ?, alturaInic = ?, id_obj = ?, id_niv = ?
+             WHERE id_usuario = ?`,
+            [this.sexo, this.fecha_nacimiento, this.alturaInic, this.id_obj, this.id_niv, this.id_usuario]
         );
     }
     
@@ -72,13 +73,33 @@ module.exports = class Cliente {
         `, [username]);
     }
 
+    static fetchIdCliente(id_usuario){
+        return db.execute(`
+            SELECT *
+            FROM cliente c, usuario u, objetivo o, nivelfisico n
+            WHERE c.id_usuario = ?
+            AND c.id_usuario = u.id_usuario
+            AND c.id_obj=o.id_obj
+            AND c.id_niv=n.id_niv
+        `, [id_usuario]);
+    }
+
     static getCliente(nombre_usuario){
-        return db.excecute(`
+        return db.execute(`
             SELECT c.id_cliente
             FROM cliente c, usuario u
             WHERE u.nombre_usuario = ?
             AND c.id_usuario = u.id_usuario
-        `)
+        ` , [nombre_usuario]);
+    }
+
+    static getIdCliente(nombre_usuario){
+        return db.execute(`
+        SELECT u.id_usuario
+        FROM cliente c, usuario u
+        WHERE u.nombre_usuario = ?
+        AND c.id_usuario = u.id_usuario
+        `, [nombre_usuario]);
     }
 
     //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
