@@ -133,7 +133,7 @@
             <form action="/progreso" method="POST" autocomplete="off">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <input type="hidden" name="fecha_ant" id="fecha_ant">
-                <input type="hidden" name="medidaOriginal" id="medidaOriginal">
+                <input type="hidden" name="medidaId" id="medidaId">
             <div style="max-height: 400px; overflow: auto">
             <table id="table-medida"class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
                 <colgroup>
@@ -157,7 +157,6 @@
                 <% if (registros.length > 0) { %>
                         <% for (let registro of registros) { %>
                             <tr> 
-                            <input type="hidden" name="created_at" value="<%= registro.created_at %>">
                             <th class="has-text-white-ter"> 
                                 <% const fecha = new Date(registro.fecha); %>
                                 <%= fecha.getDate().toString().padStart(2, '0') %>/<%= (fecha.getMonth() + 1).toString().padStart(2, '0') %>/<%= fecha.getFullYear() %>
@@ -219,8 +218,10 @@
             const fechaInput = document.createElement('input');
             fechaInput.type = 'date';
             fechaInput.value = formatDateToInput(cells[0].textContent.trim());
+
             let fecha_ant = document.getElementById("fecha_ant");
             fecha_ant.value = formatDateToInput(cells[0].textContent.trim());
+
             fechaInput.required = true;
             fechaInput.setAttribute('id', 'edit_fecha');
             fechaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
@@ -229,28 +230,28 @@
     
             const medidasStr = "<%- escape(JSON.stringify(medidas)) %>";
             const medidas = JSON.parse(unescape(medidasStr));
-            let medidaOriginal = document.getElementById("medidaOriginal");
+            let medidaId = document.getElementById("medidaId");
             
             medidas.forEach(medida => { 
                 console.log(medida.tipo);
                 console.log(cells[1].textContent);               
                 if (" "+medida.tipo == cells[1].textContent){
-                    medidaOriginal.value = medida.id_medicion;
-                    console.log(medidaOriginal.value);
+                    medidaId.value = medida.id_medicion;
+                    console.log(medidaId.value);
                 }
             })
 
-            const descripcionInput = document.createElement('input');
-            descripcionInput.type = 'text';
-            descripcionInput.maxLength = 1000;
-            descripcionInput.value = cells[2].textContent;
-            descripcionInput.required = true;
-            descripcionInput.setAttribute('id', 'edit_descr_sesion');
-            descripcionInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
+            const medidaInput = document.createElement('input');
+            medidaInput.type = 'text';
+            medidaInput.maxLength = 1000;
+            medidaInput.value = cells[2].textContent;
+            medidaInput.required = true;
+            medidaInput.setAttribute('id', 'edit_medida');
+            medidaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
             cells[2].innerHTML = '';
-            cells[2].appendChild(descripcionInput);
+            cells[2].appendChild(medidaInput);
     
-             setOriginalDataAttributes(row.querySelector('.fa-undo'), fechaInput.value, descripcionInput.value);
+             setOriginalDataAttributes(row.querySelector('.fa-undo'), fechaInput.value, medidaInput.value);
             // Ocultar iconos de editar y eliminar, y mostrar el de confirmar
             element.style.display = 'none';
             row.querySelector('.fa-times').style.display = 'none';
@@ -262,17 +263,17 @@
             const cells = row.querySelectorAll('th, td');
             const fecha_ant = document.querySelector('input[name="fecha_ant"]').value;
             const fecha = document.getElementById('edit_fecha').value;
-            const medidaOriginal = document.getElementById('medidaOriginal').value;
-            const descripcion = document.getElementById('edit_descr_sesion').value;
+            const medidaId = document.getElementById('medidaId').value;
+            const med = document.getElementById('edit_medida').value;
     
-            if (!validateEditForm(fecha, descripcion)) {
+            if (!validateEditForm(fecha, med)) {
                 alert('Completa los campos de fecha y descripción para continuar');
                 return;
             }
     
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/progreso/editar';//Aqui vamoooooooooooooooooooooooos!
+            form.action = '/progreso/editar';
     
             const tokenInput = document.createElement('input');
             tokenInput.type = "hidden";
@@ -297,22 +298,20 @@
             form.appendChild(fechaAnt);
 
             const medidaRow = document.createElement('input');
-            const medida = parseInt(medidaOriginal);
             medidaRow.type = 'hidden';
             medidaRow.id = 'id_medicion'
             medidaRow.name = 'id_medicion'
-            medidaRow.value = medida;
+            medidaRow.value = medidaId;
             console.log(medidaRow);
             form.appendChild(medidaRow);
     
-            const descripcionInput = document.createElement('input');
-            const descripcionFloat = parseFloat(descripcion);
-            descripcionInput.type = 'hidden';
-            descripcionInput.id = 'edit_descr_sesion'
-            descripcionInput.name = 'edit_descr_sesion'
-            descripcionInput.value = descripcionFloat;
-            console.log(descripcionInput);
-            form.appendChild(descripcionInput);
+            const medidaInput = document.createElement('input');
+            medidaInput.type = 'hidden';
+            medidaInput.id = 'edit_medida'
+            medidaInput.name = 'edit_medida'
+            medidaInput.value = med;
+            console.log(medidaInput);
+            form.appendChild(medidaInput);
     
             document.body.appendChild(form);
             form.submit();
@@ -321,7 +320,7 @@
         function cancelEdit(element) {
     
             console.log(element.getAttribute('data-original-fecha'));
-            console.log(element.getAttribute('data-original-descripcion'));
+            console.log(element.getAttribute('data-original-medida'));
     
             const row = element.closest('tr');
             const cells = row.querySelectorAll('th, td');
@@ -331,8 +330,8 @@
             cells[0].innerHTML = formatDateToDisplay(fecha);
     
             // Revertir descripción
-            const descripcion = element.getAttribute('data-original-descripcion');
-            cells[2].innerHTML = descripcion;
+            const med = element.getAttribute('data-original-medida');
+            cells[2].innerHTML = med;
     
             // Restaurar los iconos de editar y eliminar
             const editIcons = document.querySelectorAll('.edit-icon');
@@ -359,16 +358,16 @@
             return `${day}/${month}/${year}`;
         }
         
-        function validateEditForm(fecha, descripcion) {
-            if (!fecha || !descripcion) {
+        function validateEditForm(fecha, med) {
+            if (!fecha || !med) {
                 alert('Por favor, completa los campos de fecha y descripción.');
                 return false;
             }
             return true;
         }
-        function setOriginalDataAttributes(element, fecha, descripcion) {
+        function setOriginalDataAttributes(element, fecha, med) {
             element.setAttribute('data-original-fecha', fecha);
-            element.setAttribute('data-original-descripcion', descripcion);
+            element.setAttribute('data-original-medida', med);
         }
         document.getElementById('previousMonth').addEventListener('click', changeMonth(-1));
         document.getElementById('nextMonth').addEventListener('click', changeMonth(1));

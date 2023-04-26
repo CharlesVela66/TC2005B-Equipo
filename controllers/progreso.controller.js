@@ -30,13 +30,13 @@ exports.editar = (request,response,next) => {
     .then(([rows, fieldData]) => {
             // Se crea un nuevo registro de bitacora
             const medida = parseInt(request.body.id_medicion);
-            const descripcionFloat = parseFloat(request.body.edit_descr_sesion);
+            const medidaFloat = parseFloat(request.body.edit_medida);
 
             const registro = new ClienteMedidas({
                 id_cliente: rows[0].id_cliente,
                 fecha: request.body.edit_fecha,
                 id_medicion: medida,
-                medida: descripcionFloat
+                medida: medidaFloat
             });
             console.log(request.body.fecha_ant);
             console.log(registro);
