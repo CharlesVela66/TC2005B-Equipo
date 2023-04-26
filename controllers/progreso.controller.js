@@ -32,17 +32,21 @@ exports.editar = (request,response,next) => {
             const registro = new ClienteMedidas({
                 id_cliente: rows[0].id_cliente,
                 fecha: request.body.edit_fecha,
-                id_medicion: request.body.medida,
+                id_medicion: request.body.medidaOriginal,
                 descr_sesion: request.body.edit_descr_sesion,
             });
             // Se actualiza en la base de datos
-            registro.update()
+            const fechaAnt = request.body.fecha_ant;
+            console.log(fechaAnt);
+            registro.update(fechaAnt)
             .then(([rows, fieldData]) => {
                 //Redericciona al usuario a la bitacora
                 response.redirect('/progreso');
             })
             .catch((error) => {console.log(error)});
         
+
+            
     })
     .catch((error) => {console.log(error)});
 }
