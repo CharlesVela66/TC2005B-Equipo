@@ -45,6 +45,13 @@ Ver si esta jala
 
         `, [username]);
     }
+    static fetchCorreo(correo){
+        return db.execute(`
+        SELECT * 
+        FROM usuario
+        WHERE correo = ?
+        `, [correo]);
+    }
 
     static fetchRol(username){
         return db.execute(`
