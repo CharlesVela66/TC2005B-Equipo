@@ -80,7 +80,7 @@
                 
                 <div class="column">
                     <label class="label">Ingresa tú fecha de Nacimiento</label>
-                    <input type="date" id="fecha_nacimiento" required name="fecha_nacimiento"  style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                    <input type="date" id="fecha_nacimiento" required name="fecha_nacimiento"  style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;" min="<?php echo date('Y-m-d', strtotime('-12 years')); ?>">
                 </div>
 
                 <div class="column">
