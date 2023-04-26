@@ -183,8 +183,6 @@ exports.post_editarPerfil = async (request, response, next) => {
           pesoInic: cliente.pesoInic,
           // Agregar las propiedades faltantes
         });
-        console.log("Ver update")
-        console.log(updatedCliente);
         return updatedCliente.updateClienteData();
       } else {
         throw new Error('Cliente no encontrado');
