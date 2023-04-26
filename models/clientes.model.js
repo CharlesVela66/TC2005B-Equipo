@@ -82,14 +82,14 @@ module.exports = class Cliente {
         ` , [nombre_usuario]);
     }
 
-    /*static getIdCliente(nombre_usuario){
+    static getIdCliente(nombre_usuario){
         return db.execute(`
         SELECT u.id_usuario
         FROM cliente c, usuario u
         WHERE u.nombre_usuario = ?
         AND c.id_usuario = u.id_usuario
-        `[nombre_usuario]);
-    }*/
+        `, [nombre_usuario]);
+    }
 
     //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
     static getObjetivo(id_cliente) {
@@ -108,4 +108,9 @@ module.exports = class Cliente {
         `, [id_usuario, id_obj]);
     }
 
-}  
+}   /* saveRol(id_usuario, id_rol) {
+    return db.execute(`
+        INSERT INTO usuariorol (id_usuario, id_rol)
+        values (?, ?)
+    `, [id_usuario, id_rol]);
+}*/

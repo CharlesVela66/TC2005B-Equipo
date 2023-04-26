@@ -38,6 +38,7 @@ exports.ver_perfil = (request, response, next) => {
 exports.verCliente = (request, response, next) => {
   Cliente.fetchOne(request.session.nombre_usuario)
     .then(([clientes, fieldData]) => {
+      console.log(clientes);
       response.render('perfil/ver_info', {
         infoCliente: clientes[0],
         isLoggedIn: request.session.isLoggedIn || false,
@@ -89,8 +90,43 @@ exports.get_editarPerfil = (request, response, next) => {
     }).catch((error) => console.log(error));
 };
 
+/*
+exports.post_editarPerfil = (request, response, next) => {
+  //const { nombre, apellido, sexo, alturaInic, fecha_nacimiento, objetivo, nivelFisico } = request.body;
+  const nombre = request.body.nombre;
+  const apellido = request.body.apellido;
+  const sexo = request.body.sexo;
+  const alturaInic = request.body.alturaInic;
+  const fecha_nacimiento = request.body.fecha_nacimiento;
+  const objetivo = request.body.id_obj;
+  const nivelFisico = request.body.id_niv;
+
+  const id_usuario = request.session.id_usuario;
+  const foto_perfil = request.file ? request.file.filename : '';
+
+  Cliente.fetchOne(request.session.nombre_usuario)
+  // Actualizar los datos del cliente
+  Cliente.updateClienteData({
+      id_usuario: id_usuario,
+      nombre: nombre,
+      apellido: apellido,
+      sexo: sexo,
+      fecha_nacimiento: fecha_nacimiento,
+      alturaInic: alturaInic,
+      foto_perfil: foto_perfil || null,
+      id_obj: objetivo, // Agregar la actualización del objetivo
+      id_niv: nivelFisico, // Agregar la actualización del nivel físico
+  })
+  .then(() => {
+      // Redireccionar a la página de edición del perfil 
+      response.redirect('/perfil');
+  }).catch((error) => console.log(error));
+};*/
+
+
 exports.post_editarPerfil = async (request, response, next) => {
   const nombre_usuario = request.session.nombre_usuario;
+  const idCliente = await Cliente.getIdCliente(nombre_usuario);
   console.log(" console log")
   console.log(nombre_usuario);
   const nombre = request.body.nombre;
@@ -124,14 +160,17 @@ exports.post_editarPerfil = async (request, response, next) => {
      foto_perfil: foto_perfil,
      // Agregar las propiedades faltantes del Usuario si es necesario
    });
+   console.log(idCliente);
 
   updatedUsuario.updateUsuarioData()
     .then(() => {
+      console.log("console log");
       return Cliente.fetchOne(nombre_usuario);
     })
     .then(([clientes, fieldData]) => {
       if (clientes.length > 0) {
         const cliente = clientes[0];
+        console.log(cliente);
         const updatedCliente = new Cliente({
           id_usuario: cliente.id_usuario,
           id_rutina: cliente.id_rutina,
@@ -144,7 +183,8 @@ exports.post_editarPerfil = async (request, response, next) => {
           pesoInic: cliente.pesoInic,
           // Agregar las propiedades faltantes
         });
-
+        console.log("Ver update")
+        console.log(updatedCliente);
         return updatedCliente.updateClienteData();
       } else {
         throw new Error('Cliente no encontrado');
