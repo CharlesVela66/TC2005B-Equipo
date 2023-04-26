@@ -15,13 +15,13 @@ module.exports = class RegistroMedida {
         `, [this.id_cliente, this.fecha, this.id_medicion, this.medida]);
     }
 
-    update(fecha_ant){
+    update(fecha_ant) {
         return db.execute(`
-            UPDATE clientemedicion SET id_cliente = ?, fecha = ?, id_medicion = ?, medida = ?
+            UPDATE clientemedicion SET fecha = ?, medida = ?
             WHERE id_cliente = ?
             AND fecha = ?
             AND id_medicion = ?
-        `, [this.id_cliente, this.fecha, this.id_medicion, this.medida, this.id_cliente, fecha_ant,this.id_medicion]);
+        `, [this.fecha, this.medida, this.id_cliente, fecha_ant,this.id_medicion]);
     }
 
     static fetchAll(username) {

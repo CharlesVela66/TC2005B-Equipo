@@ -29,24 +29,24 @@ exports.editar = (request,response,next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
             // Se crea un nuevo registro de bitacora
+            const medida = parseInt(request.body.id_medicion);
+            const descripcionFloat = parseFloat(request.body.edit_descr_sesion);
+
             const registro = new ClienteMedidas({
                 id_cliente: rows[0].id_cliente,
                 fecha: request.body.edit_fecha,
-                id_medicion: request.body.medidaOriginal,
-                descr_sesion: request.body.edit_descr_sesion,
+                id_medicion: medida,
+                medida: descripcionFloat
             });
+            console.log(request.body.fecha_ant);
+            console.log(registro);
             // Se actualiza en la base de datos
-            const fechaAnt = request.body.fecha_ant;
-            console.log(fechaAnt);
-            registro.update(fechaAnt)
+            registro.update(request.body.fecha_ant)
             .then(([rows, fieldData]) => {
                 //Redericciona al usuario a la bitacora
                 response.redirect('/progreso');
             })
-            .catch((error) => {console.log(error)});
-        
-
-            
+            .catch((error) => {console.log(error)}); 
     })
     .catch((error) => {console.log(error)});
 }

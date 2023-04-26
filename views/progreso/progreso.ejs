@@ -220,8 +220,7 @@
             fechaInput.type = 'date';
             fechaInput.value = formatDateToInput(cells[0].textContent.trim());
             let fecha_ant = document.getElementById("fecha_ant");
-            fecha_ant.value = cells[0].textContent.trim();
-            console.log(fecha_ant.value);
+            fecha_ant.value = formatDateToInput(cells[0].textContent.trim());
             fechaInput.required = true;
             fechaInput.setAttribute('id', 'edit_fecha');
             fechaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
@@ -286,6 +285,7 @@
             fechaInput.id = 'edit_fecha'
             fechaInput.name = 'edit_fecha'
             fechaInput.value = fecha;
+            console.log(fecha);
             form.appendChild(fechaInput);
 
             const fechaAnt = document.createElement('input');
@@ -293,20 +293,25 @@
             fechaAnt.id = 'fecha_ant'
             fechaAnt.name = 'fecha_ant'
             fechaAnt.value = fecha_ant;
+            console.log(fecha_ant);
             form.appendChild(fechaAnt);
 
             const medidaRow = document.createElement('input');
+            const medida = parseInt(medidaOriginal);
             medidaRow.type = 'hidden';
             medidaRow.id = 'id_medicion'
             medidaRow.name = 'id_medicion'
-            medidaRow.value = medidaOriginal;
+            medidaRow.value = medida;
+            console.log(medidaRow);
             form.appendChild(medidaRow);
     
             const descripcionInput = document.createElement('input');
+            const descripcionFloat = parseFloat(descripcion);
             descripcionInput.type = 'hidden';
             descripcionInput.id = 'edit_descr_sesion'
             descripcionInput.name = 'edit_descr_sesion'
-            descripcionInput.value = descripcion;
+            descripcionInput.value = descripcionFloat;
+            console.log(descripcionInput);
             form.appendChild(descripcionInput);
     
             document.body.appendChild(form);
