@@ -36,7 +36,7 @@ module.exports = class Cliente {
     update(){
         return db.execute(
             'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic=?, pesoInic=?, id_niv=? WHERE id_usuario = ?',
-            [this.id_obj, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic,this.id_niv, this.id_usuario]
+            [this.id_obj||null, this.sexo||null, this.fecha_nacimiento||null,this.alturaInic||null,this.pesoInic||null,this.id_niv||null, this.id_usuario]
         );
 
      }
