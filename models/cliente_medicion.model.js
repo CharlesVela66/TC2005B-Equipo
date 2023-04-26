@@ -24,6 +24,15 @@ module.exports = class RegistroMedida {
         `, [this.fecha, this.medida, this.id_cliente, fecha_ant,this.id_medicion]);
     }
 
+    static delete(id_cliente, created_at, id_medicion){
+        return db.execute(`
+            DELETE FROM clientemedicion
+            WHERE id_cliente = ?
+            AND created_at = ?
+            AND id_medicion = ?
+        `, [id_cliente, created_at, id_medicion])
+    }
+
     static fetchAll(username) {
         return db.execute(`
             SELECT fecha,m.tipo AS 'nombre', medida, m.id_medicion
