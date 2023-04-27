@@ -1,7 +1,7 @@
 const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
-const Administrador= require('../models/administrador.model');
+const Administrador = require('../models/administrador.model');
 const Nivel= require('../models/niveles.model');
 
 const bcrypt = require('bcryptjs');

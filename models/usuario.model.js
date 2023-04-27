@@ -45,13 +45,11 @@ Ver si esta jala
 
         `, [username]);
     }
-
     static fetchCorreo(correo){
         return db.execute(`
         SELECT * 
         FROM usuario
         WHERE correo = ?
-
         `, [correo]);
     }
 
@@ -68,4 +66,14 @@ Ver si esta jala
         return db.execute('SELECT * FROM usuario WHERE id_usuario = ?', [id_usuario]);
     }
 
+    //Actualizar datos del cliente
+    updateUsuarioData() {
+        return db.execute(
+            `UPDATE usuario
+             SET nombre = ?, apellido = ?, foto_perfil = ?
+             WHERE nombre_usuario = ?`,
+            [this.nombre, this.apellido, this.foto_perfil, this.nombre_usuario]
+        );
+        
+    }
 }
