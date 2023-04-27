@@ -10,31 +10,11 @@
     border-top-left-radius: 5%;
     background-color: rgb(58, 58, 58);  
   }
-  .title {
-    color: grey;
-    font-size: 18px;
-  }
-  button {
-    border: none;
-    outline: 0;
-    display: inline-block;
-    padding: 8px;
-    color: white;
-    background-color: #000;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 18px;
-  }
 
   a {
     text-decoration: none;
     font-size: 22px;
     color: black;
-  }
-
-  button:hover, a:hover {
-    opacity: 0.7;
   }
 
   .form-group {
@@ -60,7 +40,7 @@
     box-sizing: border-box;
   }
 
-  input[type="submit"] {
+  input[type='submit'] {
     width: 100%;
     background-color: rgba(31, 93, 240, 0.7);
     color: white;
@@ -70,7 +50,7 @@
     font-size: 16px;
   }
 
-  input[type="submit"]:hover {
+  input[type='submit']:hover {
     opacity: 0.7;
   }
 
@@ -90,85 +70,91 @@
     font-size: larger;
   }
 
+  .title{
+    color: azure;
+    font-size: 15px;
+  }
+
 </style>
+
 <br>
-<a href="/perfil/ver_info" class="back-button"> < Volver atrás</a>
-<div class="card-profile">
-  <h1 class="title is-2" style="color: aliceblue;">Editar información de cliente</h1>
+<a href='/perfil/ver_info' class='back-button'> < Volver atrás</a>
+<div class='card-profile'>
+  <h1 class='title is-2'>Editar información de cliente</h1>
 
   <% if (cliente) { %>
-    <form method="POST" action="/perfil/editar_info" enctype="multipart/form-data" onsubmit="return confirmarCambios();">
+    <form method='POST' action='/perfil/editar_info' enctype='multipart/form-data' onsubmit='return confirmarCambios();'>
 
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+      <input type='hidden' name='_csrf' value='<%= csrfToken %>' >
 
-      <div class="form-group">
-      <input type="hidden" name="id" value="<%= id %>" >
+      <div class='form-group'>
+      <input type='hidden' name='id' value='<%= id %>' >
       </div>
 
-      <div class="form-group">
-        <label for="nombre">Nombre de usuario</label>
-        <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" placeholder="<%= usuario.nombre %>" maxlength="30" required>
+      <div class='form-group'>
+        <label for='nombre'>Nombre de usuario</label>
+        <input type='text' id='nombre' name='nombre' value='<%= usuario.nombre %>' placeholder='<%= usuario.nombre %>' maxlength='30' required>
       </div>
 
-      <div class="form-group">
-        <label for="apellido">Apellido de usuario</label>
-        <input type="text" id="apellido" name="apellido" value="<%= usuario.apellido %>" placeholder="<%= usuario.apellido %>" maxlength="30"  required>
+      <div class='form-group'>
+        <label for='apellido'>Apellido de usuario</label>
+        <input type='text' id='apellido' name='apellido' value='<%= usuario.apellido %>' placeholder='<%= usuario.apellido %>' maxlength='30'  required>
       </div>
 
-      <div class="form-group">
-        <label for="imagen">Foto de perfil</label>
-        <input type="file" id="imagen" name="imagen">
+      <div class='form-group'>
+        <label for='imagen'>Foto de perfil</label>
+        <input type='file' id='imagen' name='imagen'>
       </div>
 
-      <div class="form-group">
-        <label for="sexo">Sexo:</label>
-        <select name="sexo" id="sexo">
-            <option value="M" <% if (cliente.sexo === 'M') { %> selected <% } %>>Masculino</option>
-            <option value="F" <% if (cliente.sexo === 'F') { %> selected <% } %>>Femenino</option>
+      <div class='form-group'>
+        <label for='sexo'>Sexo:</label>
+        <select name='sexo' id='sexo'>
+            <option value='M' <% if (cliente.sexo === 'M') { %> selected <% } %>>Masculino</option>
+            <option value='F' <% if (cliente.sexo === 'F') { %> selected <% } %>>Femenino</option>
         </select><br><br>
       </div>
 
-      <div class="form-group">
-        <label for="alturaInic">Altura (m):</label>
+      <div class='form-group'>
+        <label for='alturaInic'>Altura (m):</label>
       <% if (cliente.alturaInic) { %>
-        <input type="number" name="alturaInic" id="alturaInic" placeholder="<%= cliente.alturaInic.toFixed(2) %>" value="<%= cliente.alturaInic.toFixed(2) %>" step="0.01" min="1.00" max="3.50" required><br><br>
+        <input type='number' name='alturaInic' id='alturaInic' placeholder='<%= cliente.alturaInic.toFixed(2) %>' value='<%= cliente.alturaInic.toFixed(2) %>' step='0.01' min='1.00' max='3.50' required><br><br>
       <% } else { %>
-        <input type="number" name="alturaInic" id="alturaInic" placeholder="Altura" step="0.01" min="1.00" max="3.99" required><br><br>
+        <input type='number' name='alturaInic' id='alturaInic' placeholder='Altura' step='0.01' min='1.00' max='3.99' required><br><br>
       <% } %>
       </div>
 
-      <div class="form-group">
-        <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+      <div class='form-group'>
+        <label for='fecha_nacimiento'>Fecha de nacimiento:</label>
         <% if (cliente.fecha_nacimiento) { %>
-          <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<%= cliente.fecha_nacimiento.toISOString().substr(0,10) %>" required><br><br>
+          <input type='date' name='fecha_nacimiento' id='fecha_nacimiento' value='<%= cliente.fecha_nacimiento.toISOString().substr(0,10) %>' required><br><br>
         <% } else { %>
-          <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="" required><br><br>
+          <input type='date' name='fecha_nacimiento' id='fecha_nacimiento' value='' required><br><br>
         <% } %>
       </div>
-
-      <div class="form-group">
-        <label for="objetivo">Objetivo:</label>
-        <select name="objetivo" id="objetivo">
+      
+      <div class='form-group'>
+        <label for='objetivo'>Objetivo:</label>
+        <select name='objetivo' id='objetivo'>
           <% objetivos.forEach(function(objetivo) { %>
-            <option value="<%= objetivo.id_obj %>" <% if (cliente.id_obj === objetivo.id_obj) { %> selected <% } %>>
+            <option value='<%= objetivo.id_obj %>' <% if (cliente.id_obj === objetivo.id_obj) { %> selected <% } %>>
               <%= objetivo.nombre_obj %>
             </option>
           <% }); %>
         </select><br><br>
       </div>
 
-      <div class="form-group">
-        <label for="nivelFisico">Escoge la opción que más te describa:</label>
-        <select name="nivelFisico" id="nivelFisico">
+      <div class='form-group'>
+        <label for='nivelFisico'>Escoge la opción que más te describa:</label>
+        <select name='nivelFisico' id='nivelFisico'>
           <% nivelesFisicos.forEach(function(nivelFisico) { %>
-            <option value="<%= nivelFisico.id_niv %>" <% if (cliente.id_niv === nivelFisico.id_niv) { %> selected <% } %>>
+            <option value='<%= nivelFisico.id_niv %>' <% if (cliente.id_niv === nivelFisico.id_niv) { %> selected <% } %>>
               <%= nivelFisico.descripcion_niv %>
             </option>
             <% }); %>
         </select><br><br>
       </div>
 
-      <input type="submit" value="Guardar cambios">
+      <input type='submit' value='Guardar cambios'>
     </form>
     <% } else { %>
       <p>No se pudo encontrar la información del cliente.</p>
@@ -177,8 +163,8 @@
 
   <script>
     function confirmarCambios() {
-      return confirm("¿Estás seguro de guardar los cambios?");
+      return confirm('¿Estás seguro de guardar los cambios?');
     }
   </script>
-  
+
 <%- include('../includes/foot.ejs');  %>
