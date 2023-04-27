@@ -157,15 +157,17 @@
                                 <% const fecha = new Date(registro.fecha); %>
                                 <%= fecha.getDate().toString().padStart(2, '0') %>/<%= (fecha.getMonth() + 1).toString().padStart(2, '0') %>/<%= fecha.getFullYear() %>
                             </th>
-                            <td> <%= registro.nombre %></td>
+                            <td> <%= registro.nombre %> 
+                                <input type="hidden" name="name_med" id="name_med" value="<%= registro.nombre %>">
+                            </td>
                             <td> <%= registro.medida.toFixed(1) %></td>
                             <td> 
                                 <i class="fas fa-edit edit-icon" onclick="editRow(this)"></i>
                                 <i class="fas fa-check" style="display:none;" onclick="submitEditForm(this)"></i>
                             </td>
                             <td> 
-                                <input type="hidden" name="name_med" id="name_med" value="<%= registro.nombre %>">
-                                <i class="fas fa-times delete-icon" data-fehca=""="<%= registro.fecha %>" onclick="openDeletePopup(this, 'popup-delete')"></i>
+                                
+                                <i class="fas fa-times delete-icon" data-nombre = "<%= registro.nombre %>" data-fecha="<%= registro.fecha%>" onclick="openDeletePopup(this, 'popup-delete')"></i>
                                 <i class="fas fa-undo" style="display:none;" onclick="cancelEdit(this)"></i>
                             </td>
                             </tr>
@@ -176,6 +178,7 @@
                 </tbody>
             </table>
             <form action="/progreso/eliminar" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <input type="hidden" name="delete_fecha" id="delete_fecha">
                 <input type="hidden" name="delete_id_medicion" id="delete_id_medicion"> 
                 <div class ="popup" id="popup-delete">
@@ -203,15 +206,15 @@
         }
     
         function openDeletePopup(deleteElement, popupId) {
-            const createdAt = deleteElement.getAttribute('data-fecha');
-            document.getElementById('delete_created_at').value = createdAt;
+            const fecha= deleteElement.getAttribute('data-fecha');
+            document.getElementById('delete_fecha').value = fecha;
+            let id_m = 0;
 
-            let nombreM = document.getElementById('name_med').value;
-            medidas.forEach(medida => { 
-                console.log(medida.tipo);
-                console.log(nombreM);               
-                if (" "+medida.tipo == nombreM){
-                    let id_m= medida.id_medicion;
+            let nombreM = deleteElement.getAttribute('data-nombre')
+            console.log(nombreM);
+            medidas.forEach(medida => {               
+                if (medida.tipo == nombreM){
+                    id_m= medida.id_medicion;
                     console.log(id_m);
                 }
             })

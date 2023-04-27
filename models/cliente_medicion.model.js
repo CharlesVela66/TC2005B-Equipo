@@ -11,6 +11,7 @@ module.exports = class RegistroMedida {
     save() {
         return db.execute(`
             INSERT INTO clientemedicion (id_cliente, fecha, id_medicion, medida)
+            
             VALUES (?, ?, ?, ?)
         `, [this.id_cliente, this.fecha, this.id_medicion, this.medida]);
     }
@@ -24,13 +25,13 @@ module.exports = class RegistroMedida {
         `, [this.fecha, this.medida, this.id_cliente, fecha_ant,this.id_medicion]);
     }
 
-    static delete(id_cliente, created_at, id_medicion){
+    static delete(id_cliente, fecha, id_medicion){
         return db.execute(`
             DELETE FROM clientemedicion
             WHERE id_cliente = ?
-            AND created_at = ?
+            AND fecha = ?
             AND id_medicion = ?
-        `, [id_cliente, created_at, id_medicion])
+        `, [id_cliente, fecha, id_medicion])
     }
 
     static fetchAll(username) {
