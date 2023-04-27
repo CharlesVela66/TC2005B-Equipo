@@ -23,6 +23,46 @@ exports.get_progreso = (request,response,next) => {
         })
     }) 
     .catch((error) => {console.log(error)});
+}
 
-    
+exports.editar = (request,response,next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([rows, fieldData]) => {
+            // Se crea un nuevo registro de bitacora
+            const medida = parseInt(request.body.id_medicion);
+            const medidaFloat = parseFloat(request.body.edit_medida);
+
+            const registro = new ClienteMedidas({
+                id_cliente: rows[0].id_cliente,
+                fecha: request.body.edit_fecha,
+                id_medicion: medida,
+                medida: medidaFloat
+            });
+            console.log(request.body.fecha_ant);
+            console.log(registro);
+            // Se actualiza en la base de datos
+            registro.update(request.body.fecha_ant)
+            .then(([rows, fieldData]) => {
+                //Redericciona al usuario a la bitacora
+                response.redirect('/progreso');
+            })
+            .catch((error) => {console.log(error)}); 
+    })
+    .catch((error) => {console.log(error)});
+}
+
+exports.eliminar = (request, response, next) => {
+    Cliente.fetchOne(request.session.nombre_usuario)
+    .then(([rows, fieldData]) => {
+            // Se elimina de la base de datos
+            const medida = parseInt(delete_id_medicion);
+            ClienteMedidas.delete(rows[0].id_cliente, delete_fecha, medida)
+            .then(([rows, fieldData]) => {
+                //Redericciona al usuario a la bitacora
+                response.redirect('/progreso');
+            })
+            .catch((error) => {console.log(error)});
+        
+    })
+    .catch((error) => {console.log(error)});
 }

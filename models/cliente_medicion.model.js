@@ -15,6 +15,24 @@ module.exports = class RegistroMedida {
         `, [this.id_cliente, this.fecha, this.id_medicion, this.medida]);
     }
 
+    update(fecha_ant) {
+        return db.execute(`
+            UPDATE clientemedicion SET fecha = ?, medida = ?
+            WHERE id_cliente = ?
+            AND fecha = ?
+            AND id_medicion = ?
+        `, [this.fecha, this.medida, this.id_cliente, fecha_ant,this.id_medicion]);
+    }
+
+    static delete(id_cliente, created_at, id_medicion){
+        return db.execute(`
+            DELETE FROM clientemedicion
+            WHERE id_cliente = ?
+            AND created_at = ?
+            AND id_medicion = ?
+        `, [id_cliente, created_at, id_medicion])
+    }
+
     static fetchAll(username) {
         return db.execute(`
             SELECT fecha,m.tipo AS 'nombre', medida, m.id_medicion
@@ -23,7 +41,7 @@ module.exports = class RegistroMedida {
             AND u.id_usuario = c.id_usuario
             AND cm.id_medicion = m.id_medicion
             AND u.nombre_usuario = ?
-            ORDER BY m.tipo ASC,fecha DESC;
+            ORDER BY fecha DESC;
         `, [username]);
     }
 
