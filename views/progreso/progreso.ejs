@@ -157,16 +157,14 @@
                                 <% const fecha = new Date(registro.fecha); %>
                                 <%= fecha.getDate().toString().padStart(2, '0') %>/<%= (fecha.getMonth() + 1).toString().padStart(2, '0') %>/<%= fecha.getFullYear() %>
                             </th>
-                            <td> <%= registro.nombre %> 
-                                <input type="hidden" name="name_med" id="name_med" value="<%= registro.nombre %>">
-                            </td>
+                            <td> <%= registro.nombre %></td>
                             <td> <%= registro.medida.toFixed(1) %></td>
                             <td> 
                                 <i class="fas fa-edit edit-icon" onclick="editRow(this)"></i>
                                 <i class="fas fa-check" style="display:none;" onclick="submitEditForm(this)"></i>
                             </td>
                             <td> 
-                                
+                                <input type="hidden" name="name_med" id="name_med" value="<%= registro.nombre %>">
                                 <i class="fas fa-times delete-icon" data-nombre = "<%= registro.nombre %>" data-fecha="<%= registro.fecha%>" onclick="openDeletePopup(this, 'popup-delete')"></i>
                                 <i class="fas fa-undo" style="display:none;" onclick="cancelEdit(this)"></i>
                             </td>
@@ -251,7 +249,9 @@
     
             let medidaId = document.getElementById("medidaId");
             
-            medidas.forEach(medida => {             
+            medidas.forEach(medida => {     
+                console.log(medida.tipo);
+                console.log(cells[1].textContent);      
                 if (" "+medida.tipo == cells[1].textContent){
                     medidaId.value = medida.id_medicion;
                     console.log(medidaId.value);
