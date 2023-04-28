@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-goatech.alwaysdata.net
--- Generation Time: Apr 19, 2023 at 04:50 PM
+-- Generation Time: Apr 27, 2023 at 06:40 AM
 -- Server version: 10.6.11-MariaDB
 -- PHP Version: 7.4.19
 
@@ -21,6 +21,43 @@ SET time_zone = "+00:00";
 -- Database: `goatech_onyx`
 --
 
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`goatech`@`%` PROCEDURE `actualizar_alimento_en_dieta` (IN `dieta_id` INT(11), IN `dietaalimento_id` INT(11), IN `dieta_nombre` VARCHAR(50), IN `dieta_medida` VARCHAR(50), IN `dieta_cantidad` INT(5))   UPDATE dietasalimentos SET 
+  nombre = IFNULL(dieta_nombre, nombre), 
+  medida = IFNULL(dieta_medida, medida), 
+  cantidad = IFNULL(dieta_cantidad, cantidad)
+WHERE id_dietaalimento = dietaalimento_id AND id_dieta = dieta_id$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `agregar_alimento_dieta` (IN `dieta_id` INT(11), IN `dieta_nombre` VARCHAR(50), IN `dieta_medida` VARCHAR(50), IN `dieta_cantidad` INT(5))   INSERT INTO dietasalimentos(id_dieta, nombre, medida, cantidad)VALUES (dieta_id, dieta_nombre, dieta_medida, dieta_cantidad)$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `agregar_ejercicio_rutina` (IN `rutina_id` INT(11), IN `ejercicio_id` INT(11))   INSERT INTO rutinaejercicio (id_rutina, id_ejercicio) VALUES (rutina_id, ejercicio_id)$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `editar_dieta` (IN `dieta_id` INT(11), IN `dieta_nombre` VARCHAR(25), IN `dieta_tipo` VARCHAR(15), IN `dieta_Url_image` TEXT)   UPDATE dieta SET 
+  nombre = IFNULL(dieta_nombre, nombre), 
+  tipo_dieta = IFNULL(dieta_tipo, tipo_dieta), 
+  Url_image = IFNULL(dieta_Url_image, Url_Image)
+WHERE id_dieta = dieta_id$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `editar_rutina` (IN `rutina_id` INT(11), IN `rutina_nombre` VARCHAR(25), IN `rutina_tipo` VARCHAR(25), IN `rutina_descripcion` TEXT, IN `rutina_url_image` TEXT)   UPDATE rutina SET 
+  nombre = IFNULL(rutina_nombre, nombre), 
+  tiporutina = IFNULL(rutina_tipo, tiporutina), 
+  descripcion = IFNULL(rutina_descripcion, descripcion), 
+  URL_Image = IFNULL(rutina_url_image, URL_Image)
+WHERE id_rutina = rutina_id$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `eliminar_alimento_dieta` (IN `dieta_id` INT(11), IN `dieta_nombre` VARCHAR(50), IN `dieta_medida` VARCHAR(50), IN `dieta_cantidad` INT(5))   DELETE FROM dietasalimentos WHERE id_dieta = dieta_id AND nombre = dieta_nombre AND medida = dieta_medida AND cantidad = dieta_cantidad$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `eliminar_dieta` (IN `dieta_id` INT(11))   DELETE FROM dieta WHERE id_dieta = dieta_id$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `eliminar_ejercicio_rutina` (IN `rutina_id` INT(11), IN `ejercicio_id` INT(11))   DELETE FROM rutinaejercicio WHERE id_rutina = rutina_id AND id_ejercicio = ejercicio_id$$
+
+CREATE DEFINER=`goatech`@`%` PROCEDURE `eliminar_rutina` (IN `rutina_id` INT(11))   DELETE FROM rutina WHERE id_rutina = rutina_id$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -29,8 +66,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `administrador` (
   `id_admin` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL
+  `id_usuario` int(11) NOT NULL,
+  `id_obj` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Dumping data for table `administrador`
+--
+
+INSERT INTO `administrador` (`id_admin`, `id_usuario`, `id_obj`) VALUES
+(2, 37, 3),
+(3, 35, 3);
 
 -- --------------------------------------------------------
 
@@ -54,18 +100,21 @@ CREATE TABLE `bitacora` (
 
 INSERT INTO `bitacora` (`id_cliente`, `id_rutina`, `created_at`, `fecha`, `nivel_satisf`, `descripcion_sesion`, `comentarios`) VALUES
 (21, 1, '2023-03-30 01:22:49', '2023-03-20', 5, 'Todo', 'No agregó comentarios'),
-(21, 1, '2023-03-30 01:22:56', '2023-03-20', 1, 'Nada', 'No agregó comentarios'),
-(21, 1, '2023-03-30 01:23:18', '2023-03-27', 1, 'Me gusto mucho lo que hice', 'No agregó comentarios'),
-(21, 1, '2023-03-30 01:28:07', '2023-03-28', 4, 'Pierna', 'No agregó comentarios'),
-(21, 1, '2023-03-30 01:28:46', '2023-03-29', NULL, 'Brazo', 'No agregó comentarios'),
-(21, 1, '2023-04-17 19:07:54', '2023-04-17', 4, 'ramona', 'ramona'),
-(21, 2, '2023-04-11 23:36:34', '2023-04-06', NULL, 'hombro', 'No agregó comentarios'),
-(21, 3, '2023-04-12 19:01:27', '2023-04-10', 5, '4x10 Bicep Curl', 'Las pude hacer todas y termine muy cansado pero me senti muy bien'),
-(21, 3, '2023-04-12 19:34:50', '2023-04-12', 4, 'Hola', 'Hola'),
-(21, 3, '2023-04-12 19:38:17', '2023-04-12', 5, 'Hola2', 'Hola'),
-(21, 33, '2023-04-12 19:00:27', '2023-04-07', 4, '5x5 Squats 100kg', 'Me senti bien '),
-(25, 1, '2023-04-14 17:13:28', '0002-02-02', 1, 'nada', 'nada'),
-(25, 1, '2023-04-17 04:16:03', '2023-03-28', NULL, 'btn', 'bmt');
+(21, 1, '2023-03-30 01:23:18', '2023-03-27', 1, ' Me gusto mucho lo que hice', ' No agregó comentarios'),
+(21, 1, '2023-03-30 01:28:07', '2023-03-28', 5, ' Pierna', 'No siento las piernas '),
+(21, 1, '2023-03-30 01:28:46', '2023-03-29', 5, ' Brazo', ' No agregó comentarios'),
+(21, 1, '2023-04-20 20:57:26', '2023-04-01', 3, ' Hola', 'No agregó comentarios'),
+(21, 1, '2023-04-21 01:10:56', '2023-02-15', 5, 'Doppio', 'Doppio'),
+(21, 3, '2023-04-12 19:01:27', '2023-04-12', 5, ' Hola', '             Las pude hacer todas y termine muy cansado pero me senti muy bien'),
+(21, 5, '2023-04-24 02:32:47', '2023-04-07', 1, 'asdfasfd', 'asfsad'),
+(25, 1, '2023-04-20 01:44:50', '2023-04-12', 2, '   uidhthdiueuid', '   dhthb'),
+(27, 1, '2023-04-24 21:07:34', '2023-04-24', 2, ' Pecho y Espalda', 'Hola'),
+(27, 1, '2023-04-25 01:54:42', '2023-04-11', 4, 'Pierna', 'No agregó comentarios'),
+(53, 1, '2023-04-24 18:03:30', '2023-04-18', 2, 'nuibibu', 'inui'),
+(54, 1, '2023-04-24 17:52:49', '2023-04-18', 2, 'dfghj', 'vjfj'),
+(57, 1, '2023-04-24 19:06:21', '2023-04-20', 3, 'daosbaiu', 'ajnaj'),
+(57, 1, '2023-04-24 19:08:30', '2023-04-26', NULL, 'Hola', 'No agregó comentarios'),
+(62, 1, '2023-04-26 17:06:26', '2023-04-26', 5, ' Probé la página desplegada jujuju', ' Funciona bien :D');
 
 -- --------------------------------------------------------
 
@@ -81,42 +130,40 @@ CREATE TABLE `cliente` (
   `id_obj` int(11) DEFAULT NULL,
   `id_niv` int(11) DEFAULT NULL,
   `sexo` varchar(1) DEFAULT NULL,
-  `fecha_nacimiento` date NOT NULL
+  `fecha_nacimiento` date DEFAULT NULL,
+  `alturaInic` float(3,2) DEFAULT NULL,
+  `pesoInic` float(4,1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Dumping data for table `cliente`
 --
 
-INSERT INTO `cliente` (`id_cliente`, `id_usuario`, `id_rutina`, `id_dieta`, `id_obj`, `id_niv`, `sexo`, `fecha_nacimiento`) VALUES
-(1, 1, 8, 5, 3, 1, NULL, '0000-00-00'),
-(2, 1, 3, 8, 2, 3, NULL, '0000-00-00'),
-(3, 1, 7, 6, 1, 4, NULL, '0000-00-00'),
-(4, 1, 5, 3, 2, 2, NULL, '0000-00-00'),
-(5, 1, 9, 4, 2, 2, NULL, '0000-00-00'),
-(6, 1, 10, 9, 1, 3, NULL, '0000-00-00'),
-(7, 1, 5, 1, 2, 1, NULL, '0000-00-00'),
-(8, 1, 8, 7, 3, 1, NULL, '0000-00-00'),
-(9, 1, 7, 10, 2, 3, NULL, '0000-00-00'),
-(10, 1, 9, 6, 2, 4, NULL, '0000-00-00'),
-(11, 1, 8, 7, 2, 3, NULL, '0000-00-00'),
-(12, 1, 2, 1, 2, 1, NULL, '0000-00-00'),
-(13, 1, 1, 9, 2, 3, NULL, '0000-00-00'),
-(14, 1, 2, 2, 2, 2, NULL, '0000-00-00'),
-(15, 1, 10, 10, 3, 4, NULL, '0000-00-00'),
-(16, 1, 5, 5, 3, 1, NULL, '0000-00-00'),
-(17, 1, 7, 6, 2, 1, NULL, '0000-00-00'),
-(18, 1, 4, 5, 3, 4, NULL, '0000-00-00'),
-(19, 1, 10, 5, 3, 3, NULL, '0000-00-00'),
-(20, 1, 9, 6, 2, 4, NULL, '0000-00-00'),
-(21, 25, 1, 1, 2, 4, NULL, '0000-00-00'),
-(23, 34, NULL, NULL, 3, 3, NULL, '0000-00-00'),
-(24, 35, 18, 1, 3, 3, NULL, '0000-00-00'),
-(25, 36, 1, 2, 3, 3, NULL, '0000-00-00'),
-(26, 37, NULL, NULL, 1, 2, NULL, '0000-00-00'),
-(27, 38, NULL, NULL, 3, NULL, NULL, '0000-00-00'),
-(28, 39, NULL, NULL, 1, NULL, NULL, '0000-00-00'),
-(29, 40, NULL, NULL, 1, NULL, NULL, '0000-00-00');
+INSERT INTO `cliente` (`id_cliente`, `id_usuario`, `id_rutina`, `id_dieta`, `id_obj`, `id_niv`, `sexo`, `fecha_nacimiento`, `alturaInic`, `pesoInic`) VALUES
+(1, 1, 8, 5, 3, 1, NULL, '0000-00-00', NULL, NULL),
+(21, 25, NULL, 32, 3, 2, 'M', '2003-04-09', 1.70, 70.0),
+(25, 36, 6, NULL, 3, 3, NULL, '0000-00-00', NULL, NULL),
+(27, 38, NULL, NULL, 3, 3, 'M', '2001-07-05', NULL, NULL),
+(29, 40, NULL, NULL, 1, NULL, NULL, '0000-00-00', NULL, NULL),
+(50, 179, NULL, NULL, 2, NULL, 'F', '2023-04-07', 9.99, 80.0),
+(51, 180, NULL, NULL, 2, NULL, 'M', '2002-11-15', 9.99, 80.0),
+(52, 181, NULL, NULL, 2, NULL, 'F', '2023-04-20', 9.99, 80.0),
+(53, 182, NULL, NULL, 2, 2, 'F', '2023-04-21', 9.99, 80.0),
+(54, 183, NULL, NULL, 1, 2, 'M', '2023-04-19', 2.00, 1.0),
+(55, 184, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(56, 185, NULL, NULL, 2, 2, 'M', '2023-04-21', 9.99, 80.0),
+(57, 186, NULL, NULL, 2, 2, 'F', '2023-04-27', 9.99, 80.0),
+(58, 187, NULL, NULL, 3, 1, 'F', '1931-02-24', -4.00, 4.0),
+(59, 188, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(60, 189, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(61, 190, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(62, 224, NULL, 4, 2, 3, 'F', '2023-04-06', 1.63, 80.0),
+(63, 225, NULL, NULL, 3, 4, 'M', '2003-06-01', 1.73, 63.0),
+(64, 226, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(65, 227, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(66, 228, NULL, 1, 1, 3, 'M', '2023-04-19', 1.39, 50.0),
+(67, 229, NULL, NULL, 2, 2, 'F', '2023-04-26', 1.50, 63.0),
+(68, 230, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -142,35 +189,46 @@ INSERT INTO `clientemedicion` (`id_cliente`, `id_medicion`, `fecha`, `medida`) V
 (21, 1, '2023-03-31', 101.0),
 (21, 1, '2023-04-12', 0.8),
 (21, 1, '2023-04-14', 2.6),
+(21, 1, '2023-04-20', 100.0),
 (21, 2, '2023-03-24', 10.0),
 (21, 2, '2023-03-29', 999.9),
 (21, 2, '2023-04-14', 1.6),
+(21, 2, '2023-04-20', 30.0),
 (21, 3, '2023-03-24', 10.0),
 (21, 3, '2023-03-28', 999.9),
 (21, 3, '2023-03-29', 999.9),
+(21, 3, '2023-04-20', 1.0),
 (21, 4, '2023-03-24', 10.0),
 (21, 4, '2023-03-28', 10.0),
 (21, 4, '2023-03-29', 999.9),
 (21, 4, '2023-04-12', 33.0),
 (21, 4, '2023-04-17', 1.0),
+(21, 4, '2023-04-20', 100.0),
 (21, 5, '2023-03-24', 10.0),
 (21, 5, '2023-03-29', 999.9),
+(21, 5, '2023-04-20', 30.0),
 (21, 6, '2023-03-24', 10.0),
 (21, 6, '2023-03-29', 999.9),
 (21, 6, '2023-04-12', 1.8),
+(21, 6, '2023-04-20', 100.0),
 (21, 7, '2023-03-24', 10.0),
 (21, 7, '2023-03-29', 999.9),
 (21, 7, '2023-04-12', 0.7),
+(21, 7, '2023-04-20', 99.0),
 (21, 8, '2023-03-24', 10.0),
 (21, 8, '2023-03-29', 999.9),
+(21, 8, '2023-04-20', 25.0),
 (21, 9, '2023-03-24', 10.0),
 (21, 9, '2023-03-29', 67.0),
+(21, 9, '2023-04-20', 60.0),
 (21, 10, '2023-03-24', 71.1),
 (21, 10, '2023-03-29', 999.9),
 (21, 10, '2023-04-12', 60.0),
+(21, 10, '2023-04-20', 999.9),
 (21, 11, '2023-03-24', 10.0),
 (21, 11, '2023-03-29', 999.9),
 (21, 11, '2023-04-12', 1.0),
+(21, 11, '2023-04-20', 540.0),
 (25, 1, '2023-03-28', 3.0),
 (25, 1, '2023-03-29', 999.9),
 (25, 1, '2023-03-30', 727.0),
@@ -184,13 +242,15 @@ INSERT INTO `clientemedicion` (`id_cliente`, `id_medicion`, `fecha`, `medida`) V
 (25, 4, '2023-04-18', 12.0),
 (25, 5, '2023-03-28', 3.0),
 (27, 1, '2023-03-30', 18.0),
-(27, 1, '2023-04-13', 85.0),
+(27, 1, '2023-04-13', 30.0),
 (27, 2, '2023-03-30', 876.0),
 (27, 2, '2023-04-13', 1.6),
 (27, 3, '2023-03-30', 7.0),
-(27, 3, '2023-04-13', 3.5),
-(27, 4, '2023-03-30', 8.0),
-(27, 4, '2023-04-13', 85.0),
+(27, 3, '2023-04-14', 9.0),
+(27, 4, '2023-03-30', 20.0),
+(27, 4, '2023-04-13', 27.0),
+(27, 4, '2023-04-26', 50.0),
+(27, 4, '2023-04-30', 40.0),
 (27, 5, '2023-03-30', 9.0),
 (27, 6, '2023-03-30', 10.0),
 (27, 7, '2023-03-30', 11.0),
@@ -198,7 +258,18 @@ INSERT INTO `clientemedicion` (`id_cliente`, `id_medicion`, `fecha`, `medida`) V
 (27, 8, '2023-03-30', 12.0),
 (27, 9, '2023-03-30', 13.0),
 (27, 10, '2023-03-30', 14.0),
-(27, 11, '2023-03-30', 15.0);
+(27, 11, '2023-03-30', 15.0),
+(62, 1, '2023-04-26', 8.0),
+(62, 2, '2023-04-26', 5.0),
+(62, 3, '2023-04-26', 2.0),
+(62, 4, '2023-04-26', 1.0),
+(62, 5, '2023-04-26', 4.0),
+(62, 6, '2023-04-26', 11.0),
+(62, 7, '2023-04-26', 10.0),
+(62, 8, '2023-04-26', 6.0),
+(62, 9, '2023-04-26', 7.0),
+(62, 10, '2023-04-26', 9.0),
+(62, 11, '2023-04-26', 3.0);
 
 -- --------------------------------------------------------
 
@@ -221,7 +292,6 @@ CREATE TABLE `dieta` (
 
 INSERT INTO `dieta` (`id_dieta`, `nombre`, `tipo_dieta`, `id_macro`, `id_micro`, `Url_image`) VALUES
 (1, 'Rico pollo', 'Aumento peso', 1, 1, 'https://www.iocir.com/wp-content/uploads/2020/10/diet-food-PUD4BCL.jpg'),
-(2, 'Pollo', 'Mantner peso', 6, 3, 'https://www.iocir.com/wp-content/uploads/2020/10/diet-food-PUD4BCL.jpg'),
 (3, 'Ensalada Cesar', 'Bajar peso', 3, 10, 'https://www.iocir.com/wp-content/uploads/2020/10/diet-food-PUD4BCL.jpg'),
 (4, 'Pescado', 'Mantener', 4, 12, 'https://www.iocir.com/wp-content/uploads/2020/10/diet-food-PUD4BCL.jpg'),
 (5, 'Dieta detox', 'Ganar masa', 5, 8, 'https://www.iocir.com/wp-content/uploads/2020/10/diet-food-PUD4BCL.jpg'),
@@ -245,7 +315,14 @@ INSERT INTO `dieta` (`id_dieta`, `nombre`, `tipo_dieta`, `id_macro`, `id_micro`,
 (23, 'Pollo Pollo', '', 30, 32, ''),
 (24, 'Pollo Pollo 2', '', 31, 33, ''),
 (25, 'Pollo Pollo 3', '', 32, 34, ''),
-(26, 'Pollo Pollo 4', '', 33, 35, '');
+(26, 'Pollo Pollo 4', '', 33, 35, ''),
+(27, 'Frutas ricas', '', 34, 36, ''),
+(28, 'Dieta chida chidoris', '', 35, 37, ''),
+(29, 'Dieta cool', '', 36, 38, ''),
+(30, 'Dieta de pruebarrrrrrrrrr', '', 37, 39, ''),
+(31, 'Dieta1', '', 38, 40, ''),
+(32, 'Pollo y Ensalada', '', 39, 41, ''),
+(34, 'friiiiijoles', '', 41, 43, '');
 
 -- --------------------------------------------------------
 
@@ -269,7 +346,19 @@ INSERT INTO `dietasalimentos` (`id_dietaalimento`, `id_dieta`, `nombre`, `medida
 (1, 25, '', '', 0),
 (2, 26, 'Pollo', 'Gramos', 1),
 (3, 26, 'Pollo', 'Miligramos', 100),
-(4, 26, 'Pollo', 'Kilogramos', 10);
+(4, 26, 'Pollo', 'Kilogramos', 10),
+(5, 27, 'Mando', 'Gramoooos', 2),
+(6, 28, 'Alimento chido', 'Medida chida', 10),
+(7, 29, 'Higo', 'Piezaaas', 5),
+(8, 30, 'Frijoloooooooooooooooooooooooooooooooooooooooooooo', 'Miligramo', 235),
+(9, 31, 'Arroz', 'Gramo', 234),
+(10, 32, 'Pollo', 'Piezas', 10),
+(11, 32, 'Zanahoria', 'Piezas', 5),
+(12, 32, 'Tomate', 'Piezas', 5),
+(13, 32, 'Ensalada', 'Gramos', 500),
+(14, 32, 'Lechuga', 'Gramos', 200),
+(16, 34, 'habichuela', 'granos', 3),
+(17, 34, 'Manzana', 'Unidad', 3);
 
 -- --------------------------------------------------------
 
@@ -287,19 +376,13 @@ CREATE TABLE `dietasfavoritas` (
 --
 
 INSERT INTO `dietasfavoritas` (`id_cliente`, `id_dieta`) VALUES
-(1, 1),
-(1, 3),
-(2, 10),
-(3, 4),
-(4, 2),
-(5, 9),
-(6, 3),
-(7, 10),
-(8, 5),
-(9, 6),
-(10, 9),
-(21, 2),
-(21, 3);
+(21, 1),
+(25, 1),
+(25, 9),
+(51, 1),
+(53, 1),
+(56, 1),
+(57, 1);
 
 -- --------------------------------------------------------
 
@@ -321,18 +404,17 @@ CREATE TABLE `ejercicio` (
 INSERT INTO `ejercicio` (`id_ejercicio`, `descripcion`, `descripcion_ejercicio`, `video_ejercicio`) VALUES
 (1, 'Curt de bicep', '', 'Video demostrativo'),
 (2, 'Lagartijas', '', 'Video demostrativo'),
-(3, 'Abdominal', 'Ejercicio que trabaja la area', 'https://www.youtube.com/embed/WnoCFnIiQHw'),
+(3, 'Abdominal', 'Ejercicio que trabaja la area kdhoekth.ikuohti euthieuhtkieuthkieutijhdewhxjmhmwbk xjkmw bjkx kjw', ''),
 (4, 'Remo', '', 'Video demostrativo'),
 (5, 'Plancha', '', 'Video demostrativo'),
 (6, 'Sentadillas', '', 'Video demostrativo'),
-(7, 'Dominadas', '', 'Video demostrativo'),
+(7, 'Dominadas', 'Ejercicio que consiste en poner tus manos sobre la banca y flexionar las codos para estimular la zona del tricep', 'Video demostrativo'),
 (8, 'Press de pecho', '', 'Video demostrativo'),
-(9, 'Martillos', '', 'Video demostrativo'),
+(9, 'Martillos', 'Ejercicio que consiste en usar mancuernas, fijar los codos y mover los antebrazos hacia arriba sin mover los codos', 'Video demostrativo'),
 (10, 'Elevaciones de piernas', '', 'Video demostrativo'),
 (11, 'Caminadora', '', 'Video demostrativo'),
 (12, 'Bicicleta de piso', '', 'Video demostrativo'),
 (13, 'Extension de tricep', '', 'Video demostrativo'),
-(14, 'Fondos', '', 'Video demostrativo'),
 (15, 'Press Militar', '', 'Video demostrativo'),
 (16, 'Peso Muerto', '', 'Video demostrativo'),
 (17, 'Remo invertido', '', 'Video demostrativo'),
@@ -342,16 +424,29 @@ INSERT INTO `ejercicio` (`id_ejercicio`, `descripcion`, `descripcion_ejercicio`,
 (21, 'sentar', '', 'Video demostrativo'),
 (22, 'bulgarian split squad', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
 (107, 'Micheal', '', 'https://www.youtube.com/embed/n3qQtSRmHxo'),
-(108, 'uidhdik', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
-(109, 'uidhxk', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
 (112, 'volar', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
-(128, 'oeuidhdiueoeuidbhmbxkjueoeuidhxikjueoeui', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
-(129, 'Ab', '', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
-(130, 'alo', 'ueuteonuhoetnuhtnoeuhnothnouhontuhneotuhntuhnotuhnuhonuonuhonthtnehuetunoebjbhobnebueothtnohutohuntountohutnohunthunto uthtnuheont uhontu oenhuneto ntoh ntoeh untoe untoeh unoeh unoeh untoehntoeunt oentuhentu otunt hunoth une unoh unote huo', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
+(129, 'Ab', 'euidht', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
+(130, 'aeli', 'ueuteonuhoetnuhtnoeuhnothnouhontuhneotuhntuhnotuhnuhonuonuhonthtnehuetunoebjbhobnebueothtnohutohuntountohutnohunthunto uthtnuheont uhontu oenhuneto ntoh ntoeh untoe untoeh unoeh unoeh untoehntoeunt oentuhentu otunt hunoth une unoh unote huo', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
 (131, 'al', 'uidh567', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
 (132, 'Squats', 'Sentar', 'https://www.youtube.com/embed/BjixzWEw4EY'),
 (133, 'Squatss', 'sssue', 'https://www.youtube.com/embed/U7cGjV37rbk'),
-(134, 'aaaaaaaa', 'aaaa', 'https://www.youtube.com/embed/WnoCFnIiQHw');
+(134, 'aaaaaaaaáoeuihduiuihdthiduiuihdtiufheidh', 'aaaaehduhtdihtithithithithithithithiththithithithihtithdthdntd', 'https://www.youtube.com/embed/WnoCFnIiQHw'),
+(136, 'Press Frances', 'Un ejercicio chido', 'https://www.youtube.com/embed/PTO862T8U7Y'),
+(138, 'ejercicio x', 'este tiene 4 series 3 repeticiones', 'https://www.youtube.com/embed/WnoCFnIiQHw'),
+(139, 'aaaa', 'aaa', ''),
+(141, 'aaaxaxa', 'aaa', 'https://www.youtube.com/embed/WnoCFnIiQHw'),
+(142, 'hhe', 'ehe', 'https://www.youtube.com/embed/PTO862T8U7Y'),
+(143, 'pez frances', 'pez', ''),
+(144, 'ála', 'ala', 'https://www.youtube.com/embed/PTO862T8U7Y'),
+(145, 'euidhthdiuxbhtgfyuxdhtcgfiujkxhdiudhdiuj', 'iudhqeuidhdiujeukidhthdiujidhthdiujkidhthdiueuidhdiueuidthiduijddthiduijdkhdthiudjkihdthiduijqjihdixjkqjxkbxwmkxbjkmkjbxkmxkxjkbmxkbxkmbxkmjxjbxjbxbjjbxjbjbxjbxjbxjxjbxjbjxbbbxjbxjbjbx', ''),
+(146, 'aaaaaaaaxaxxa', 'dededededieohektheudtheudneuhkdenhtduendeuntudenudoentudoenudntuoetnhduoenudnudontdondoudonudndunudnednedkhnteidtdhuduhkdhtdkhdkhudkuhkdhdhdkuhdkhudhdkhkdhjkdhkdhkdhkdhjkdjkjkjkjkujkjkjkkdkhedkhedkthdkthdtkhexkthjxthkxjkth djthd thjqdc uexk', ''),
+(148, 'bb', 'kok jtnkhneukhnotkhntohkntohknthkeuntkeokokkokoekoekoekokbhxdkuqhttnkdtuhutueodktnukdntouontkdontontko', ''),
+(149, 'ave', 'thdtehnththutenhtuhehnsuthdnehdhionehandinohsatdhpinuhndihnhuidhneuhanhutnohdtoeuidheuidheuidejukixdiueuiiuiiuuixixxxkxddududududududududu', ''),
+(150, 'bbbbb', 'b', ''),
+(151, 'b', 'thkhbtnkutbnkutnbkuntkuntbntbmkntb kntbk untb knmbnmb nmntbkunmbukxmkubnmtkubtnkumnbumbntbmkwmbnxuknmbkunmbknmbk entmbe ktnmb ekntbmek ntmbek btnmek nbtm eknmb eknbtmk btn kenbt ke', 'https://www.youtube.com/embed/WnoCFnIiQHw'),
+(152, 'ababababa', 'ababba', ''),
+(153, 'aprue', 'a', 'https://www.youtube.com/embed/iQ3g-gqKe_A'),
+(157, 'juutuut', 'keueue', '');
 
 -- --------------------------------------------------------
 
@@ -404,7 +499,15 @@ INSERT INTO `macronutrientes` (`id_macro`, `calorias`, `proteinas`, `carbohidrat
 (30, 0, 0, 0, 0),
 (31, 0, 0, 0, 0),
 (32, 0, 0, 0, 0),
-(33, 0, 0, 0, 0);
+(33, 0, 0, 0, 0),
+(34, 234, 124, 423, 244),
+(35, 27, 19, 29, 40),
+(36, 2354, 2147483647, 2147483647, 2147483647),
+(37, 324325323, 2147483647, 3523525, 2147483647),
+(38, 242, 423423, 3423, 4234),
+(39, 1000, 95, 142, 95),
+(40, 4000, 1, 1, 1),
+(41, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -414,7 +517,7 @@ INSERT INTO `macronutrientes` (`id_macro`, `calorias`, `proteinas`, `carbohidrat
 
 CREATE TABLE `medicion` (
   `id_medicion` int(11) NOT NULL,
-  `tipo` varchar(20) NOT NULL
+  `tipo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
@@ -424,13 +527,13 @@ CREATE TABLE `medicion` (
 INSERT INTO `medicion` (`id_medicion`, `tipo`) VALUES
 (1, 'Cuello'),
 (2, 'Pecho'),
-(3, 'BrazoIzq'),
-(4, 'BrazoDer'),
+(3, 'Brazo Izquierdo'),
+(4, 'Brazo Derecho'),
 (5, 'Cintura'),
-(6, 'PiernaIzq'),
-(7, 'PiernaDer'),
-(8, 'PantorrillaIzq'),
-(9, 'PantorrillaDer'),
+(6, 'Pierna Izquierda'),
+(7, 'Pierna Derecha'),
+(8, 'Pantorrilla Izquierda'),
+(9, 'Pantorrilla Derecha'),
 (10, 'Peso'),
 (11, 'Cadera');
 
@@ -442,28 +545,28 @@ INSERT INTO `medicion` (`id_medicion`, `tipo`) VALUES
 
 CREATE TABLE `micronutrientes` (
   `id_micro` int(11) NOT NULL,
-  `ceniza` float(5,1) DEFAULT NULL,
-  `fibra_total` float(5,1) DEFAULT NULL,
-  `calcio` float(5,1) DEFAULT NULL,
-  `fosforo` float(5,1) DEFAULT NULL,
-  `hierro` float(5,1) DEFAULT NULL,
-  `tiamina` float(5,1) DEFAULT NULL,
-  `riboflavina` float(5,1) DEFAULT NULL,
-  `niacina` float(5,1) DEFAULT NULL,
-  `vit_c` float(5,1) DEFAULT NULL,
-  `vit_a` float(5,1) DEFAULT NULL,
-  `acgrasosmin` float(5,1) DEFAULT NULL,
-  `acgrasospoli` float(5,1) DEFAULT NULL,
-  `acgrasossat` float(5,1) DEFAULT NULL,
-  `colesterol` float(5,1) DEFAULT NULL,
-  `potasio` float(5,1) DEFAULT NULL,
-  `sodio` float(5,1) DEFAULT NULL,
-  `zinc` float(5,1) DEFAULT NULL,
-  `magnesio` float(5,1) DEFAULT NULL,
-  `vit_b6` float(5,1) DEFAULT NULL,
-  `vit_b12` float(5,1) DEFAULT NULL,
-  `acfolico` float(5,1) DEFAULT NULL,
-  `folatoeq` float(5,1) DEFAULT NULL
+  `ceniza` int(5) DEFAULT NULL,
+  `fibra_total` int(5) DEFAULT NULL,
+  `calcio` int(5) DEFAULT NULL,
+  `fosforo` int(5) DEFAULT NULL,
+  `hierro` int(5) DEFAULT NULL,
+  `tiamina` int(5) DEFAULT NULL,
+  `riboflavina` int(5) DEFAULT NULL,
+  `niacina` int(5) DEFAULT NULL,
+  `vit_c` int(5) DEFAULT NULL,
+  `vit_a` int(5) DEFAULT NULL,
+  `acgrasosmin` int(5) DEFAULT NULL,
+  `acgrasospoli` int(5) DEFAULT NULL,
+  `acgrasossat` int(5) DEFAULT NULL,
+  `colesterol` int(5) DEFAULT NULL,
+  `potasio` int(5) DEFAULT NULL,
+  `sodio` int(5) DEFAULT NULL,
+  `zinc` int(5) DEFAULT NULL,
+  `magnesio` int(5) DEFAULT NULL,
+  `vit_b6` int(5) DEFAULT NULL,
+  `vit_b12` int(5) DEFAULT NULL,
+  `acfolico` int(5) DEFAULT NULL,
+  `folatoeq` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
@@ -471,41 +574,49 @@ CREATE TABLE `micronutrientes` (
 --
 
 INSERT INTO `micronutrientes` (`id_micro`, `ceniza`, `fibra_total`, `calcio`, `fosforo`, `hierro`, `tiamina`, `riboflavina`, `niacina`, `vit_c`, `vit_a`, `acgrasosmin`, `acgrasospoli`, `acgrasossat`, `colesterol`, `potasio`, `sodio`, `zinc`, `magnesio`, `vit_b6`, `vit_b12`, `acfolico`, `folatoeq`) VALUES
-(1, 4523.1, 1253.1, 1234.2, 3728.3, 32.2, 123.2, 2.1, 3.0, 4.0, 9.2, 293.0, 345.2, 2352.0, 3552.2, 23.0, 2124.0, 2344.0, 21.0, 232.0, 6.0, 23.0, 24.0),
-(2, 234.2, 312.0, 23.0, 56.0, 789.0, 847.3, 234.2, 2134.0, 234.2, 25.0, 493.0, 954.0, 34.3, 492.3, 4953.0, 2948.3, 244.4, 234.0, 34.0, 43.0, 54.0, 4.0),
-(3, 234.2, 324.2, 2345.2, 345.0, 234.2, 35.2, 234.2, 345.2, 34.2, 345.2, 3521.3, 3.0, 352.2, 35.2, 76.3, 45.0, 67.4, 86.0, 53.4, 32.1, 34.0, 2.0),
-(4, 234.2, 4324.3, 234.2, 2342.3, 234.2, 3452.3, 443.5, 20.1, 435.9, 542.3, 432.3, 342.5, 234.2, 345.3, 34.2, 10.5, 231.3, 12.3, 35.3, 235.2, 11.2, 54.2),
-(5, 35.1, 17.7, 1482.4, 2156.4, 18.9, 1.4, 2.9, 23.7, 37.2, 2271.8, 27.0, 18.2, 28.9, 865.7, 3993.7, 1781.7, 16.1, 485.1, 2.2, 4.5, 389.3, 23.0),
-(6, 35.0, 32.0, 54.0, 235.2, 324.2, 23.2, 35.0, 67.0, 43.2, 6563.0, 35.3, 45.3, 23.0, 23.0, 54.0, 54.0, 34.0, 23.0, 65.0, 34.0, 4.3, 543.3),
-(7, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0),
-(8, 34.2, 43.7, 34.6, 3.5, 34.5, 3.4, 443.5, 4.0, NULL, NULL, 34.0, NULL, 234.0, NULL, 234.4, 424.5, NULL, 53.2, 98.3, 20.0, 21.0, 22.0),
-(9, NULL, 345.2, NULL, 9.4, 10.4, 54.3, 76.7, 23.5, 65.4, 90.4, 3.2, 4.4, 6.6, 7.7, 8.8, 9.9, 21.4, 67.7, 45.7, 23.4, 56.7, 45.0),
-(10, 9.3, 23.5, 345.4, 332.5, 366.3, 36.9, 43.0, 54.2, 43.6, 347.8, 34.0, 65.8, 346.0, 45.3, 656.3, 545.3, 45.5, 43.0, 75.9, 45.3, 2.1, 54.9),
+(1, 4523, 1253, 1234, 3728, 32, 123, 2, 3, 4, 9, 293, 345, 2352, 3552, 23, 2124, 2344, 21, 232, 6, 23, 24),
+(2, 234, 312, 23, 56, 789, 847, 234, 2134, 234, 25, 493, 954, 34, 492, 4953, 2948, 244, 234, 34, 43, 54, 4),
+(3, 234, 324, 2345, 345, 234, 35, 234, 345, 34, 345, 3521, 3, 352, 35, 76, 45, 67, 86, 53, 32, 34, 2),
+(4, 234, 4324, 234, 2342, 234, 3452, 444, 20, 436, 542, 432, 342, 234, 345, 34, 10, 231, 12, 35, 235, 11, 54),
+(5, 35, 18, 1482, 2156, 19, 1, 3, 24, 37, 2272, 27, 18, 29, 866, 3994, 1782, 16, 485, 2, 4, 389, 23),
+(6, 35, 32, 54, 235, 324, 23, 35, 67, 43, 6563, 35, 45, 23, 23, 54, 54, 34, 23, 65, 34, 4, 543),
+(7, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22),
+(8, 34, 44, 35, 4, 34, 3, 444, 4, NULL, NULL, 34, NULL, 234, NULL, 234, 424, NULL, 53, 98, 20, 21, 22),
+(9, NULL, 345, NULL, 9, 10, 54, 77, 24, 65, 90, 3, 4, 7, 8, 9, 10, 21, 68, 46, 23, 57, 45),
+(10, 9, 24, 345, 332, 366, 37, 43, 54, 44, 348, 34, 66, 346, 45, 656, 545, 46, 43, 76, 45, 2, 55),
 (11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0),
-(13, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(15, 1.0, 11.0, 1.0, 11.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0),
-(16, 1.0, 11.0, 1.0, 11.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0),
-(17, 1.0, 11.0, 1.0, 11.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0),
-(18, 1.0, 11.0, 1.0, 11.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0),
-(19, 1.0, 11.0, 1.0, 11.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0),
-(20, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(21, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(22, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(23, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(24, -20.0, -20.0, -20.0, -20.0, -20.0, -20.0, -20.0, -20.0, -20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(26, 0.3, 0.6, 0.6, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 2.5, 0.4, 0.0, 0.3, 0.2, 1.0, 0.0),
-(27, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.4, 0.3, 0.3),
-(28, 0.3, 0.5, 0.5, 0.4, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-(29, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1),
-(30, 0.1, 0.0, 0.1, 0.1, 0.1, 0.0, 0.0, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1),
-(31, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1),
-(32, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1),
-(33, 0.1, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1),
-(34, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1),
-(35, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1, 0.0, 0.0, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1);
+(12, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3),
+(13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(15, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+(16, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+(17, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+(18, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+(19, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+(20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(24, -20, -20, -20, -20, -20, -20, -20, -20, -20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(26, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0),
+(27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(36, 2147483647, 2147483647, 2, 0, 3, 2, 8, 9, 7, 4, 7, 8, 9, 11, 2147483647, 56, 44, 88, 4, 2, 5, 2),
+(37, 1, 1, 6, 0, 25, 15, 15, 21, 14, 16, 18, 21, 19, 28, 10, 7, 11, 16, 13, 13, 16, 16),
+(38, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(39, 2147483647, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(40, 0, 2, 0, 0, 0, 7, 26, 642, 46, 64, 46, 46, 64, 46, 56, 54, 5, 9, 0, 0, 10, 0),
+(41, 21, 32, 53, 61, 39, 17, 26, 0, 29, 28, 43, 37, 34, 47, 46, 12, 16, 38, 37, 34, 37, 40),
+(42, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(43, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -589,7 +700,7 @@ CREATE TABLE `rutina` (
 --
 
 INSERT INTO `rutina` (`id_rutina`, `nombre`, `tiporutina`, `descripcion`, `URL_Image`) VALUES
-(1, 'pecho_explosivo', 'pecho', 'Realizar un fuerte entrenamiento de pecho', 'https://fnsi.com.mx/wp-content/uploads/2020/06/GYM-17-1024x731.jpg'),
+(1, 'pecho_duro', 'pechito', 'Pecho para tenerlo duro', 'https://fnsi.com.mx/wp-content/uploads/2020/06/GYM-17-1024x731.jpg'),
 (2, 'Pierna_tonifcar', 'Pierna', 'realizar un leve entrenamiento', 'https://fnsi.com.mx/wp-content/uploads/2020/06/GYM-17-1024x731.jpg'),
 (3, 'Bicep_cara', 'bicep', 'Realizar entrenamiento de fuerza con mancuernas', 'https://fnsi.com.mx/wp-content/uploads/2020/06/GYM-17-1024x731.jpg'),
 (4, 'Pecho Alto', 'Pecho', 'Realizar entrenamiento de fuerza con barra', 'https://fnsi.com.mx/wp-content/uploads/2020/06/GYM-17-1024x731.jpg'),
@@ -621,7 +732,6 @@ INSERT INTO `rutina` (`id_rutina`, `nombre`, `tiporutina`, `descripcion`, `URL_I
 (30, 'Mi Rutina', 'Mantener Peso', 'Mi Rutina', ''),
 (31, 'Mi Nueva Rutina', 'Mantener Peso', 'Mi Nueva Rutina', ''),
 (32, 'Mi Nueva Nueva Rutina', 'Mantener Peso', 'Yes', ''),
-(33, 'Mi NUeva Nueva Nueva Nuev', 'Mantener Peso', 'Hola', '1680815030403-Planet-Fitness-un-gimnasio-en-QuerÃ©taro-hecho-a-tu-medida.jpg'),
 (34, 'Carlitos', '', 'Carlitos', '1680899167153-Planet-Fitness-un-gimnasio-en-QuerÃ©taro-hecho-a-tu-medida.jpg'),
 (35, 'Holis', '', 'Holis', '1680899456684-Planet-Fitness-un-gimnasio-en-QuerÃ©taro-hecho-a-tu-medida.jpg'),
 (36, '2525', '', '25', '1680899539198-Planet-Fitness-un-gimnasio-en-QuerÃ©taro-hecho-a-tu-medida.jpg'),
@@ -631,7 +741,23 @@ INSERT INTO `rutina` (`id_rutina`, `nombre`, `tiporutina`, `descripcion`, `URL_I
 (40, 'Mi Rutina Loca', 'Mantener Peso', 'Rutina chida', '1680902521418-Planet-Fitness-un-gimnasio-en-QuerÃ©taro-hecho-a-tu-medida.jpg'),
 (41, 'Sebas', 'Subir de Peso', 'Sebas', '1681142895437-download.jfif'),
 (42, 'Rutina poderosa', 'Mantener Peso', 'Rutina donde vas a tener un cuerpower', '1681836183050-Cuerpower.jpg'),
-(43, 'Rutina perrona', 'Subir de Peso', 'Aqui es donde se viene el super texto', '1681876938956-download (1).jfif');
+(44, 'Yoga', 'Mantener Peso', 'Mind-fullness', '1681941179609-yoga-0.jpg'),
+(45, 'Rutina bien padre para tí', 'Bajar de Peso', 'Hola', '1681941927028-IMG_20230115_103736.jpg'),
+(47, 'Charlie', 'Subir de Peso', 'Hola', ''),
+(48, 'Charlie', 'Mantener Peso', 'a', ''),
+(49, 'Charlie', 'Bajar de Peso', 'Charlie', ''),
+(50, 'Doppio', 'Subir de Peso', 'Doppio', ''),
+(51, 'Doppio20', 'Bajar de Peso', 'Doppio20', ''),
+(52, 'Doppio20', 'Subir de Peso', 'Doppio20', ''),
+(53, 'Doppio20', 'Bajar de Peso', 'Doppio20', ''),
+(54, 'Doppio2020', 'Bajar de Peso', 'Doppio20', ''),
+(55, 'Rutinaaaaaaaaaaaaaaaaaaaa', 'Bajar de Peso', 'Rutina bonita', ''),
+(56, 'Rutina perronsísima', 'Bajar de Peso', 'er', '1681968945370-IMG_20230115_103806.jpg'),
+(57, 'Rutina pierna', 'Bajar de Peso', 'ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg', '1682023925723-ejercicios-para-mejorar-la-flexibilidad.jpg'),
+(58, 'La Rutina de Charlie', 'Subir de Peso', 'Explicacion de la rutina', '1682045498305-Planet-Fitness-un-gimnasio-en-QuerÃ©taro-hecho-a-tu-medida.jpg'),
+(59, 'Rutina nueva', 'Mantener Peso', 'Nueva rutina', '1682446973943-IMG_20230115_103736.jpg'),
+(60, 'Rutina prueba 2', 'Subir de Peso', 'Rutina', ''),
+(61, 'Rutina prueba 4', 'Bajar de Peso', 'R', '1682447985252-IMG_20230115_104446.jpg');
 
 -- --------------------------------------------------------
 
@@ -689,16 +815,31 @@ INSERT INTO `rutinaejercicio` (`id_rutinaejercicio`, `id_rutina`, `id_ejercicio`
 (37, 30, 3),
 (38, 31, 3),
 (39, 32, 3),
-(40, 33, 3),
 (41, 37, 3),
 (42, 40, 3),
 (43, 41, 3),
 (44, 42, 2),
 (45, 42, 3),
 (46, 42, 15),
-(47, 43, 134),
-(48, 43, 3),
-(49, 43, 3);
+(50, 44, 12),
+(51, 44, 11),
+(52, 44, 3),
+(53, 44, 19),
+(54, 45, 22),
+(58, 54, 3),
+(59, 54, 9),
+(60, 54, 11),
+(61, 55, 129),
+(62, 56, 18),
+(63, 57, 12),
+(64, 58, 11),
+(65, 58, 12),
+(66, 58, 3),
+(67, 59, 149),
+(68, 60, 143),
+(69, 61, 3),
+(71, 34, 16),
+(72, 34, 16);
 
 -- --------------------------------------------------------
 
@@ -716,27 +857,7 @@ CREATE TABLE `rutinasfavoritas` (
 --
 
 INSERT INTO `rutinasfavoritas` (`id_cliente`, `id_rutina`) VALUES
-(1, 8),
-(2, 3),
-(3, 4),
-(4, 2),
-(5, 2),
-(6, 10),
-(7, 5),
-(8, 8),
-(9, 7),
-(10, 9),
-(11, 8),
-(12, 5),
-(13, 1),
-(14, 2),
-(15, 10),
-(16, 5),
-(17, 7),
-(18, 4),
-(19, 10),
-(20, 6),
-(21, 2),
+(21, 5),
 (25, 6);
 
 -- --------------------------------------------------------
@@ -749,8 +870,8 @@ CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
-  `nombre_usuario` varchar(15) NOT NULL,
-  `correo` varchar(30) NOT NULL,
+  `nombre_usuario` varchar(40) NOT NULL,
+  `correo` varchar(80) NOT NULL,
   `contrasena` varchar(400) NOT NULL,
   `foto_perfil` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
@@ -760,82 +881,50 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `nombre_usuario`, `correo`, `contrasena`, `foto_perfil`) VALUES
-(1, 'José', 'Pérez', 'josperez', 'jose01@gmail.com', 'jose013', NULL),
-(2, 'Mariana', 'González', 'mariangoz', 'marigonz@gmail.com', 'coutmariti01', NULL),
-(3, 'Nashun', 'Wang', 'nwang', 'nashunwaang@gmail.com', 'extrañojapon', NULL),
-(4, 'Mariano', 'Vega', 'marianoovega', 'vegamariiano@gmail.com', 'hogema01_', NULL),
-(5, 'Vanessa', 'Lanz', 'enav_152003', 'enavlanz_01@gmail.com', 'unicorniofeliz', NULL),
-(6, 'Héctor', 'Torres', 'hector.t24', 'hectortorres@gmail.com', 'torresgemelas', NULL),
-(7, 'Uri', 'Gopar', 'uri_gopar', 'urigopar@gmail.com', 'gatitosarcoir01', NULL),
-(8, 'Sofia', 'Garcia', 'sofiii_garcia', 'sofgarciia22@gmail.com', 'Cg#1fQm*', NULL),
-(9, 'Lucas', 'Rodriguez', 'roddlucc', 'rognw012@gmail.com', 'p9XhKd$r', NULL),
-(10, 'Ana', 'Perez', 'anappperez', 'ezanap@gmail.com', 'E#7LjFt*', NULL),
-(11, 'Daniel', 'Ramirez', 'ramdan', 'ledanfer@gmail.com', 'b4NkM@5x', NULL),
-(12, 'Valeria', 'Torres', 'valeria_torres', 'valeria.torres@example.com', 'T2y@5DgH', NULL),
-(13, 'Juan', 'Hernandez', 'juan_hernandez', 'juan.hernandez@example.com', 'Rf@8GtS2', NULL),
-(14, 'Isabella', 'Gonzalez', 'isabella_glez', 'isabella.gonzalez@example.com', 'q6Wx#7sK', NULL),
-(15, 'Andres', 'Castro', 'andres_castro', 'andres.castro@example.com', 'P#3vH8dZ', NULL),
-(16, 'Camila', 'Sanchez', 'camila_sanchez', 'camila.sanchez@example.com', 'A5z*9tRq', NULL),
-(17, 'Leonardo', 'Lopez', 'leonardo_lopez', 'leonardo.lopez@example.com', 'V8b#4mFp', NULL),
-(18, 'Carla', 'Martinez', 'carla_martinez', 'carla.martinez@example.com', 'S@1dN6tJ', NULL),
-(19, 'Tomas', 'Diaz', 'tomas_diaz', 'tomas.diaz@example.com', 'V8b#4mFp', NULL),
-(20, 'Lucia', 'Ortiz', 'lucia_ortiz', 'lucia.ortiz@example.com', 'G#9nH4jK', NULL),
-(25, 'Carlos', 'Velasco', 'Carlos123', 'carlos@carlos.com', '$2a$12$KWLqReEuXZ9ijV4zYX3pp.9vAmmTTOnCHfyn81sNFjaIikmgarrq.', NULL),
-(26, 'Diego', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$NimnvQgSqXHcfo/iileb1exuE1N70sdVohBRNGxgP289qSy0Squc.', NULL),
-(27, 'Diego ', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$fSZM0IYJzT9ATVnTbcsa7.zdxlgEj5uebtEgRd5chRl1f8PQFTQYa', NULL),
-(28, 'Diego', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$sDVFkomJC.NC0pxIJmfVSuKiQqwmd0SDQjLnps0.C9lqJBsw.XeGK', NULL),
-(29, 'Diego ', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$cY/WSANToFwMbMrbpqAwNOhneiiaukpTgtoekm.i6uCW8kZh80IL.', NULL),
-(30, 'Diego', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$S2AGiq9j8NUf1b6Ukb4CSOIE/NU6lQ3yQnsMM0bM.VGn2zxjPrb5S', NULL),
-(31, 'Tito', 'Capotito', 'tito', 'tito@gmail.com', '$2a$12$ENhkQGiolgTs7.BGMUmw1u0Na5/ejKKF.SEfpNXMVfVDjUJA9QVl2', NULL),
-(32, 'Diego ', 'Perdomo Salcedo', 'doppio19', 'A01709150@tec.mx', '$2a$12$3tDD9NiMNH./s73U6qXxIe.WMWHHm/VD1ZdX6QkSHMlnbtUjkwOHu', NULL),
-(34, 'Carlitos', 'Velasco', 'Carlitos123', 'carlos@carlos.com', '$2a$12$v/j7dzNMxm6mmFvMHKtaMut/xDve7kleC3QpO9A2GkQrMb/3TUJPi', NULL),
+(1, 'José', 'Pérez', 'joseperez', 'joseperez@gmail.com', 'jose013', NULL),
+(2, 'Mariana', 'González', 'mariana.gonzalez', 'mariana.gonzalez@gmail.com', 'coutmariti01', NULL),
+(3, 'Nashun', 'Wang', 'wang0123', 'wang@gmail.com', 'extrañojapon', NULL),
+(4, 'Mariano', 'Vega', 'marianov', 'marianov@gmail.com', 'hogema01_', NULL),
+(5, 'Vanessa', 'Lanz', 'vlanz01', 'lanz@gmail.com', 'unicorniofeliz', NULL),
+(6, 'Héctor', 'Torres', 'hectortorres', 'hectortorres@gmail.com', 'torresgemelas', NULL),
+(8, 'Sofia', 'Garcia', 'sofigarcia', 'sofigarcia@gmail.com', 'Cg#1fQm*', NULL),
+(9, 'Lucas', 'Rodriguez', 'luquitasrodri', '', 'p9XhKd$r', NULL),
+(10, 'Ana', 'Perez', 'ana.perez', 'ana.perez@gmail.com', 'E#7LjFt*', NULL),
+(11, 'Daniel', 'Ramirez', 'daniramirez', 'dani.ramirez@gmail.com', 'b4NkM@5x', NULL),
+(12, 'Valeria', 'Torres', 'valetorres', 'vale.torres@gmail.com', 'T2y@5DgH', NULL),
+(13, 'Juan', 'Hernandez', 'juanhernandez', 'juan@gmail.com', 'Rf@8GtS2', NULL),
+(14, 'Isabella', 'Gonzalez', 'isagonzalez', 'isagonzalez@gmail.com', 'q6Wx#7sK', NULL),
+(15, 'Andres', 'Castro', 'andres.castro', 'andres.castro@gmail.com', 'P#3vH8dZ', NULL),
+(16, 'Camila', 'Sanchez', 'camila.sanchez', 'camila.sanchez@gmail.com', 'A5z*9tRq', NULL),
+(17, 'Leonardo', 'Lopez', 'leolopez', 'leolopez@gmail.com', 'V8b#4mFp', NULL),
+(18, 'Carla', 'Martinez', 'carlamartinez', 'carlamartinez@gmail.com', 'S@1dN6tJ', NULL),
+(19, 'Tomas', 'Diaz', 'tomasdiaz', 'tomasdiaz@gmail.com', 'V8b#4mFp', NULL),
+(20, 'Lucia', 'Ortiz', 'luciaortiz', 'luciaortiz@gmail.com', 'G#9nH4jK', NULL),
+(25, 'Carlos', 'Velasco', 'Carlos123', 'carlos@carlos.com', '$2a$12$KWLqReEuXZ9ijV4zYX3pp.9vAmmTTOnCHfyn81sNFjaIikmgarrq.', '1682561918862-chat noir.jpg'),
 (35, 'Diego ', 'Perdomo Salcedo', 'doppio20', 'A01709150@tec.mx', '$2a$12$OdwDbRpqAsKy4tNNY6zzCueejYjD1LPJZv3cfN5mI20fRvG7ftz7m', NULL),
-(36, 'Diego2', 'Perdomo Salcedo', 'doppio21', 'A01709150@tec.mx', '$2a$12$vlEzRAsZpTNQP./Q0aMxhuwBPXrwdnNGblylmJ3xqK1Wo0.cpUa2i', NULL),
-(37, 'Mafer', 'Moreno', 'mafermoreno', 'Febrero@tec.mx', '$2a$12$d/FEvd.RpBREd5gt6ubTEeYTHs3FR4bHb3IMxmNk5qcaDxg600gkO', NULL),
-(38, 'Julio ', 'Perez', 'Julio', 'A01705763@tec.mx', '$2a$12$FODE2L8QIX/DMHHuECZ/2OoF8ZXJs/uqYCJL27x4bh5gmmxlbd1i6', NULL),
-(39, 'Uri', 'Gopar', 'gopar', 'gopar@gmail', '$2a$12$YUtTuo4gRBEoVmZPBID7lelp6Zl97k1qwgXfvmVSk.Kf6TiT2G2Wi', NULL),
-(40, 'Monica Andrea', 'Ayala Marrero', 'piebsat', 'mayalam2806@gmail.com', '$2a$12$9uODZFAHebJm7fQmXES0SOs.DVmbnBa.Xzp0e.zEa.MuZsBDFrWxC', NULL),
-(41, 'h', 'h', 'h', 'h@gmial.com', '$2a$12$FGKjqSn6sebC8/h2K.ddx.9gdo5CwUkSXaysWn0g/47h/3SGrSF/q', NULL),
-(42, 'a', 'a', 'a', 'a@gmail.com', '$2a$12$oGdO3vnr0t7huHxTpp/arupBykyY78eWThyhDu/CR4qY6PVwjrsMS', NULL),
-(43, 'a', 'a', 'a', 'a@gmail.com', '$2a$12$9MBR8ftbeExZB4SFW7KcHOpo6mpBnIeoN9ZFLHD2Tzrl8vYAisFpS', NULL),
-(44, 'b', 'b', 'b', 'b@gmail.com', '$2a$12$0YQME1jMoFZ935U4FfGm..80CxjQlaXgFg3BhcC14BydgKg1GFna2', NULL),
-(45, 'c', 'c', 'c', 'c@gmail', '$2a$12$dYB1DIVDJYZDDfu/nSz9rO6t8nXMZUVeEDs3uB9CoxpSkOpyAjX7m', NULL),
-(46, 'b', '', '', '', '$2a$12$5GQa78muCiJZ6hfsnpMf8OTdihkABfgS7Tzr6wWrl4w8830uHf28W', NULL),
-(47, 'd', 'd', 'd', 'h@gmial.com', '$2a$12$/5CofXIL4muObOxrPD9rS.yBaHN4MnUOWqNOwzPdDl6qVG7rR0.va', NULL),
-(48, 't', 't', 't', 'h@gmial.com', '$2a$12$f5E8lBvjYopqsd6hGx6P/eLrfvrUXXK0Pk64aqr/pl/vDRp8Y0KQ6', NULL),
-(49, 'y', 'y', 'y', '', '$2a$12$EYx5k4WduQqG7CFHd2fnfeFC.84Eyo8HObcBjkSD2essp/dkPPiuC', NULL),
-(50, 'u', 'u', 'u', '', '$2a$12$UpynAelbmFMw.ukx7Otque.uSAsM5GtieUBrbPUlpiq246J9C0HAy', NULL),
-(51, 'w', 'w', '', '', '$2a$12$K/BRQDE24sjg4r3OIHDYO.0gs3.W4n872FPSMLj9VfLSWuH9043dS', NULL),
-(52, '´p', 'p', '', '', '$2a$12$1Weft/vBgfxmZ2Tw.dHh4u/tV07/9lnVylq8mAMX555SiUWPkmXva', NULL),
-(53, 'o', 'o', 'o', '', '$2a$12$Hfkzs6g2AcLwAFlsbt5.6uxuEC/al/NIqtcLtGZa44aegTPwTjtva', NULL),
-(54, 'e', '', '', '', '$2a$12$oIyfhpXUuaS.mH.NkZ3B6OD3XJQufweXmpbLJU8/PspWpU9q8jUzi', NULL),
-(55, 'q', '', '', '', '$2a$12$6DzLQEjtsTuqTaqmRSsi4.GczY8ZT.E1gE23EU6si49t89G54ng52', NULL),
-(56, 'x', 'x', 'x', '', '$2a$12$B4A8fUkpQK/oEbDwrKicvutYXEadlF8jps6m7tU1j6UMfy6B4m4Se', NULL),
-(57, 'll', 'l', '', '', '$2a$12$tFYoWdeXiWcPqoR1CYRX0.zPS8hnIvesluJxl2Bh5rAQBS9WxLkaO', NULL),
-(58, 'lllll', '', '', '', '$2a$12$XKn9g1BVTRkojxGVuxNKzeXER/dYnZ0UIKzlPg2wW/6wtdWctc5GK', NULL),
-(59, 'sssssss', 'ssss', 'sssss', '', '$2a$12$FMH8ylFN0Q4Knv/KabhhYuC0izb4xWpVruCmbbiPstQCEESWrH.Tu', NULL),
-(60, 'dddd', 'dddd', 'ddddddd', '', '$2a$12$taqymC.ftmixssp2bG2QdehqpPOE6KpkKeLVO5E5UHFuNKhyBH4py', NULL),
-(89, 'uwu', '', 'uwu', '', '$2a$12$0zoNW/NnUJu6cmob2DLS4uFlpSUSU8ynjFbiYTZRqqksPB2MYpLb6', NULL),
-(90, 'uwu2', '', 'uwu2', '', '$2a$12$KbbHJYl1dY6sKc7xxZ1.aeOjJTPoRAX45fEpWaKxObmPV4JildT.6', NULL),
-(91, 'uwu3', '', 'uu3', '', '$2a$12$nfJuDRmd.CIfAK3JGJ3ZSeVzJM4OEF5lSauLUh8PorQKAX0FnSJDq', NULL),
-(92, 'Uwux4', '', 'uwu5', '', '$2a$12$ZJJl37v9E1/C9dmoIuUsC.U9993qzCtUUko2u9Q4fahjmq6xbHo1C', NULL),
-(93, 'uwu5', '', 'uuuuuu', '', '$2a$12$ex.A.32eVdjSda8kx9HUPuBkisMIUxysLWjFDmqLz.k2qQeSWBZv2', NULL),
-(94, 'jojojo', '', 'jojojo', '', '$2a$12$GaIpzLbQ5Kx68Hh.TCCx4.XRc2E.iD6ZVKs9/8bZfcIZjP1J33rxG', NULL),
-(95, 'jijiji', '', 'jijijij', '', '$2a$12$/wCar33KDBwt6zHz5/huze5XtzAehqLA.Ad4xkwVm7tZnZ5HgcLZ2', NULL),
-(96, 'ki', 'h', 'h', 'b@gmail.com', '$2a$12$EEWhsJLLyayhylAnHCLJxOFj8ZoZ479em4TMmBHW12rT3Nz2c1q0m', NULL),
-(97, 'as', 'h', 'a', 'gopar@gmail', '$2a$12$P4ZeGhTy0ClmcJbS.iQ8ieSdZ4gG4aApFWNSKNeCfYnRHynMTY03m', NULL),
-(98, 'as', 'a', 'h', '', '$2a$12$LWvhl.i0dxvqPfzKzTHFR.SuQkzCxz7IfZTgy0yUH6QHb1vAXFNcC', NULL),
-(99, 'h', '', 'a', '', '$2a$12$hyv6r69wTTyZ/aR3khCqeeTGu5Y60TiEhEw2rz.WlLpPK9SXRACEu', NULL),
-(100, 'b', '', 'sddsa', '', '$2a$12$XGANtUD0dO8KZwJX3D3dLOM988/V8MGQJhAdurOyMU8zOO1ea380m', NULL),
-(101, 'h', '', 'h', '', '$2a$12$X08niQct09l7YmdZuOYad.HYWBt02gQUhWPPeeTt34vN4TIDCA5HS', NULL),
-(102, 'sd', '', 'sdas', '', '$2a$12$K9w2ZQqf5C14HA.hikVWWe6rkn9XA76/cdDBOTvc6LzKPZ9di85BK', NULL),
-(103, 'a', 'a', 'a', 'a@gmail.com', '$2a$12$T6hnAfQbPMyBmNAUSB/NEecPpKmZ/veX1..fWSQJ68RzlU5Mnht3u', NULL),
-(104, 'a', 'a', 'a', 'a@gmail.com', '$2a$12$j7OKouq371kdNj99Vus4X.QLSpkLySKxNYdHc13xuifPxSf9WawzS', NULL),
-(105, 'Zuri', 'Moreno', 'zuri', 'Zuri@gmail.com', '$2a$12$toWy6ycazLtg8tCzJKvTvOfbkLJp9OshvUGBZQrU.ujHqiKPkk2HO', NULL),
-(106, 'ee', 'e', 'e', 'h@gmial.com', '$2a$12$iN4ZA.mIxPrMyIkemaTL6ewaGqEQK4S2jvdRy3c6ETyG1MvFsfS/C', NULL),
-(107, 'b', 'b', 'b', 'h@gmial.com', '$2a$12$L9kFAAwstXP/Cu/qyxaHh.8Mxw0K2hSvhlSrT8rGs3ML4cmhRRNUa', NULL),
-(108, 'a', 'qq', 'q', 'a@gmail.com', '$2a$12$JK38CmJuW0wbAntk3MV6G.TuXjbEkMPwp15VkPZkhN2I2/zR2PUnG', NULL),
-(109, 'e', 'ee', 'e', 'h@gmial.com', '$2a$12$SxIOudFJ1Q/qYuusp1jNJeb5khGFcVRkyrbsdsiceImfcBOXQ9Y1O', NULL);
+(36, 'Diego2', 'Perdomo Salcedo', 'doppio21', 'perdomodiego@gmail.com', '$2a$12$vlEzRAsZpTNQP./Q0aMxhuwBPXrwdnNGblylmJ3xqK1Wo0.cpUa2i', NULL),
+(37, 'Mafer', 'Moreno', 'mafermoreno', 'mafermoreno@gmail.com', '$2a$12$d/FEvd.RpBREd5gt6ubTEeYTHs3FR4bHb3IMxmNk5qcaDxg600gkO', NULL),
+(38, 'Julio ', 'Perez', 'Julio', 'julio@gmail.com', '$2a$12$FODE2L8QIX/DMHHuECZ/2OoF8ZXJs/uqYCJL27x4bh5gmmxlbd1i6', NULL),
+(40, 'Monica Andrea', 'Ayala Marrero', '', 'monica@gmail.com', '$2a$12$9uODZFAHebJm7fQmXES0SOs.DVmbnBa.Xzp0e.zEa.MuZsBDFrWxC', NULL),
+(179, 'a', 'a', 'a', 'a@gmail.com', '$2a$12$.ddnkmSpeX9FhvPjOu6ppuv/HogO7BS2ZnHB/Pm6fWs6QXeLNIxqq', NULL),
+(180, 'Uri', 'Gopar', 'urigopar', 'gopar@gmail', '$2a$12$LlY/baZTbKhQo7evHelceuveoCfbmRN3v4BCMBgJmrtRO/QIXTL0K', NULL),
+(181, 'b', 'b', 'b', 'b@gmail.com', '$2a$12$mYysqKGuFu1nz3eLocuL9evL3UprS0mcCHon9Y2gAvR0Pnm.paiwW', NULL),
+(182, 'c', 'c', 'c', 'c@gmail', '$2a$12$/rDGv4.5yHmM0j7K5ywo/eJ3TXBiyXG7z6dNXk4hGhK7lDpqmbmaW', NULL),
+(183, 'pi', 'pi', 'pi', 'p@gmail.com', '$2a$12$u17X2trmMCImNNf/RjUZ7eDdsgd8ajy35fJB5255/Xm4ITJkqRW4y', NULL),
+(184, 'h', 'h', 'h', 'h@gmial.com', '$2a$12$mKKzcQNVoo3K1f6C0kJizuHPCaHiScs1JRlG9yeItfommvdNHxJni', NULL),
+(185, 'yo', 'g', 'yo', 'yo@gmail.com', '$2a$12$ssHP/Ct1HX72mTVCyVkFn.ZDv1Fcdg4DFX9tIMk9OvLU2BRfaYcs2', NULL),
+(186, 'Prueba', 'Prueba', 'prueba', 'prueba@gmail.com', '$2a$12$iWAt2QYPn2GNjYT7XkxIZObyRZ55ywbZeGwd9fnbRtzvNb.ffxLb6', NULL),
+(187, 'banana', 'banana', 'banana', 'banana@gmail.com', '$2a$12$iYOWviP31le0l2OB9dALJuXUpR3i4VPWEWLovp0cVzDi/euhTGKeS', NULL),
+(188, 'u', 'g', 'u', 'u@gmail', '$2a$12$fg0CGRp.ldjiwSEKuYjjw.G7JKrpVnHDEDMa7bkf5TaWVS1Idm/xy', NULL),
+(189, 'ee', 'e', 'ee', 'e@gamil.com', '$2a$12$XB7om2vY7lNcqe.DL12Lnuzweqqq9UH9YxPTGmt3Fd8EaBnNAbyF.', NULL),
+(190, 'u', 'u', 'w', 'we@gmail.com', '$2a$12$hMQw1gx/DktiK7YSRNxN2.0PC9XqZ.JbmjWR12OwTtXmGcC27iwQy', NULL),
+(224, 'Ramona', 'Najera', 'RamonaNF', 'ramona@hotmail.com', '$2a$12$joPqSLkjbOLOUt7yDjB9Tu0xeHxyO6Xaq.RU7c1lVogzvEEuqpdLC', '1682537768776-WhatsApp Image 2023-04-26 at 1.35.20 PM.jpeg'),
+(225, 'Armando', 'Rosas', 'MisterAce', 'armando@gmail.com', '$2a$12$fePeG/f9I30ptqDLOOWq5.jd7UrFDWR/LuXx9g4ZZMxNUzn9GNoD2', '1682533551056-113733780 (1).jfif'),
+(226, 'Leslie', 'Gomez', 'leslie', 'leslie@gmail', '$2a$12$QccP.pW.Z1QeSCD7pRZBjuSggnDsFe1RVL0A4NxU5EsI4snQzKm6O', NULL),
+(227, 'hola', 'hola', 'hola', 'hola@gmailcom', '$2a$12$zGtdqdshSAXNAjmrriNUwOiNT2RS/F9/RNm6H.phQdkv15teBIdxy', NULL),
+(228, 'hola', 'hola', 'hols', 'hols@gmail.com', '$2a$12$m.fGpwN.Dl5O8dH5nPts6e58ANiKmQjRN2RHheFouesIQWcAuNPza', NULL),
+(229, 'Ivana', 'Pear', 'ivana', 'ivana@gmail', '$2a$12$BLZPN6ZXn2iQPhkWW5Zc9.1NRx3/m7zuB8ia4MuxuV0J83cLgPjcO', NULL),
+(230, 'ghj', 'ghj', 'ghj', 'ghj@gmail.com', '$2a$12$Xn2Az2jDnXbJ4cNaLlSC4.6Dq1r74YxTkF0KgIDGRSV4RH7wqNXre', NULL);
 
 -- --------------------------------------------------------
 
@@ -860,7 +949,6 @@ INSERT INTO `usuariorol` (`id_usuario`, `id_rol`, `CreatedAt`) VALUES
 (4, 1, '2023-04-18 16:36:47'),
 (5, 1, '2023-04-18 16:36:47'),
 (6, 1, '2023-04-18 16:36:47'),
-(7, 1, '2023-04-18 16:36:47'),
 (8, 1, '2023-04-18 16:36:47'),
 (9, 2, '2023-04-18 16:36:47'),
 (10, 2, '2023-04-18 16:36:47'),
@@ -875,45 +963,30 @@ INSERT INTO `usuariorol` (`id_usuario`, `id_rol`, `CreatedAt`) VALUES
 (19, 1, '2023-04-18 16:36:47'),
 (20, 2, '2023-04-18 16:36:47'),
 (25, 1, '2023-04-18 16:36:47'),
-(34, 1, '2023-04-18 16:36:47'),
 (35, 2, '2023-04-18 16:36:47'),
 (36, 1, '2023-04-18 16:36:47'),
 (37, 2, '2023-04-18 16:36:47'),
 (38, 1, '2023-04-18 16:36:47'),
-(39, 1, '2023-04-18 16:36:47'),
 (40, 1, '2023-04-18 16:36:47'),
-(41, 1, '2023-04-18 18:36:32'),
-(41, 1, '2023-04-18 18:45:40'),
-(41, 1, '2023-04-18 19:07:20'),
-(42, 1, '2023-04-18 16:36:47'),
-(42, 1, '2023-04-18 18:38:39'),
-(42, 1, '2023-04-18 18:57:23'),
-(42, 1, '2023-04-18 21:05:02'),
-(42, 1, '2023-04-18 21:53:24'),
-(44, 1, '2023-04-18 22:32:34'),
-(45, 1, '2023-04-18 16:36:47'),
-(46, 1, '2023-04-18 16:36:47'),
-(46, 1, '2023-04-18 16:37:50'),
-(46, 1, '2023-04-18 16:38:57'),
-(46, 1, '2023-04-18 16:46:52'),
-(46, 1, '2023-04-18 16:48:39'),
-(46, 1, '2023-04-18 16:58:11'),
-(46, 1, '2023-04-18 17:00:20'),
-(46, 1, '2023-04-18 17:02:46'),
-(46, 1, '2023-04-18 17:08:20'),
-(47, 1, '2023-04-18 16:36:47'),
-(49, 1, '2023-04-18 16:36:47'),
-(50, 1, '2023-04-18 16:36:47'),
-(60, 1, '2023-04-18 16:36:47'),
-(91, 1, '2023-04-18 17:50:42'),
-(94, 1, '2023-04-18 18:33:15'),
-(95, 1, '2023-04-18 18:35:10'),
-(100, 1, '2023-04-18 19:04:41'),
-(102, 1, '2023-04-18 19:07:49'),
-(105, 1, '2023-04-18 22:27:00'),
-(106, 1, '2023-04-18 22:29:35'),
-(106, 1, '2023-04-18 23:03:57'),
-(108, 1, '2023-04-18 22:50:48');
+(179, 1, '2023-04-24 01:24:42'),
+(180, 1, '2023-04-24 14:27:45'),
+(181, 1, '2023-04-24 14:51:58'),
+(182, 1, '2023-04-24 15:07:59'),
+(183, 1, '2023-04-24 15:51:29'),
+(184, 1, '2023-04-24 16:07:20'),
+(185, 1, '2023-04-24 16:54:32'),
+(186, 1, '2023-04-24 17:05:38'),
+(187, 1, '2023-04-24 17:15:00'),
+(188, 1, '2023-04-25 02:49:12'),
+(189, 1, '2023-04-25 02:58:31'),
+(190, 1, '2023-04-25 03:24:57'),
+(224, 1, '2023-04-25 19:43:06'),
+(225, 1, '2023-04-25 21:56:12'),
+(226, 1, '2023-04-25 22:26:30'),
+(227, 1, '2023-04-26 18:43:36'),
+(228, 1, '2023-04-26 19:03:40'),
+(229, 1, '2023-04-26 21:51:42'),
+(230, 1, '2023-04-27 03:06:12');
 
 --
 -- Indexes for dumped tables
@@ -924,7 +997,8 @@ INSERT INTO `usuariorol` (`id_usuario`, `id_rol`, `CreatedAt`) VALUES
 --
 ALTER TABLE `administrador`
   ADD PRIMARY KEY (`id_admin`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_obj` (`id_obj`);
 
 --
 -- Indexes for table `bitacora`
@@ -939,6 +1013,7 @@ ALTER TABLE `bitacora`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_cliente`),
+  ADD UNIQUE KEY `id_usuario_2` (`id_usuario`),
   ADD KEY `id_rutina` (`id_rutina`),
   ADD KEY `id_dieta` (`id_dieta`),
   ADD KEY `id_obj` (`id_obj`),
@@ -1044,7 +1119,10 @@ ALTER TABLE `rutinasfavoritas`
 -- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `nombre_usuario_unique` (`nombre_usuario`),
+  ADD UNIQUE KEY `correo_unique` (`correo`),
+  ADD UNIQUE KEY `id_usuario_unique` (`id_usuario`);
 
 --
 -- Indexes for table `usuariorol`
@@ -1062,37 +1140,37 @@ ALTER TABLE `usuariorol`
 -- AUTO_INCREMENT for table `administrador`
 --
 ALTER TABLE `administrador`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `dieta`
 --
 ALTER TABLE `dieta`
-  MODIFY `id_dieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_dieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `dietasalimentos`
 --
 ALTER TABLE `dietasalimentos`
-  MODIFY `id_dietaalimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_dietaalimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `ejercicio`
 --
 ALTER TABLE `ejercicio`
-  MODIFY `id_ejercicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `id_ejercicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT for table `macronutrientes`
 --
 ALTER TABLE `macronutrientes`
-  MODIFY `id_macro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_macro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `medicion`
@@ -1104,7 +1182,7 @@ ALTER TABLE `medicion`
 -- AUTO_INCREMENT for table `micronutrientes`
 --
 ALTER TABLE `micronutrientes`
-  MODIFY `id_micro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_micro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `nivelfisico`
@@ -1128,19 +1206,19 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT for table `rutina`
 --
 ALTER TABLE `rutina`
-  MODIFY `id_rutina` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_rutina` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `rutinaejercicio`
 --
 ALTER TABLE `rutinaejercicio`
-  MODIFY `id_rutinaejercicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id_rutinaejercicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 
 --
 -- Constraints for dumped tables
@@ -1150,21 +1228,22 @@ ALTER TABLE `usuario`
 -- Constraints for table `administrador`
 --
 ALTER TABLE `administrador`
-  ADD CONSTRAINT `administrador_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+  ADD CONSTRAINT `administrador_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `administrador_ibfk_2` FOREIGN KEY (`id_obj`) REFERENCES `objetivo` (`id_obj`);
 
 --
 -- Constraints for table `bitacora`
 --
 ALTER TABLE `bitacora`
   ADD CONSTRAINT `bitacora_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
-  ADD CONSTRAINT `bitacora_ibfk_2` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`);
+  ADD CONSTRAINT `bitacora_ibfk_2` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cliente`
 --
 ALTER TABLE `cliente`
-  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`),
-  ADD CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`id_dieta`) REFERENCES `dieta` (`id_dieta`),
+  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`id_dieta`) REFERENCES `dieta` (`id_dieta`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `cliente_ibfk_3` FOREIGN KEY (`id_obj`) REFERENCES `objetivo` (`id_obj`),
   ADD CONSTRAINT `cliente_ibfk_4` FOREIGN KEY (`id_niv`) REFERENCES `nivelfisico` (`id_niv`),
   ADD CONSTRAINT `cliente_ibfk_5` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
@@ -1187,20 +1266,20 @@ ALTER TABLE `dieta`
 -- Constraints for table `dietasalimentos`
 --
 ALTER TABLE `dietasalimentos`
-  ADD CONSTRAINT `dietasalimentos_ibfk_1` FOREIGN KEY (`id_dieta`) REFERENCES `dieta` (`id_dieta`);
+  ADD CONSTRAINT `dietasalimentos_ibfk_1` FOREIGN KEY (`id_dieta`) REFERENCES `dieta` (`id_dieta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `dietasfavoritas`
 --
 ALTER TABLE `dietasfavoritas`
   ADD CONSTRAINT `dietasfavoritas_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
-  ADD CONSTRAINT `dietasfavoritas_ibfk_2` FOREIGN KEY (`id_dieta`) REFERENCES `dieta` (`id_dieta`);
+  ADD CONSTRAINT `dietasfavoritas_ibfk_2` FOREIGN KEY (`id_dieta`) REFERENCES `dieta` (`id_dieta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `rutinaejercicio`
 --
 ALTER TABLE `rutinaejercicio`
-  ADD CONSTRAINT `rutinaejercicio_ibfk_1` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`),
+  ADD CONSTRAINT `rutinaejercicio_ibfk_1` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `rutinaejercicio_ibfk_2` FOREIGN KEY (`id_ejercicio`) REFERENCES `ejercicio` (`id_ejercicio`);
 
 --
@@ -1208,7 +1287,7 @@ ALTER TABLE `rutinaejercicio`
 --
 ALTER TABLE `rutinasfavoritas`
   ADD CONSTRAINT `rutinasfavoritas_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
-  ADD CONSTRAINT `rutinasfavoritas_ibfk_2` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`);
+  ADD CONSTRAINT `rutinasfavoritas_ibfk_2` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `usuariorol`

@@ -86,4 +86,13 @@ module.exports = class Rutina {
         }
     }
 
+    /*
+    async agregarEjercicio(rutinaId, ejercicioId) {
+        const connection = await db.getConnection();
+        await connection.query('CALL agregarEjercicioARutina(?, ?)', [rutinaId, ejercicioId]);
+        connection.release();
+    },
+
+    async agregarEjercicio(id_rutina, ejercicio_id)*/
+
 }

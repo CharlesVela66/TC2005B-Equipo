@@ -36,7 +36,7 @@
     }
 
     .column {
-        margin-bottom: 1rem;
+        margin-bottom: 0rem;
     }
 
     .submit-btn {
@@ -77,17 +77,23 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="column">
+                    <label class="label">Ingresa tú fecha de Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" required name="fecha_nacimiento"  style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;" min="<?php echo date('Y-m-d', strtotime('-12 years')); ?>">
+                </div>
 
                 <div class="column">
                     <label class="label">Ingresa tú Altura(m) 1 - 3.99</label>
-                    <input type="number" id="alturaInic" name="alturaInic" step="0.01" min="1" max="3.99"
+                    <input type="number" id="alturaInic" required name="alturaInic" step="0.01" min="1" max="3.99"
                     style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
                 </div>
 
                 <div class="column">
                     <label class="label">Ingresa tú peso (KG) 50 - 200</label>
-                    <input type="number" id="pesoInic" name="pesoInic" step="0.01" min="50" max="200" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                    <input type="number" id="pesoInic" required name="pesoInic" step="0.01" min="50" max="200" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
                 </div>
+
 
                 <div class="column">
                     <label class="label">Escoje la opción que más te describa:</label>

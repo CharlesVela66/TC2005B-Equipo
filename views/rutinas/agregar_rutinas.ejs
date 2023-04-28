@@ -3,71 +3,100 @@
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
     <h1 class="title is-1 has-text-white-ter has-text-centered">Agregar Rutinas</h1>
         <div class="columns">
-            <div class="column">
-                        <p class="title is-4 has-text-white-ter has-text-centered" >
-                            Nombre de la rutina
-                        </p>
-                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "nombre_rutina" id = "nombre_rutina" required="required" maxlength="25">
+            <div class="column is-one-third">
+                <p class="title is-4 has-text-white-ter has-text-centered" >
+                    Nombre de la rutina
+                </p>
+                <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "nombre_rutina" id = "nombre_rutina" required="required" maxlength="25">
             </div>
-            <div class="column">
-                        <p class="title is-4 has-text-white-ter has-text-centered">
-                            Descricpción
-                        </p>
-                        <input type = "text" size = "30" class="input is-info is-small is-rounded" name = "descripcion" id = "descripcion" required="required" maxlength="1000">
+            <div class="column is-one-third">
+                <p class="title is-4 has-text-white-ter">
+                    Tipo de rutina
+                </p>
+                <div class="select is-small select-customizado">   
+                    <select name = "tiporutina" id = "tiporutina" required="required">
+                        <option>
+                            Hipertrofia
+                        </option>
+                        <option>
+                            Fuerza
+                        </option>
+                        <option>
+                            Mixto
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="column is-one-third">
+                <p class="title is-4 has-text-white-ter ">
+                    Frecuencia
+                </p>
+                <div class="select is-small select-customizado">    
+                    <select name = "frecuencia" id = "frecuencia" required="required">
+                        <% for (let i = 2; i <= 7; i++) { %>
+                            <option> <%= i %> </option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="columns">
+            <div class="column is-one-third">
+                <p class="title is-4 has-text-white-ter">
+                    Niveles
+                </p>
+                <div class="checkboxes">
+                    <label class="checkbox">
+                        <input type="checkbox" id="principiante" name="principiante"> Principiante
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="intermedio" name="intermedio"> Intermedio
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="avanzado" name="avanzado"> Avanzado
+                    </label>
+                </div>
+            </div>
+            <div class="column is-one-third">
+                <label for = "imagen"><h5 class="subtitle is-5 has-text-white-ter">Imagen de Portada</h5></label>
+                <input type="file" id="imagen" name="imagen" >
+            </div>
+            <div class="column is-one-third">
+                <label for = "imagen"><h5 class="subtitle is-5 has-text-white-ter">Imagen de Ejercicios</h5></label>
+                <input type="file" id="imagen" name="imagen" >
             </div>
         </div>
         <div class="columns">
-            <div class="column">
-                        <p class="title is-4 has-text-white-ter ">
-                            Imagen
-                        </p>
-                        <input type="file" id="imagen" name="imagen">
-    
-            </div>
-            <div class="column">
-                        <p class="title is-4 has-text-white-ter">
-                            Tipo de rutina
-                        </p>
-                        <div class="select is-small select-customizado">
-                                
-                            <select name = "tiporutina" id = "tiporutina" required="required">
-                                <option>
-                                    Bajar de Peso
-                                </option>
-                                <option>
-                                    Mantener Peso
-                                </option>
-                                <option>
-                                    Subir de Peso
-                                </option>
-                            </select>
-                        </div>
-        </div>
-    </div>
+            <div class="column is-one-quarter">
                 <p class="title is-4 has-text-white-ter ">
                     Ejercicios
                 </p>
-                <div class="columns">
-                    <div class="column">
-                        <input type="text" id="search" class="input is-info is-small is-rounded" placeholder="Buscar ejercicios">
-                        <ul id="suggestions" class="suggestions-list">
-                            
-                        </ul>
-                    </div>
-                    <div class="column">
-                        <div style="max-height: 150px; overflow: auto">
-                            <table id="tabla-ejercicios" class="table has-text-white-ter has-background-black-ter">
-                                <thead>
-                                    <tr>
-                                        <th class="has-text-white-ter">Nombre del ejercicio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <input type="text" id="search" class="input is-info is-small is-rounded" placeholder="Buscar ejercicios">
+                <ul id="suggestions" class="suggestions-list">
+                    
+                </ul>
+                <br> <br>
+                <div style="max-height: 500px; overflow: auto">
+                    <table id="tabla-ejercicios" class="table has-text-white-ter has-background-black-ter">
+                        <thead>
+                            <tr>
+                                <th class="has-text-white-ter">Nombre del ejercicio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+            <div class="column is-three-quarters">
+                <p class="title is-4 has-text-white-ter has-text-centered">
+                    Descripción
+                </p>
+                <textarea class="textarea has-background-grey-darker is-small has-text-white-ter is-rounded has-fixed-size" rows="35" cols="100" id="descripcion" name="descripcion" required maxlength="50000"></textarea>
+            </div>
+        </div>
     <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
     <div class="popup" id="popup">
         <h2 class="title is-4 has-text-white-ter"> ¿Quieres confirmar tus datos?</h2>
@@ -210,13 +239,25 @@
 
         row.appendChild(nombreCell);
 
-        // Agregamos todo el codigo al HTML de la tabla 
+        // Segunda columna: Ícono "X" para eliminar el ejercicio
+        const deleteCell = document.createElement('td');
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fas', 'fa-times', 'has-text-white-ter');
+        deleteIcon.style.cursor = 'pointer';
+
+        deleteCell.appendChild(deleteIcon);
+        row.appendChild(deleteCell);
+
+
+        // Agregamos todo el codigo al HTML de la tabla
         document.getElementById('tabla-ejercicios').querySelector('tbody').appendChild(row);
 
-        nombreCell.addEventListener('click', () => {
+        // Eliminar el ejercicio al hacer clic en el ícono "X"
+        deleteIcon.addEventListener('click', () => {
             ejerciciosTable.querySelector('tbody').removeChild(row);
         });
     }
+
 
     function checkRutinasNombres(rutinas, rutinasFavs, nombre){
         for (let rutina of rutinas) {
