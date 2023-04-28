@@ -1,7 +1,7 @@
 <%- include('../includes/head.ejs'); %>
 
 <style>
-  .card-profile{
+  .card_profile{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 500px;
     margin: auto;
@@ -17,7 +17,7 @@
     color: black;
   }
 
-  .form-group {
+  .form_group {
     text-align: left;
     margin-bottom: 15px;
     margin-left: 15px;
@@ -64,7 +64,7 @@
     opacity: 0.7;
   }
 
-  .back-button{
+  .back_button{
     color: rgb(142, 137, 137);
     font-weight: bold;
     font-size: larger;
@@ -78,8 +78,8 @@
 </style>
 
 <br>
-<a href='/perfil/ver_info' class='back-button'> < Volver atrás</a>
-<div class='card-profile'>
+<a href='/perfil/ver_info' class='back_button'> < Volver atrás</a>
+<div class='card_profile'>
   <h1 class='title is-2'>Editar información de cliente</h1>
 
   <% if (cliente) { %>
@@ -87,26 +87,26 @@
 
       <input type='hidden' name='_csrf' value='<%= csrfToken %>' >
 
-      <div class='form-group'>
+      <div class='form_group'>
       <input type='hidden' name='id' value='<%= id %>' >
       </div>
 
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='nombre'>Nombre de usuario</label>
         <input type='text' id='nombre' name='nombre' value='<%= usuario.nombre %>' placeholder='<%= usuario.nombre %>' maxlength='30' required>
       </div>
 
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='apellido'>Apellido de usuario</label>
         <input type='text' id='apellido' name='apellido' value='<%= usuario.apellido %>' placeholder='<%= usuario.apellido %>' maxlength='30'  required>
       </div>
 
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='imagen'>Foto de perfil</label>
         <input type='file' id='imagen' name='imagen'>
       </div>
 
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='sexo'>Sexo:</label>
         <select name='sexo' id='sexo'>
             <option value='M' <% if (cliente.sexo === 'M') { %> selected <% } %>>Masculino</option>
@@ -114,16 +114,16 @@
         </select><br><br>
       </div>
 
-      <div class='form-group'>
-        <label for='alturaInic'>Altura (m):</label>
+      <div class='form_group'>
+        <label for='alturaInic'>Altura (cm):</label>
       <% if (cliente.alturaInic) { %>
-        <input type='number' name='alturaInic' id='alturaInic' placeholder='<%= cliente.alturaInic.toFixed(2) %>' value='<%= cliente.alturaInic.toFixed(2) %>' step='0.01' min='1.00' max='3.50' required><br><br>
+        <input type='number' name='alturaInic' id='alturaInic' placeholder='<%= cliente.alturaInic%>' value='<%= cliente.alturaInic%>' step='1' min='50' max='999' required><br><br>
       <% } else { %>
-        <input type='number' name='alturaInic' id='alturaInic' placeholder='Altura' step='0.01' min='1.00' max='3.99' required><br><br>
+        <input type='number' name='alturaInic' id='alturaInic' placeholder='Altura' step='1' min='50' max='999' required><br><br>
       <% } %>
       </div>
 
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='fecha_nacimiento'>Fecha de nacimiento:</label>
         <% if (cliente.fecha_nacimiento) { %>
           <input type='date' name='fecha_nacimiento' id='fecha_nacimiento' value='<%= cliente.fecha_nacimiento.toISOString().substr(0,10) %>' required><br><br>
@@ -132,7 +132,7 @@
         <% } %>
       </div>
       
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='objetivo'>Objetivo:</label>
         <select name='objetivo' id='objetivo'>
           <% objetivos.forEach(function(objetivo) { %>
@@ -143,7 +143,7 @@
         </select><br><br>
       </div>
 
-      <div class='form-group'>
+      <div class='form_group'>
         <label for='nivelFisico'>Escoge la opción que más te describa:</label>
         <select name='nivelFisico' id='nivelFisico'>
           <% nivelesFisicos.forEach(function(nivelFisico) { %>
