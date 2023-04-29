@@ -7,15 +7,16 @@ module.exports = class Rutina {
         this.nombre = nueva_rutina.nombre || "";
         this.tiporutina = nueva_rutina.tiporutina || "";
         this.descripcion = nueva_rutina.descripcion || "";
+        this.frecuencia = nueva_rutina.frecuencia || "",
         this.URL_Image= nueva_rutina.URL_Image || "";
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-            INSERT INTO  rutina(nombre,tiporutina,descripcion,URL_Image) 
-            values ( ?, ?, ?, ?)
-        `, [ this.nombre, this.tiporutina, this.descripcion, this.URL_Image]);
+            INSERT INTO  rutina(nombre,tiporutina,descripcion, frecuencia, URL_Image) 
+            values ( ?, ?, ?, ?, ?)
+        `, [ this.nombre, this.tiporutina, this.descripcion, this.frecuencia, this.URL_Image]);
     }
 
     static saveFavorita(id_cliente, id_rutina) {

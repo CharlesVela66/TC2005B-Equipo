@@ -177,6 +177,11 @@
         const nombreRutina = document.getElementById("nombre_rutina");
         const tipoRutina = document.getElementById("tiporutina");
         const descripcion = document.getElementById("descripcion");
+        const frecuencia = document.getElementById("frecuencia");
+
+        const principiante = document.getElementById("principiante").checked;
+        const intermedio = document.getElementById("intermedio").checked;
+        const avanzado = document.getElementById("avanzado").checked;
 
         const rutinasStr = "<%- escape(JSON.stringify(rutinas)) %>";
         const rutinas = JSON.parse(unescape(rutinasStr));
@@ -184,8 +189,13 @@
         const rutinasFavStr = "<%- escape(JSON.stringify(rutinasFavs)) %>";
         const rutinasFavs = JSON.parse(unescape(rutinasFavStr));
 
-        if (!nombreRutina.value || tipoRutina.value == "Elige una opción" || !descripcion.value){
+        if (!nombreRutina.value || tipoRutina.value == "Elige una opción" || !descripcion.value || !frecuencia.value){
             alert("Por favor llena todos los campos de nombre, descripcion y tipo de la rutina");
+            return;
+        }
+        
+        if (!principiante && !intermedio && !avanzado){
+            alert("Por favor selecciona mínimo un nivel para la rutina");
             return;
         }
 
@@ -205,6 +215,8 @@
         };
         });
 
+        const niveles = [principiante, intermedio, avanzado];
+
         if(ejercicios.length == 0){
             alert("Tienes que agregar mínimo un ejercicio para guardar la rutina");
             return;
@@ -221,6 +233,14 @@
         ejerciciosInput.name = "ejercicios";
         ejerciciosInput.value = JSON.stringify(ejercicios);
         form.appendChild(ejerciciosInput);
+
+        // Creamos un input escondido para que ese sea el que llamemos en el controlador con la info de los niveles.
+        const nivelInput = document.createElement("input");
+        nivelInput.type = "hidden";
+        nivelInput.id = "niveles";
+        nivelInput.name = "niveles";
+        nivelInput.value = niveles;
+        form.appendChild(nivelInput);
 
         // Esa información es la que se envia en el form
         form.submit();
