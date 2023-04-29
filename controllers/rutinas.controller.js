@@ -127,7 +127,8 @@ exports.post_nueva_rutina = (request, response, next) => {
       descripcion: request.body.descripcion,
       frecuencia: request.body.frecuencia,
       tiporutina: request.body.tiporutina,
-      URL_Image: request.file ? request.file.filename : ''
+      URL_Image: request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
+      URL_Image_Ejercicios: request.files['file'][0] ? request.files['file'][0].filename : ''
     });
   
     // Verificar si existe una rutina con el mismo nombre
