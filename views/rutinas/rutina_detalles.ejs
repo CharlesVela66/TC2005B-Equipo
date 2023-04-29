@@ -6,13 +6,58 @@
   <div class="card">
     <header class="card-header" style="background-color: rgb(31, 134, 134);">
       <p class="card-header-title has-text-white-ter" style="font-size: 30px;" >
-        <%= rutina.nombre%>
+        <%= rutina[0].nombre%>
       </p>
     </header>
   </div>
   <div class="box has-background-black-ter">
-    <p class="has-text-white-ter">Descripcion: <%= rutina.descripcion%></p>
-    <p class="has-text-white-ter">Tipo Rutina: <%= rutina.tiporutina %></p>
+    <p class="has-text-white-ter">Descripcion: <%= rutina[0].descripcion%></p>
+    <div class="columns">
+      <div class="column is-two-thirds">
+        <div class="columns">
+          <div class="column is-half">
+            <p class="has-text-white-ter">Tipo Rutina: <%= rutina[0].tiporutina %> </p>
+          </div>
+          <div class="column is-half">
+            <p class="has-text-white-ter">Frecuencia: <%= rutina[0].frecuencia %> </p>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <img src="<%= rutina[0].URL_Image_Ejercicios %>">
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <table class="table has-background-black-ter">
+          <thead>
+            <tr>
+              <th class="has-text-white-ter">Nivel</th>
+              <th class="has-text-white-ter">Recomendado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let nivel in niveles) { %>
+              <tr>
+                <td class="has-text-white-ter"><%= nivel %></td>
+                <td class="has-text-white-ter">
+                  <% if (niveles[nivel]) { %>
+                    <span class="icon has-text-success">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  <% } else { %>
+                    <span class="icon has-text-danger">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  <% } %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>        
+      </div>
+    </div>
+
     <br>
     <table class="table has-background-black-ter" width="100%">
       <thead><p class="subtitle is-4 has-text-white-ter">Ejercicios</p></thead>

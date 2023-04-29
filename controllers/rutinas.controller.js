@@ -13,6 +13,7 @@ exports.explorar_rutinas = (request, response, next) => {
     .then(([rows, fieldData]) => {
         Rutina.fetchAllFavoritas(request.session.nombre_usuario)
         .then(([rutinasFavs, fieldData]) => {
+            console.log(rutinasFavs);
             response.render('rutinas/rutinas', {
                 mensaje: mensaje,
                 rutinas: rows,
@@ -27,32 +28,41 @@ exports.explorar_rutinas = (request, response, next) => {
     .catch(error => console.log(error));
 }
 
-exports.visualizar_rutinas= (request, response, next) => {
+exports.visualizar_rutinas = (request, response, next) => {
     request.session.id_rutina = request.params.id;
     Rutina.fetchOne(request.params.id)
         .then(([rutinas, fieldData]) => {
-            //   console.log(dieta),
+            const niveles = {
+                Principiante: false,
+                Intermedio: false,
+                Avanzado: false
+            };
+
+            for (let rutina of rutinas) {
+                niveles[rutina.nombreNivel] = true;
+            }
+
             RutinaEjercicio.fetchOne(request.params.id)
-            .then(([rutinas_ejercicios, fieldData]) => {
-                //  console.log(dieta_alimento),
-                Ejercicio.fetchOne(request.params.id)
-                .then(([ejercicios, fieldData]) => {
-                    //   console.log(macro),
-                        response.render('rutinas/rutina_detalles', {
-                        rutina: rutinas[0],
-                        rutina_ejercicio: rutinas_ejercicios,
-                        ejercicio: ejercicios,
-                        isLoggedIn: request.session.isLoggedIn || false,
-                        nombre: request.session.nombre_usuario || '',
-                        rol: request.session.rol,
+                .then(([rutinas_ejercicios, fieldData]) => {
+                    Ejercicio.fetchOne(request.params.id)
+                        .then(([ejercicios, fieldData]) => {
+                            response.render('rutinas/rutina_detalles', {
+                                rutina: rutinas,
+                                rutina_ejercicio: rutinas_ejercicios,
+                                ejercicio: ejercicios,
+                                niveles: niveles,
+                                isLoggedIn: request.session.isLoggedIn || false,
+                                nombre: request.session.nombre_usuario || '',
+                                rol: request.session.rol,
+                            })
                         })
-                    })
-                    .catch(error => console.log(error));
+                        .catch(error => console.log(error));
                 })
                 .catch(error => console.log(error))
-            })
-            .catch(error => console.log(error))
+        })
+        .catch(error => console.log(error))
 }
+
 exports.seleccionar_rutinas=(request,response, next) =>{
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente,fieldData]) => {
@@ -75,6 +85,7 @@ exports.seleccionar_rutinas=(request,response, next) =>{
 exports.registrar_rutina_favorita = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente, fieldData]) => {
+        console.log(request.body.id_rutina)
         Rutina.saveFavorita(cliente[0].id_cliente, request.body.id_rutina)
         .then(([rows, fieldData]) =>{
             response.redirect('/rutinas');
@@ -87,6 +98,7 @@ exports.registrar_rutina_favorita = (request, response, next) => {
 exports.eliminar_rutina_favorita = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente, fieldData]) => {
+        console.log(request.body.id_rutina_fav)
         Rutina.deleteFavorita(cliente[0].id_cliente, request.body.id_rutina_fav)
         .then(([rows, fieldData]) =>{
             response.redirect('/rutinas');

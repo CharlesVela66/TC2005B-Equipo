@@ -54,10 +54,12 @@ module.exports = class Rutina {
 
     static fetchOne(id_rutina){
         return db.execute(`
-            SELECT *
-            FROM rutina r
-            WHERE r.id_rutina =?
-        `, [id_rutina]
+            SELECT r.id_rutina, r.nombre, r.tiporutina, r.frecuencia, r.descripcion, r.URL_Image, r.URL_Image_Ejercicios, rn.id_nivel, n.nombre as 'nombreNivel'
+            FROM rutina r, rutinaniveles rn, nivel n
+            WHERE r.id_rutina = ?
+            AND rn.id_rutina = ?
+            AND rn.id_nivel = n.id_nivel
+        `, [id_rutina, id_rutina]
         );
     }
 
@@ -71,7 +73,7 @@ module.exports = class Rutina {
 
     static fetchAllFavoritas(usuario) {
         return db.execute(`
-        SELECT *
+        SELECT r.nombre, r.id_rutina, r.URL_Image
         FROM rutina r, rutinasfavoritas rf, cliente c, usuario u
         WHERE r.id_rutina = rf.id_rutina
         AND rf.id_cliente = c.id_cliente
