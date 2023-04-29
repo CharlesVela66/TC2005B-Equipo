@@ -96,13 +96,13 @@
 
 
                 <div class="column">
-                    <label class="label">Escoje la opción que más te describa:</label>
+                    <label class="label">Selecciona tu Actividad Física:</label>
                     <div class="select is-link">
                         <select name="niv" id="niv" style="background-color: #242424; color: antiquewhite;" >
                             <option disabled selected>Selecciona una opción</option>
                             <% for(let nivelfisico of niveles){ %>
                                 <option                          value="<%=nivelfisico.id_niv %>">
-                                    <%=nivelfisico.descripcion_niv %>
+                                    <%=nivelfisico.nombre_niv %>
                                 </option>
                             <%}%>
                         </select>
