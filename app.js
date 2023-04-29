@@ -71,7 +71,10 @@ const fileFilter = (request, file, callback) => {
     }
 }
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('imagen')); 
+app.use(multer({ 
+  storage: fileStorage, 
+  fileFilter: fileFilter 
+}).fields([{ name: 'imagen' }, { name: 'file' }]));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

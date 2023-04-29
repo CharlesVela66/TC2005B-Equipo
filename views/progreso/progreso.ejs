@@ -26,22 +26,39 @@
                 },
                 options: {
                     scales: {
-                        yAxes: [{
-                            scaleLabel: {
-                                label:'Valor'
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha',
+                                color: 'white',
+                                font: 'Arial'
                             },
                             ticks: {
-                                beginAtZero: false
+                                color: 'white'
                             }
-                        }]
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Medida (cm)',
+                                color: 'white',
+                                font: 'Arial'
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                color: 'white'
+                            }
+                        }
                     },
                     plugins: {
                         legend: {
+                            labels: {
+                                color: 'white'
+                            },
                             onClick: null
                         }
                     }
                 }
-
             });
             $('#seleccion').change(function() {
                 const fechas = [];
@@ -54,15 +71,13 @@
                     const fecha = new Date(registro.fecha);
                     const fechaStr = fecha.getDate().toString().padStart(2, '0') + '/' + (fecha.getMonth() + 1).toString().padStart(2, '0') + '/' +fecha.getFullYear();
                     if (registro.nombre==valorSeleccionado){
-                        tabla.append('<tr><td class="has-text-white-ter">'+fechaStr+'</td><td class="has-text-white-ter">'+registro.medida.toFixed(2)+'</td></tr>');
+                        tabla.append('<tr><td>'+fechaStr+'</td><td>'+registro.medida.toFixed(1)+'</td></tr>');
                         fechas.unshift(fechaStr);
                         medidas.unshift(registro.medida);
                     }
                 })
                 actualizarGrafica(fechas, medidas);   
-                console.log(fechas);
             });
-
             function actualizarGrafica(fechas, medidas) {
                 grafico.data.labels = fechas;
                 grafico.data.datasets[0].data = medidas;
@@ -83,9 +98,8 @@
                     </select>
                 </div>
             </div>
-            <br><br>
             <div style="max-height: 350px; overflow: auto">
-            <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter is-1">
+            <table id="tabla-dinamica" class = "table has-text-white-ter has-background-black-ter">
                 <thead>
                     <tr>
                         <th class="has-text-white-ter">Fecha</th>
@@ -105,11 +119,333 @@
             </section>
         </columns>
     </div>
+    <div class="container" style="margin-bottom: 75px;">
+        <h1 class = "title is-1 has-text-centered has-text-white-ter"> Modificar Medidas</h1>
+        <div class = "container has-background-black-ter is-4">
+            <div class="level is-centered" style="height: 60px; background-color: rgb(31,134,134);">
+                    <button id="previousMonth" class="button has-background-black-ter is-info" style="margin-left: 20px;">&lt; </button>
+                    <span id="selectedMonth" class="level-item has-text-white-ter has-text-weight-bold">Mes y Año</span>
+                    <button id="nextMonth" class="button has-background-black-ter is-info " style="margin-right: 20px;">&gt;</button>
+            </div>
+        
+            <input type="hidden" name="fecha_ant" id="fecha_ant">
+            <input type="hidden" name="medidaId" id="medidaId">
+            <div style="max-height: 400px; overflow: auto">
+            <table id="table-medida"class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
+                <colgroup>
+                    <col span="1" style="width: 25%;">
+                    <col span="1" style="width: 25%;">
+                    <col span="1" style="width: 25%;">
+                    <col span="1" style="width: 12.5%;">
+                    <col span="1" style="width: 12.5%;">
+                 </colgroup>
+                <thead>
+                    <tr>
+                        <th class="has-text-white-ter">Fecha</th>
+                        <th class="has-text-white-ter">Parte del Cuerpo</th>
+                        <th class="has-text-white-ter">Medida</th>
+                        <th class="has-text-white-ter">Editar</th>
+                        <th class="has-text-white-ter">Borrar</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
+                <% if (registros.length > 0) { %>
+                        <% for (let registro of registros) { %>
+                            <tr> 
+                            <th class="has-text-white-ter"> 
+                                <% const fecha = new Date(registro.fecha); %>
+                                <%= fecha.getDate().toString().padStart(2, '0') %>/<%= (fecha.getMonth() + 1).toString().padStart(2, '0') %>/<%= fecha.getFullYear() %>
+                            </th>
+                            <td> <%= registro.nombre %></td>
+                            <td> <%= registro.medida.toFixed(1) %></td>
+                            <td> 
+                                <i class="fas fa-edit edit-icon" onclick="editRow(this)"></i>
+                                <i class="fas fa-check" style="display:none;" onclick="submitEditForm(this)"></i>
+                            </td>
+                            <td> 
+                                <input type="hidden" name="name_med" id="name_med" value="<%= registro.nombre %>">
+                                <i class="fas fa-times delete-icon" data-nombre = "<%= registro.nombre %>" data-fecha="<%= registro.fecha%>" onclick="openDeletePopup(this, 'popup-delete')"></i>
+                                <i class="fas fa-undo" style="display:none;" onclick="cancelEdit(this)"></i>
+                            </td>
+                            </tr>
+                        <% } %>
+        
+                <% } %>
+                <!--Fuente: https://datatables.net/examples/api/form.html-->
+                </tbody>
+            </table>
+            <form action="/progreso/eliminar" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <input type="hidden" name="delete_fecha" id="delete_fecha">
+                <input type="hidden" name="delete_id_medicion" id="delete_id_medicion"> 
+                <div class ="popup" id="popup-delete">
+                    <h2 class="title is-4 has-text-white-ter">¿Quieres eliminar este registro?</h2>
+                    <button class="button is-success" type = "submit" onclick="closePopup('popup-delete')">Confirmar</button>
+                    <button class="button is-danger" type="button" onclick="closePopup('popup-delete')">Cancelar</button>
+                </div>
+            </form>
+            </div>
+        
+    </div>
+    <script>
+        const csrfToken = '<%= csrfToken %>';
+        const medidasStr = "<%- escape(JSON.stringify(medidas)) %>";
+        const medidas = JSON.parse(unescape(medidasStr));
     
+        function openPopup(popupId, deleteElement = null) {
+            const popup = document.getElementById(popupId);
+            popup.classList.add("open-popup");
+        }
+    
+        function closePopup(popupId) {
+            const popup = document.getElementById(popupId);
+            popup.classList.remove("open-popup");
+        }
+    
+        function openDeletePopup(deleteElement, popupId) {
+            const fecha= deleteElement.getAttribute('data-fecha');
+            document.getElementById('delete_fecha').value = fecha;
+            let id_m = 0;
 
+            let nombreM = deleteElement.getAttribute('data-nombre')
+            medidas.forEach(medida => {               
+                if (medida.tipo == nombreM){
+                    id_m= medida.id_medicion;
+                }
+            })
+
+            document.getElementById('delete_id_medicion').value = id_m;
+            openPopup(popupId, deleteElement);
+        }
+    
+        function editRow(element) {
+            // Ocultar todos los iconos de editar y eliminar
+            const editIcons = document.querySelectorAll('.edit-icon');
+            const deleteIcons = document.querySelectorAll('.delete-icon');
+            for (let editIcon of editIcons) {
+                editIcon.style.display = 'none';
+            }
+            for (let deleteIcon of deleteIcons) {
+                deleteIcon.style.display = 'none';
+            }
+    
+            const row = element.closest('tr');
+            const cells = row.querySelectorAll('th, td');
+    
+            // Convertir las celdas en inputs
+            const fechaInput = document.createElement('input');
+            fechaInput.type = 'date';
+            fechaInput.value = formatDateToInput(cells[0].textContent.trim());
+            let fecha_ant = document.getElementById("fecha_ant");
+            fecha_ant.value = formatDateToInput(cells[0].textContent.trim());
+            fechaInput.required = true;
+            fechaInput.setAttribute('id', 'edit_fecha');
+            fechaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
+            cells[0].innerHTML = '';
+            cells[0].appendChild(fechaInput);
+    
+            let medidaId = document.getElementById("medidaId");
+            
+            medidas.forEach(medida => {          
+                if (" "+medida.tipo == cells[1].textContent){
+                    medidaId.value = medida.id_medicion;
+                }
+            })
+
+            const medidaInput = document.createElement('input');
+            medidaInput.type = 'text';
+            medidaInput.maxLength = 1000;
+            medidaInput.value = cells[2].textContent;
+            medidaInput.required = true;
+            medidaInput.setAttribute('id', 'edit_medida');
+            medidaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
+            cells[2].innerHTML = '';
+            cells[2].appendChild(medidaInput);
+    
+             setOriginalDataAttributes(row.querySelector('.fa-undo'), fechaInput.value, medidaInput.value);
+            // Ocultar iconos de editar y eliminar, y mostrar el de confirmar
+            element.style.display = 'none';
+            row.querySelector('.fa-times').style.display = 'none';
+            row.querySelector('.fa-check').style.display = '';
+            row.querySelector('.fa-undo').style.display = '';
+        }
+
+        function isDuplicateRecord(fecha, nombre) {
+            const registrosStr = "<%- escape(JSON.stringify(registros)) %>";
+            const registros = JSON.parse(unescape(registrosStr));
+            return registros.some(registro => {
+                const fechaRegistro = registro.fecha;
+                const nombreRegistro = registro.nombre;
+                console.log(fechaRegistro.substring(0, 10));
+                console.log(fecha);
+                console.log(nombreRegistro);
+                console.log(nombre);
+                return fecha === fechaRegistro.substring(0, 10) && nombre === nombreRegistro;
+            });
+}
+
+        function submitEditForm(element) {
+            const row = element.closest('tr');
+            const cells = row.querySelectorAll('th, td');
+            const fecha_ant = document.querySelector('input[name="fecha_ant"]').value;
+            const fecha = document.getElementById('edit_fecha').value;
+            const medidaId = document.getElementById('medidaId').value;
+            const med = document.getElementById('edit_medida').value;
+    
+            if (!validateEditForm(fecha, med)) {
+                alert('Completa los campos de fecha y descripción para continuar');
+                return;
+            }
+            
+            
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/progreso/editar';
+    
+            const tokenInput = document.createElement('input');
+            tokenInput.type = "hidden";
+            tokenInput.name = "_csrf";
+            tokenInput.value = csrfToken;
+            form.appendChild(tokenInput);
+    
+            const fechaInput = document.createElement('input');
+            fechaInput.type = 'hidden';
+            fechaInput.id = 'edit_fecha'
+            fechaInput.name = 'edit_fecha'
+            fechaInput.value = fecha;
+            console.log(fecha);
+            form.appendChild(fechaInput);
+            const fechaAnt = document.createElement('input');
+            fechaAnt.type = 'hidden';
+            fechaAnt.id = 'fecha_ant'
+            fechaAnt.name = 'fecha_ant'
+            fechaAnt.value = fecha_ant;
+            console.log(fecha_ant);
+            form.appendChild(fechaAnt);
+            const medidaRow = document.createElement('input');
+            medidaRow.type = 'hidden';
+            medidaRow.id = 'id_medicion'
+            medidaRow.name = 'id_medicion'
+            medidaRow.value = medidaId;
+            console.log(medidaRow);
+            form.appendChild(medidaRow);
+    
+            const medidaInput = document.createElement('input');
+            medidaInput.type = 'hidden';
+            medidaInput.id = 'edit_medida'
+            medidaInput.name = 'edit_medida'
+            medidaInput.value = med;
+            console.log(medidaInput);
+            form.appendChild(medidaInput);
+    
+            document.body.appendChild(form);
+            form.submit();
+        }
+    
+        function cancelEdit(element) {
+    
+            console.log(element.getAttribute('data-original-fecha'));
+            console.log(element.getAttribute('data-original-medida'));
+    
+            const row = element.closest('tr');
+            const cells = row.querySelectorAll('th, td');
+    
+            // Revertir fecha
+            const fecha = element.getAttribute('data-original-fecha');
+            cells[0].innerHTML = formatDateToDisplay(fecha);
+    
+            // Revertir descripción
+            const med = element.getAttribute('data-original-medida');
+            cells[2].innerHTML = med;
+    
+            // Restaurar los iconos de editar y eliminar
+            const editIcons = document.querySelectorAll('.edit-icon');
+            const deleteIcons = document.querySelectorAll('.delete-icon');
+            for (let editIcon of editIcons) {
+                editIcon.style.display = '';
+            }
+            for (let deleteIcon of deleteIcons) {
+                deleteIcon.style.display = '';
+            }
+    
+            // Ocultar iconos de confirmar y regresar
+            row.querySelector('.fa-check').style.display = 'none';
+            row.querySelector('.fa-undo').style.display = 'none';
+        }
+    
+        function formatDateToInput(dateString) {
+            const [day, month, year] = dateString.split('/');
+            return `${year}-${month}-${day}`;
+        }
+    
+        function formatDateToDisplay(inputDate) {
+            const [year, month, day] = inputDate.split('-');
+            return `${day}/${month}/${year}`;
+        }
+        
+        function validateEditForm(fecha, med) {
+            if (!fecha || !med) {
+                return false;
+            }
+
+            const nombre = document.getElementById("name_med").value;
+            if (isDuplicateRecord(fecha, nombre)) {
+                alert("Ya existe un registro para esa parte del cuerpo con esa fecha.");
+                return false;
+            }
+
+            return true;
+        }
+        function setOriginalDataAttributes(element, fecha, med) {
+            element.setAttribute('data-original-fecha', fecha);
+            element.setAttribute('data-original-medida', med);
+        }
+        document.getElementById('previousMonth').addEventListener('click', changeMonth(-1));
+        document.getElementById('nextMonth').addEventListener('click', changeMonth(1));
+    
+        const selectedMonth = document.getElementById('selectedMonth');
+        let currentMonth = new Date();
+        currentMonth.setDate(1);
+        updateSelectedMonth(currentMonth);
+    
+        function changeMonth(delta) {
+            return () => {
+                currentMonth.setMonth(currentMonth.getMonth() + delta);
+                updateSelectedMonth(currentMonth);
+                filterTable(currentMonth);
+            }
+        }
+    
+        function updateSelectedMonth(date) {
+            const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            selectedMonth.textContent = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+        }
+    
+        function filterTable(date) {
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const tableRows = document.querySelectorAll('#table-medida tbody tr'); // Modifica esta línea
+    
+            for (const row of tableRows) {
+                const fechaCell = row.querySelector('th');
+                const [day, monthText, yearText] = fechaCell.textContent.trim().split('/');
+                const rowDate = new Date(parseInt(yearText), parseInt(monthText) - 1, parseInt(day));
+    
+                if (rowDate.getMonth() === month && rowDate.getFullYear() === year) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+    
+        // Aplica el filtro inicialmente
+        filterTable(currentMonth);
+    </script>
 <% }  else if (rol == "Administrador") { %>
     <h1 class="title  is-1 has-text-white-ter"></h1>
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
 <% } %>
 <%- include('../includes/foot.ejs'); %>
-

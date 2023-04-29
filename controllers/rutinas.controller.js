@@ -1,6 +1,7 @@
 const Rutina = require('../models/rutinas.model');
 const Ejercicio= require('../models/ejercicios.model');
 const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
+const RutinaNivel = require('../models/rutina_nivel.model');
 const Cliente =require('../models/clientes.model');
 
 exports.explorar_rutinas = (request, response, next) => {
@@ -124,8 +125,10 @@ exports.post_nueva_rutina = (request, response, next) => {
     const newRutina = new Rutina({
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,
+      frecuencia: request.body.frecuencia,
       tiporutina: request.body.tiporutina,
-      URL_Image: request.file ? request.file.filename : ''
+      URL_Image: request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
+      URL_Image_Ejercicios: request.files['file'][0] ? request.files['file'][0].filename : ''
     });
   
     // Verificar si existe una rutina con el mismo nombre
@@ -137,9 +140,10 @@ exports.post_nueva_rutina = (request, response, next) => {
       .then(([rows, fieldData]) => {
         // Obtén el ID de la nueva rutina insertada
         const id_rutina = rows.insertId;
+        request.session.id_rutina = id_rutina;
         // Recorre los ejercicios enviados en el formulario
         const ejercicios = JSON.parse(request.body.ejercicios);
-        const promises = ejercicios.map(ejercicio => {
+        let promises = ejercicios.map(ejercicio => {
           // Guarda cada ejercicio en la tabla 'rutinaejercicios'
           const newRutinaEjercicio = new RutinaEjercicio({
             id_rutina: id_rutina,
@@ -151,6 +155,27 @@ exports.post_nueva_rutina = (request, response, next) => {
   
         // Espera a que todos los ejercicios se guarden en la base de datos
         return Promise.all(promises);
+      })
+      .then(() => {
+        const niveles = request.body.niveles;
+        const arr = niveles.split(",");
+        console.log(arr);
+        let counter = 0;
+        let promises = arr.map(nivel => {
+            counter = counter + 1;
+            console.log(nivel);
+            console.log(counter);
+            if (nivel == "true"){
+                console.log("Nivel is true");
+                const newRutinaNivel = new RutinaNivel({
+                    id_rutina: request.session.id_rutina,
+                    id_nivel: counter
+                })
+                return newRutinaNivel.save();
+            }
+        });
+        return Promise.all(promises);
+        
       })
       .then(() => {
         // Redirige a la página de éxito o a donde desees después de guardar la rutina y los ejercicios

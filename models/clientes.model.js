@@ -9,17 +9,20 @@ module.exports = class Cliente {
         this.id_dieta= nuevo_cliente.id_dieta || null;
         this.id_obj = nuevo_cliente.id_obj || null;
         this.id_niv= nuevo_cliente.id_niv || null;
-        this.sexo= nuevo_cliente.sexo || null;
+        this.sexo = nuevo_cliente.sexo || null;
         this.fecha_nacimiento = nuevo_cliente.fecha_nacimiento || null;
-        this.alturaInic=nuevo_cliente.alturaInic || null;
-        this.pesoInic=nuevo_cliente.pesoInic || null;
+        this.alturaInic = nuevo_cliente.alturaInic || null;
+        this.pesoInic = nuevo_cliente.pesoInic || null;
+        this.pressBanca = nuevo_cliente.pressBanca || null;
+        this.sentadilla = nuevo_cliente.sentadilla || null;
+        this.pesoMuerto = nuevo_cliente.pesoMuerto || null;
     }
 
     save() {
         return db.execute(`       
         INSERT INTO cliente (id_usuario, id_rutina, id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic)
-        VALUES (?,?,?,?,?,?,?,?,?)
-    `, [this.id_usuario, this.id_rutina, this.id_dieta, this.id_obj, this.id_niv, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic]);
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [this.id_usuario, this.id_rutina, this.id_dieta, this.id_obj, this.id_niv, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic, this.pressBanca, this.sentadilla, this.pesoMuerto]);
     }
 
 
@@ -35,10 +38,10 @@ module.exports = class Cliente {
 
     update(){
         return db.execute(
-            'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic=?, pesoInic=?, id_niv=? WHERE id_usuario = ?',
-            [this.id_obj||null, this.sexo||null, this.fecha_nacimiento||null,this.alturaInic||null,this.pesoInic||null,this.id_niv||null, this.id_usuario]
+            'UPDATE cliente SET id_obj = ?, sexo = ?, fecha_nacimiento = ?, alturaInic = ?, pesoInic = ?, pressBanca = ?, sentadilla = ?, pesoMuerto = ?, id_niv = ? WHERE id_usuario = ?',
+            [this.id_obj||null, this.sexo||null, this.fecha_nacimiento||null, this.alturaInic||null, this.pesoInic||null, this.pressBanca||null, this.sentadilla||null, this.pesoMuerto||null, this.id_niv||null, this.id_usuario]
         );
-
+ 
      }
 
     static saveRutina(rutina, cliente){
@@ -48,7 +51,17 @@ module.exports = class Cliente {
         );
     }
 
+    //Actualizar datos del cliente
+    updateClienteData() {
+        return db.execute(
+            `UPDATE cliente 
+             SET sexo = ?, fecha_nacimiento = ?, alturaInic = ?, pressBanca = ?, sentadilla = ?, pesoMuerto = ?, id_obj = ?, id_niv = ?
+             WHERE id_usuario = ?`,
+            [this.sexo, this.fecha_nacimiento, this.alturaInic || null, this.pressBanca||null, this.sentadilla||null, this.pesoMuerto||null, this.id_obj, this.id_niv, this.id_usuario]
+        );
+    } 
     
+    /*
     //Actualizar datos del cliente
     updateClienteData() {
         return db.execute(
@@ -57,7 +70,7 @@ module.exports = class Cliente {
              WHERE id_usuario = ?`,
             [this.sexo, this.fecha_nacimiento, this.alturaInic, this.id_obj, this.id_niv, this.id_usuario]
         );
-    }
+    }*/
     
       
 

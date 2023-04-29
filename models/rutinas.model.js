@@ -7,15 +7,17 @@ module.exports = class Rutina {
         this.nombre = nueva_rutina.nombre || "";
         this.tiporutina = nueva_rutina.tiporutina || "";
         this.descripcion = nueva_rutina.descripcion || "";
+        this.frecuencia = nueva_rutina.frecuencia || "",
         this.URL_Image= nueva_rutina.URL_Image || "";
+        this.URL_Image_Ejercicios = nueva_rutina.URL_Image_Ejercicios || "";
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-            INSERT INTO  rutina(nombre,tiporutina,descripcion,URL_Image) 
-            values ( ?, ?, ?, ?)
-        `, [ this.nombre, this.tiporutina, this.descripcion, this.URL_Image]);
+            INSERT INTO  rutina(nombre,tiporutina,descripcion, frecuencia, URL_Image, URL_Image_Ejercicios) 
+            values ( ?, ?, ?, ?, ?, ?)
+        `, [ this.nombre, this.tiporutina, this.descripcion, this.frecuencia, this.URL_Image, this.URL_Image_Ejercicios]);
     }
 
     static saveFavorita(id_cliente, id_rutina) {
@@ -52,7 +54,7 @@ module.exports = class Rutina {
 
     static fetchOne(id_rutina){
         return db.execute(`
-            SELECT r.id_rutina,r.nombre,r.tiporutina,r.descripcion, r.URL_Image
+            SELECT *
             FROM rutina r
             WHERE r.id_rutina =?
         `, [id_rutina]
@@ -69,7 +71,7 @@ module.exports = class Rutina {
 
     static fetchAllFavoritas(usuario) {
         return db.execute(`
-        SELECT r.id_rutina, r.nombre, r.tiporutina, r.Url_image, r.descripcion
+        SELECT *
         FROM rutina r, rutinasfavoritas rf, cliente c, usuario u
         WHERE r.id_rutina = rf.id_rutina
         AND rf.id_cliente = c.id_cliente
@@ -85,5 +87,14 @@ module.exports = class Rutina {
             return RutinaEjercicio.fetchAll();
         }
     }
+
+    /*
+    async agregarEjercicio(rutinaId, ejercicioId) {
+        const connection = await db.getConnection();
+        await connection.query('CALL agregarEjercicioARutina(?, ?)', [rutinaId, ejercicioId]);
+        connection.release();
+    },
+
+    async agregarEjercicio(id_rutina, ejercicio_id)*/
 
 }
