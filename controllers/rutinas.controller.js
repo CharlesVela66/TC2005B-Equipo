@@ -37,6 +37,7 @@ exports.visualizar_rutinas= (request, response, next) => {
                 //  console.log(dieta_alimento),
                 Ejercicio.fetchOne(request.params.id)
                 .then(([ejercicios, fieldData]) => {
+                    
                     //   console.log(macro),
                         response.render('rutinas/rutina_detalles', {
                         rutina: rutinas[0],

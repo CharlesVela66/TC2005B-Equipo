@@ -3,8 +3,10 @@ const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
 const Administrador = require('../models/administrador.model');
 const Nivel= require('../models/niveles.model');
+const clientemedicion=require('../models/cliente_medicion.model');
 
 const bcrypt = require('bcryptjs');
+const { request, response } = require('express');
 
 
 // Cargamos la interfaz del inicio
@@ -111,7 +113,6 @@ exports.registrarse =(request,response, next) =>{
     });
 };
 exports.post_registrarse = (request, response, next)=>{
-    console.log("Comienza el post HOLAA MOTHERFACKAR")
     request.session.flagOne = true;
     request.session.flagTwo = true;
      
@@ -195,10 +196,10 @@ exports.post_registrarse = (request, response, next)=>{
                         .then(([row,fieldData])=>{
                             request.session.mensaje = "Usuario Registrado";   
                             response.redirect('/iniciar-sesion');
-                        }).catch(err=>console(err));
-                    }).catch(err=>console(err));
+                        }).catch(err=>console.error(err));
+                    }).catch(err=>console.error(err));
                 }).catch((error)=>{
-                    console.log(error) 
+                    console.log(error);
                 })
 
         }).catch(error=>{
@@ -245,6 +246,9 @@ exports.post_informacion =(request,response,next)=>{
             fecha_nacimiento:rows[0].fecha_nacimiento,
             alturaInic: rows[0].alturaInic,
             pesoInic: rows[0].pesoInic,
+            pressBanca: rows[0].pressBanca,
+            sentadilla: rows[0].sentadilla,
+            pesoMuerto: rows[0].pesoMuerto,
 
         });
         //Actualizar
@@ -253,18 +257,23 @@ exports.post_informacion =(request,response,next)=>{
         cliente.fecha_nacimiento=request.body.fecha_nacimiento;
         cliente.alturaInic=request.body.alturaInic;
         cliente.pesoInic=request.body.pesoInic;
+        cliente.pressBanca=request.body.pressBanca;
+        cliente.sentadilla=request.body.sentadilla;
+        cliente.pesoMuerto=request.body.pesoMuerto;
         cliente.id_niv=request.body.niv;
 
         return cliente.update();
 
     })
     .then(([rows,fieldData])=>{
-        response.redirect('/home')
-    })        
+        response.redirect('/')
+    })
+    //borrar        
     .catch((error) => {
         console.log(error);
     });
 };
+
 
 exports.cerrar_sesion = (request, response, next) => {
     request.session.destroy(() => {
