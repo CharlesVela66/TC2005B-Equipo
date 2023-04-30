@@ -1,5 +1,7 @@
 <%- include('../includes/head.ejs'); %>
     </div>
+    <head>    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script></head>
     <style>
         html {
             scroll-behavior: smooth;
@@ -281,13 +283,23 @@
         }
 
         .azulf {
-            width: 400px;
-            height: 400px;
-            border-radius: 5%;
+            width: 40px;
+            height: 40px;
             margin: 0 0 0 170px;
             position: relative;
             top: -150px;
         }
+
+        #grafico {
+            display: block;
+            margin: 0 auto;
+            background-color: rgba(10, 14, 43, 1);
+            width: 600px;
+            height: 450px;
+            position: relative;
+            top:-50px
+        }
+ 
 
         .azulconn {
             padding: 20px 10px 30px 10px;
@@ -428,7 +440,65 @@
                     lo que puede llevar a que descarten la práctica del ejercicio. </p>
             </div>
 
-            <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" class="azulf">
+            <canvas id="grafico"></canvas>
+    <script>
+        var totalDietas =  <%= totalDietas %>;
+        var totalRutinas =  <%= totalRutinas %>;// Reemplaza este valor con el total de dietas obtenido de tus datos
+        // Reemplaza este valor con el total de rutinas obtenido de tus datos
+
+        var ctx = document.getElementById('grafico').getContext('2d');
+        var grafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Rutinas', 'Dietas'],
+                datasets: [{
+                    label: 'Total',
+                    data: [totalRutinas, totalDietas],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'hsl(0, 0%, 96%)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'hsl(0, 0%, 96%)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'hsl(0, 0%, 96%)'
+                        },
+                         onClick: function() {
+                            return;
+                        }
+                    },
+                    datalabels: {
+                        color: 'hsl(0, 0%, 96%)',
+                        anchor: 'end',
+                        align: 'top'
+                    }
+                }
+            }
+        });
+    </script>
 
         </div>
 
@@ -445,8 +515,8 @@
                     también podrás consultar diversas dietas y rutinas que puedes seguir de acuerdo a tus preferencias y
                     objetivos. </p>
             </div>
-
             <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" class="azulff">
+
 
         </div>
 
@@ -556,6 +626,8 @@
             <p>&copy; 2023 Onyx. All rights reserved.</p>
         </div>
     </footer>
+
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

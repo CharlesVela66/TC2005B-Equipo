@@ -189,7 +189,7 @@ exports.post_ejercicios = (request, response, next) => {
     Ejercicio.fetchOneByDescripcion(descripcion)
       .then(([rows, fieldData]) => {
         if (rows.length > 0) {
-          request.session.mensaje = "Ya existe un ejercicio con la misma descripción.";
+          request.session.mensaje = "Ya existe un ejercicio con el mismo nombre.";
           response.redirect('/ejercicios');
         } else {
           const ejercicio = new Ejercicio({

@@ -16,9 +16,10 @@ router.get('/informacion',homeController.get_informacion);
 
 router.post('/informacion',homeController.post_informacion);
 
-
 router.get('/cerrar-sesion', homeController.cerrar_sesion)
 
 router.get('/', homeController.inicio);
+
+
 
 module.exports = router;
