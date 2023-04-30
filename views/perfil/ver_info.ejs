@@ -147,7 +147,14 @@
     <% if (infoCliente.hasOwnProperty('alturaInic') && infoCliente.alturaInic !== null) { %>
       <span class='bold_text'>Altura: </span><%= infoCliente.alturaInic%> cm<br>
     <% } %>       
+
+    <% if (pesoUltimo) { %>
+      <span class='bold_text'>Última medición de peso: </span><%= pesoUltimo %> kg<br>
+    <% } else { %>
+      <span class='bold_text'>Peso inicial: </span><%= infoCliente.pesoInic %> kg<br>
+    <% } %>
     <br>
+    
     </p>
   </div>
   <p>

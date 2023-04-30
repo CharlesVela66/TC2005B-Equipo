@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 module.exports = class Cliente {
 
     constructor(nuevo_cliente) {
+        this.id_cliente = nuevo_cliente.id_cliente;
         this.id_usuario = nuevo_cliente.id_usuario;
         this.id_rutina =nuevo_cliente.id_rutina || null;
         this.id_dieta= nuevo_cliente.id_dieta || null;
@@ -108,14 +109,12 @@ module.exports = class Cliente {
 
     static getIdCliente(nombre_usuario){
         return db.execute(`
-        SELECT u.id_usuario
+        SELECT c.id_cliente
         FROM cliente c, usuario u
         WHERE u.nombre_usuario = ?
         AND c.id_usuario = u.id_usuario
         `, [nombre_usuario]);
     }
-
-    //función para obtener información de un cliente y su objetivo. Se pudiera incluir Nivel Físico, pero ese aún no se crea para llenar datos
     static getObjetivo(id_cliente) {
         return db.execute(
             `
