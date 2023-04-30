@@ -54,7 +54,7 @@ module.exports = class Rutina {
 
     static fetchOne(id_rutina){
         return db.execute(`
-            SELECT r.id_rutina, r.nombre, r.tiporutina, r.frecuencia, r.descripcion, r.URL_Image, r.URL_Image_Ejercicios, rn.id_nivel, n.nombre as 'nombreNivel'
+            SELECT r.id_rutina, r.nombre as 'nombreRutina', r.tiporutina, r.frecuencia, r.descripcion, r.URL_Image, r.URL_Image_Ejercicios, rn.id_nivel, n.nombre as 'nombreNivel'
             FROM rutina r, rutinaniveles rn, nivel n
             WHERE r.id_rutina = ?
             AND rn.id_rutina = ?

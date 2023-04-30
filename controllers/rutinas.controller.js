@@ -48,6 +48,7 @@ exports.visualizar_rutinas = (request, response, next) => {
                         .then(([ejercicios, fieldData]) => {
                             response.render('rutinas/rutina_detalles', {
                                 rutina: rutinas,
+                                nombreRutina: rutinas[0].nombreRutina,
                                 rutina_ejercicio: rutinas_ejercicios,
                                 ejercicio: ejercicios,
                                 niveles: niveles,
