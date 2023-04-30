@@ -46,4 +46,17 @@ module.exports = class RegistroMedida {
         `, [username]);
     }
 
+    static ultimaMedicionPeso(id_cliente) {
+        return db.execute(`
+            SELECT cm.medida
+            FROM clientemedicion cm, cliente c, medicion m
+            WHERE c.id_cliente=cm.id_cliente
+            AND m.id_medicion = cm.id_medicion
+            AND cm.id_cliente = 21
+            AND cm.id_medicion = 10
+            ORDER BY fecha DESC
+            LIMIT 1;
+        `, [id_cliente]);
+    }
+
 }

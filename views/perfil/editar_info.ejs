@@ -144,11 +144,11 @@
       </div>
 
       <div class='form_group'>
-        <label for='nivelFisico'>Escoge la opción que más te describa:</label>
+        <label for='nivelFisico'>Nivel físico:</label>
         <select name='nivelFisico' id='nivelFisico'>
           <% nivelesFisicos.forEach(function(nivelFisico) { %>
             <option value='<%= nivelFisico.id_niv %>' <% if (cliente.id_niv === nivelFisico.id_niv) { %> selected <% } %>>
-              <%= nivelFisico.descripcion_niv %>
+              <%= nivelFisico.nombre_niv %>
             </option>
             <% }); %>
         </select><br><br>

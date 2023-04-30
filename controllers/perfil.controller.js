@@ -5,7 +5,7 @@ const Objetivo = require('../models/objetivos.model');
 const NivelFisico = require('../models/niveles.model');
 const Usuario = require('../models/usuario.model');
 const Administrador = require('../models/administrador.model');
-const db = require('../util/database');
+const ClienteMedicion = require('../models/cliente_medicion.model');
 
 exports.ver_perfil = (request, response, next) => {
   Cliente.fetchOne(request.session.nombre_usuario)
@@ -37,16 +37,30 @@ exports.ver_perfil = (request, response, next) => {
 
 exports.verCliente = (request, response, next) => {
   Cliente.fetchOne(request.session.nombre_usuario)
-    .then(([clientes, fieldData]) => {
-      console.log(clientes);
+  .then(([clientes, fieldData]) => {
+    const id_cliente = clientes[0].id_cliente;
+    ClienteMedicion.ultimaMedicionPeso(id_cliente)
+    .then(([medPeso, fieldData]) => {
+      console.log("Log de peso");
+      const peso = medPeso.length > 0 ? medPeso[0].medida : clientes[0].pesoInic;
+      console.log(peso);
       response.render('perfil/ver_info', {
         infoCliente: clientes[0],
         isLoggedIn: request.session.isLoggedIn || false,
         nombre: request.session.nombre_usuario || '',
         rol: request.session.rol,
+        pesoUltimo: peso
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      response.status(500).send('Error al obtener la última medición de peso');
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    response.status(500).send('Error al obtener los datos del cliente');
+  });
 };
 
 exports.verAdministrador = (request, response, next) => {
