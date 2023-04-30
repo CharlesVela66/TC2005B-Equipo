@@ -37,31 +37,78 @@ exports.ver_perfil = (request, response, next) => {
 
 exports.verCliente = (request, response, next) => {
   Cliente.fetchOne(request.session.nombre_usuario)
-  .then(([clientes, fieldData]) => {
-    const id_cliente = clientes[0].id_cliente;
-    ClienteMedicion.ultimaMedicionPeso(id_cliente)
-    .then(([medPeso, fieldData]) => {
-      console.log("Log de peso");
-      const peso = medPeso.length > 0 ? medPeso[0].medida : clientes[0].pesoInic;
-      console.log(peso);
-      response.render('perfil/ver_info', {
-        infoCliente: clientes[0],
-        isLoggedIn: request.session.isLoggedIn || false,
-        nombre: request.session.nombre_usuario || '',
-        rol: request.session.rol,
-        pesoUltimo: peso
-      });
+    .then(([clientes, fieldData]) => {
+      const id_cliente = clientes[0].id_cliente;
+      ClienteMedicion.ultimaMedicionPeso(id_cliente)
+        .then(([medPeso, fieldData]) => {
+          console.log("Log de peso");
+          const peso = medPeso.length > 0 ? medPeso[0].medida : clientes[0].pesoInic;
+          console.log(peso);
+
+          // Cálculo del GMB según el sexo del cliente
+          const sexo = clientes[0].sexo;
+          let gmb;
+          if (sexo === 'M') {
+            gmb = 9.99 * peso + 6.25 * clientes[0].alturaInic - 4.92 * getAge(clientes[0].fecha_nacimiento) + 5;
+          } else if (sexo === 'F') {
+            gmb = 9.99 * peso + 6.25 * clientes[0].alturaInic - 4.92 * getAge(clientes[0].fecha_nacimiento) - 161;
+          }
+
+          // Obtener nivel físico del cliente
+          const id_niv = clientes[0].id_niv;
+          NivelFisico.fetchOne(id_niv)
+            .then(([nivelfisico, fieldData]) => {
+              console.log(nivelfisico);
+              const porcentaje = nivelfisico[0].porcentaje;
+              console.log(porcentaje);
+
+              // Cálculo de las calorías consumidas por actividad física (AF)
+              const af = gmb * (porcentaje / 100);
+              console.log(af);
+
+              // Cálculo de las calorías gastadas por termogénesis de los alimentos (TA)
+              const ta = gmb * 0.1;
+              console.log(ta);
+
+              // Cálculo de las calorías recomendadas según el objetivo del cliente
+              let caloriasRecomendadas = gmb;
+              const id_obj = clientes[0].id_obj;
+              if (id_obj === 1) {
+                caloriasRecomendadas -= 500;
+              } else if (id_obj === 3) {
+                caloriasRecomendadas += 500;
+              }
+              console.log(caloriasRecomendadas);
+
+              response.render("perfil/ver_info", {
+                infoCliente: clientes[0],
+                isLoggedIn: request.session.isLoggedIn || false,
+                nombre: request.session.nombre_usuario || "",
+                rol: request.session.rol,
+                pesoUltimo: peso,
+                gmb: gmb,
+                af: af,
+                ta: ta,
+                caloriasRecomendadas: caloriasRecomendadas,
+              });
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
     })
-    .catch(err => {
-      console.log(err);
-      response.status(500).send('Error al obtener la última medición de peso');
-    });
-  })
-  .catch(err => {
-    console.log(err);
-    response.status(500).send('Error al obtener los datos del cliente');
-  });
+    .catch((err) => console.log(err));
 };
+
+function getAge(dateString) {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
 
 exports.verAdministrador = (request, response, next) => {
   Administrador.fetchOne(request.session.nombre_usuario)

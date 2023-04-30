@@ -2,7 +2,6 @@
 
 <h1 class='title is-1' style='color: aliceblue;'>Información del Usuario</h1>
 
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <style>
   .card{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -152,6 +151,10 @@
       <span class='bold_text'>Última medición de peso: </span><%= pesoUltimo %> kg<br>
     <% } else { %>
       <span class='bold_text'>Peso inicial: </span><%= infoCliente.pesoInic %> kg<br>
+    <% } %>
+    
+    <% if (pesoUltimo) { %>
+      <span class='bold_text'>Calorías recomendadas: </span><%= Math.round(caloriasRecomendadas) %> kcal<br>
     <% } %>
     <br>
     

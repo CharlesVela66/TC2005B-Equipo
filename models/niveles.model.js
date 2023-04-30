@@ -6,15 +6,15 @@ module.exports = class Niveles {
     constructor(nuevo_nivel) {
         this.id_niv = nuevo_nivel.id_niv;
         this.nombre_niv = nuevo_nivel.nombre_niv;
-        this.descripcion_niv = nuevo_nivel.descripcion_niv;
+        this.porcentaje = nuevo_nivel.porcentaje;
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-        INSERT INTO  nivelfisico(nombre_niv, descripcion_niv) 
+        INSERT INTO  nivelfisico(nombre_niv, porcentaje) 
         values (?, ?)
-    `, [this.nombre_niv, this.descripcion_niv]);
+    `, [this.nombre_niv, this.porcentaje]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
