@@ -266,7 +266,7 @@ exports.post_informacion =(request,response,next)=>{
 
     })
     .then(([rows,fieldData])=>{
-        response.redirect('/')
+        response.redirect('/home')
     })
     //borrar        
     .catch((error) => {

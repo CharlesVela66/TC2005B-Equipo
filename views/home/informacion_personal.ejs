@@ -53,9 +53,10 @@
 
                 <div class="columns">
                     <div class="column">
-                        <label class="label">Elige tu Objetivo</label>
-                        <div class="select is-link" >
-                            <select  style="color:rgba(31, 93, 240, 0.7); background-color: #242424; color: antiquewhite;" name="obj" id="obj">
+                        <label class="label">Elige tu objetivo</label>
+                        <div class="control">
+                            <div class="select is-link">
+                            <select required style="background-color: #242424; color: antiquewhite;" name="obj" id="obj">
                                 <option disabled selected>Selecciona una opción</option>
                                 <% for(let objetivo of objetivos){ %>
                                     <option value="<%=objetivo.id_obj %>">
@@ -64,55 +65,57 @@
                                 <%}%>
                             </select>
                         </div>
-                        <br><br><br>
+                        </div>
+                        <br><br>
 
-                        <label class="label">Selecciona tú Sexo</label>
+                        <label class="label">Selecciona tú sexo</label>
                         <div class="control">
                             <div class="select is-link">
-                                <select style="background-color: #242424; color: antiquewhite;" id="sexo" name="sexo">
+                                <select required style="background-color: #242424; color: antiquewhite;" id="sexo" name="sexo">
                                     <option disabled selected>Selecciona una opción</option>
                                     <option>M</option>
                                     <option>F</option>
                                 </select>
                             </div>
                         </div>
-                        <br><br><br>
+                        <br><br>
                         
-                        <label class="label">Ingresa tú fecha de Nacimiento</label>
+                        <label class="label">Ingresa tú fecha de nacimiento</label>
                         <input type="date" id="fecha_nacimiento" required name="fecha_nacimiento"
                         min="<%= new Date(new Date().getFullYear() - 15, new Date().getMonth(), new Date().getDate()).toISOString().substr(0, 10) %>"
                         style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;
-                        padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                        padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px; width: 213px; height: 40px;">
 
                         <br><br>
 
-                        <label class="label">Ingresa tú Altura(CM) 100 - 400</label>
+                        <label class="label">Ingresa tú altura(cm) 100 - 400</label>
                         <input type="number" id="alturaInic" required name="alturaInic" step="1" min="100" max="400"
-                        style="border: 1.5px solid rgba(31, 93, 240,0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                        style="border: 1.5px solid rgba(31, 93, 240,0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
                     </div>
                     
-                    <br><br><br>
+                    <br><br>
 
                     <div class="column">
-                        <label class="label">Ingresa tú peso (KG) 40 - 200</label>
-                        <input type="number" id="pesoInic" required name="pesoInic" step="0.01" min="40" max="200" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                        <label class="label">Ingresa tú peso (kg) 40 - 200</label>
+                        <input type="number" id="pesoInic" required name="pesoInic" step="1" min="40" max="200" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
 
-                        <label class="label">Ingresa tu máximo de PRESS BANCA (KG)</label>
-                        <input type="number" id="pressBanca" name="pressBanca" step="0.01" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                        <label class="label">Ingresa tu máximo de Press de Banca (kg)</label>
+                        <input type="number" id="pressBanca" name="pressBanca" step="1" min="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
 
-                        <label class="label">Ingresa tu máximo de SENTADILLA (KG)</label>
-                        <input type="number" id="sentadilla" name="sentadilla" step="0.01" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                        <label class="label">Ingresa tu máximo de Sentadilla (kg)</label>
+                        <input type="number" id="sentadilla" name="sentadilla" step="1" min="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
 
-                        <label class="label">Ingresa tu máximo de PESO MUERTO (KG)</label>
-                        <input type="number" id="pesoMuerto" name="pesoMuerto" step="0.01" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;">
+                        <label class="label">Ingresa tu máximo de Peso peso muerto (kg)</label>
+                        <input type="number" id="pesoMuerto" name="pesoMuerto" step="1" min="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
                     </div>
                 </div>
 
                 <div class="columns">
                     <div class="column">
-                        <label class="label">Selecciona tu Actividad Física:</label>
+                        <label class="label">Selecciona tu actividad física:</label>
+                        <div class="control">
                         <div class="select is-link">
-                            <select name="niv" id="niv" style="background-color: #242424; color: antiquewhite;" >
+                            <select  required name="niv" id="niv" style="background-color: #242424; color: antiquewhite;" >
                                 <option disabled selected>Selecciona una opción</option>
                                 <% for(let nivelfisico of niveles){ %>
                                     <option value="<%=nivelfisico.id_niv %>">
@@ -121,6 +124,7 @@
                                 <%}%>
                             </select>
                         </div>
+                    </div>
                     </div>
                 </div>
 
