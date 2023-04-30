@@ -27,6 +27,13 @@ module.exports = class Rutina {
         `, [id_cliente, id_rutina]);
     }
 
+    static count(){
+        return db.execute (`
+        SELECT COUNT(id_rutina) as "Totalr"
+        FROM rutina
+        `);
+    }
+
     static deleteFavorita(id_cliente, id_rutina) {
         return db.execute(`
             DELETE FROM rutinasfavoritas 

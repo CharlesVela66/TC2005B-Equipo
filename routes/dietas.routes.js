@@ -22,4 +22,9 @@ router.post('/:id',dietasController.seleccionar_dieta);
 
 router.get('/', dietasController.explorar_dietas);
 
+router.get('/editar_d/:id', hasCreate, dietasController.get_editar);
+
+router.get('/editar_d', hasCreate, dietasController.get_nueva);
+
+router.post('/editar_d', hasCreate, dietasController.post_editar);
 module.exports = router;
