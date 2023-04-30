@@ -62,7 +62,7 @@ module.exports = class Dieta {
 
     static fetchOne(id){
         return db.execute(`
-        SELECT id_dieta,nombre, tipo_dieta
+        SELECT id_dieta,nombre, tipo_dieta, Url_image
         FROM dieta
         WHERE id_dieta =?
         `,[id]);
