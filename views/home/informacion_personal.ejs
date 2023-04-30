@@ -56,7 +56,7 @@
                         <label class="label">Elige tu objetivo</label>
                         <div class="control">
                             <div class="select is-link">
-                            <select  style="background-color: #242424; color: antiquewhite;" name="obj" id="obj">
+                            <select required style="background-color: #242424; color: antiquewhite;" name="obj" id="obj">
                                 <option disabled selected>Selecciona una opción</option>
                                 <% for(let objetivo of objetivos){ %>
                                     <option value="<%=objetivo.id_obj %>">
@@ -71,7 +71,7 @@
                         <label class="label">Selecciona tú sexo</label>
                         <div class="control">
                             <div class="select is-link">
-                                <select style="background-color: #242424; color: antiquewhite;" id="sexo" name="sexo">
+                                <select required style="background-color: #242424; color: antiquewhite;" id="sexo" name="sexo">
                                     <option disabled selected>Selecciona una opción</option>
                                     <option>M</option>
                                     <option>F</option>
@@ -100,13 +100,13 @@
                         <input type="number" id="pesoInic" required name="pesoInic" step="1" min="40" max="200" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
 
                         <label class="label">Ingresa tu máximo de Press de Banca (kg)</label>
-                        <input type="number" id="pressBanca" name="pressBanca" step="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
+                        <input type="number" id="pressBanca" name="pressBanca" step="1" min="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
 
                         <label class="label">Ingresa tu máximo de Sentadilla (kg)</label>
-                        <input type="number" id="sentadilla" name="sentadilla" step="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
+                        <input type="number" id="sentadilla" name="sentadilla" step="1" min="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
 
                         <label class="label">Ingresa tu máximo de Peso peso muerto (kg)</label>
-                        <input type="number" id="pesoMuerto" name="pesoMuerto" step="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
+                        <input type="number" id="pesoMuerto" name="pesoMuerto" step="1" min="1" style="border: 1.5px solid rgba(31, 93, 240, 0.7); background-color: #242424;padding: 8px; font-size: 16px;border-radius: 4px; margin-bottom: 16px;width: 213px; height: 40px;">
                     </div>
                 </div>
 
@@ -115,7 +115,7 @@
                         <label class="label">Selecciona tu actividad física:</label>
                         <div class="control">
                         <div class="select is-link">
-                            <select name="niv" id="niv" style="background-color: #242424; color: antiquewhite;" >
+                            <select  required name="niv" id="niv" style="background-color: #242424; color: antiquewhite;" >
                                 <option disabled selected>Selecciona una opción</option>
                                 <% for(let nivelfisico of niveles){ %>
                                     <option value="<%=nivelfisico.id_niv %>">

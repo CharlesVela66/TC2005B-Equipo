@@ -20,7 +20,7 @@ module.exports = class Cliente {
 
     save() {
         return db.execute(`       
-        INSERT INTO cliente (id_usuario, id_rutina, id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic)
+        INSERT INTO cliente (id_usuario, id_rutina, id_dieta, id_obj, id_niv, sexo, fecha_nacimiento, alturaInic, pesoInic, pressBanca,sentadilla,pesoMuerto)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [this.id_usuario, this.id_rutina, this.id_dieta, this.id_obj, this.id_niv, this.sexo, this.fecha_nacimiento,this.alturaInic,this.pesoInic, this.pressBanca, this.sentadilla, this.pesoMuerto]);
     }

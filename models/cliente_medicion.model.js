@@ -5,7 +5,7 @@ module.exports = class RegistroMedida {
         this.id_cliente = nueva_medida.id_cliente;
         this.id_medicion = nueva_medida.id_medicion;
         this.fecha = nueva_medida.fecha;
-        this.medida = nueva_medida.medida;
+        this.medida = nueva_medida.medida;  
     }
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
