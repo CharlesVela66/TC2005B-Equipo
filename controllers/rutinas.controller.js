@@ -144,8 +144,8 @@ exports.post_nueva_rutina = (request, response, next) => {
       descripcion: request.body.descripcion,
       frecuencia: request.body.frecuencia,
       tiporutina: request.body.tiporutina,
-      URL_Image: request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
-      URL_Image_Ejercicios: request.files['file'][0] ? request.files['file'][0].filename : ''
+      UURL_Image: request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
+      URL_Image_Ejercicios: request.files['file'] && request.files['file'][0] ? request.files['file'][0].filename : ''
     });
   
     // Verificar si existe una rutina con el mismo nombre
@@ -219,7 +219,7 @@ exports.delete_rutina = (request, response, next) => {
     console.log("Console de eliminar");
     console.log(request.session.id_rutina);
     const id_rutina = request.session.id_rutina;
-    console.log(id_rutina);
+    console.log(id_rutina)
     Rutina.delete(id_rutina)
     .then(([rutina, fieldData]) => {
         Rutina.fetchAll(request.session.nombre_usuario)

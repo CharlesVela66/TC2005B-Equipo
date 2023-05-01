@@ -1,8 +1,22 @@
 <%- include('../includes/head.ejs'); %>
   <style>
-    .modal-background {
-  background-color: black;
-  }
+    .dark-modal-card {
+      background-color: #424242;
+    }
+
+    .dark-modal-head {
+      background-color: #333;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark-modal-body {
+      background-color: #424242;
+    }
+
+    .dark-modal-foot {
+      background-color: #333;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
   </style>
   <% if (rol == "Cliente") { %>
     <div class="container" style="margin-top: 20px;" >
@@ -208,25 +222,24 @@
         <button class="button is-danger has-text-white" onclick="confirmDelete()">Eliminar rutina</button>
         <div class="modal" id="confirm-modal">
           <div class="modal-background"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Eliminar rutina</p>
+          <div class="modal-card dark-modal-card">
+            <header class="modal-card-head dark-modal-head">
+              <p class="modal-card-title has-text-white">Eliminar rutina</p>
               <button class="delete" aria-label="close" onclick="closeModal()"></button>
             </header>
-            <section class="modal-card-body">
-              <p class="has-text-black">¿Estás seguro que deseas eliminar la rutina?</p>
+            <section class="modal-card-body dark-modal-body">
+              <p class="has-text-white">¿Estás seguro que deseas eliminar la rutina?</p>
             </section>
-            <footer class="modal-card-foot">
+            <footer class="modal-card-foot dark-modal-foot">
               <form action="/rutinas/eliminar" method="POST"> 
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <input type="hidden" id="id" name="id" value="<%= rutina.id_rutina %>" >
-                <button class="button is-danger" type="submit">Eliminar</button>
+                <button class="button is-danger" style="margin-right: 10px;" type="submit">Eliminar</button>
               </form>
               <button class="button" onclick="closeModal()">Cancelar</button>
             </footer>
           </div>
         </div>
-
       <!--</form>-->
     </div>
     <script>
