@@ -49,7 +49,7 @@
     <div class="hero-body is-justify-content-center is-align-items-center">
         <div class="columns is-flex is-flex-direction-column box form-section">
             <form action="/registrarse" method="POST">
-                <span class="title">REGISTRATE</span>
+                <span class="title" style="margin-left: 30%;">REGISTRATE</span>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
                 <div class="column">
@@ -74,7 +74,7 @@
 
                 <div class="column">
                     <label class="label">Password</label>
-                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="contrasena" id="contrasena" class="input" maxlength="400" min="5" type="password" placeholder="********">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="contrasena" id="contrasena" class="input" minlength="8" maxlength="50"  type="password" placeholder="********">
                 </div>
 
                 <div class="column">
