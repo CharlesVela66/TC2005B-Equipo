@@ -15,11 +15,13 @@
     max-width: 400px;
     margin: 0 auto;
     border-radius: 8px;
+
   }
   .box {
     background-color: #242424;
     padding: 2rem;
     border-radius: 8px;
+    width: 50%;
   }
   .title {
     margin-bottom: 1.5rem;
@@ -55,7 +57,11 @@
         </div>
 
         <br>
-
+        <% if (mensaje) { %>
+          <div class="notification is-danger" style="max-width:100%;">  
+              <strong><%= mensaje %></strong>
+          </div>
+      <% } %>
         <div class="field is-grouped">
           <div class="control">
             <button type="submit" class="button is-info">Enviar</button>
