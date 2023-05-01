@@ -237,6 +237,18 @@
           </tbody>
         </table>
         <br><br>
+        <div class="field is-grouped">
+        
+        <% if (dietas.length > 0) { %>
+          <% for (let dieta of dietas) { %>
+            <div class="field is-grouped">
+              <div class="buttons">
+                <a href="/dietas/editar_d/<%= dieta.id_dieta %>" class="button is-info" style = "position:absolute; left: 150px">Editar</a>
+              </div>
+            </div>
+          <% } %>
+        <% } %>
+        
         <form action="/dietas/eliminar" method="POST">
           <% if (dietas.length > 0){ %>
           <input class="button is-danger has-text-white-ter" type="button" value="Eliminar dieta" onclick="openPopup()">
@@ -249,6 +261,7 @@
           </div>
           </form>
           <% } %>
+        </div>
         <% } %>
       </div>
       <div class="column" style="width: 50%; float: right; ">

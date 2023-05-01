@@ -1,3 +1,194 @@
 <%- include('../includes/head.ejs'); %>
-<h1>hola</h1>
+<h1 class="title has-text-white-ter">Editar Dieta</h1>
+<form action="/dietas/editar_d" method="POST" autocomplete="off" id="dieta-f" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <input type="hidden" name="id" value="<%= dieta.id_dieta %>" >
+    <div class="columns">
+        <div class="column">
+            <div class="aligned" style="display: block; margin: 0 auto; width: 70%;">
+                <label for = "nombre_dieta"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Nombre</h5></label>
+                <input class = "input is-rounded has-text-white-ter" type = "text" id="nombre_dieta" name = "nombre_dieta" size="25" maxlength="25" placeholder="Nombre de la dieta" required>
+            </div>
+        </div>
+        <div class="column">
+            <label for = "imagen"><h5 class="subtitle is-5 has-text-white-ter">Imagen</h5></label>
+            <input type="file" id="imagen" name="imagen" >
+        </div>
+    </div>
+    <br>
+    <div class="container">
+                <div style="max-height: 250px; overflow: auto">
+                <table class = "table has-text-white-ter has-background-black-ter is-fullwidth" id="tabla-alimentos">
+                    <button type="button" id="addRowBtn" class="custom-button">
+                        <i class="fas fa-plus has-text-white-ter"></i>
+                    </button>
+                    <colgroup>
+                        <col span="1" style="width: 40%;">
+                        <col span="1" style="width: 35%;">
+                        <col span="1" style="width: 25%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white-ter">Nombre</th>
+                            <th class="has-text-white-ter">Medida</th>
+                            <th class="has-text-white-ter">Cantidades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                </div>
+        <br>
+        <div class="columns">
+            <div class="column" >
+                <label for="tabla-macro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Macronutrientes</h5></label>
+                <table class = "table has-text-white-ter has-background-black-ter" id="tabla-macro">
+                    <colgroup>
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 30%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white-ter">Nombre</th>
+                            <th class="has-text-white-ter">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="has-text-white-ter">Calorías</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="calorias" name="calorias"  maxlength="9999999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-white-ter">Proteínas</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="proteinas" name="proteinas" maxlength="9999999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-white-ter">Carbohidratos</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="carbohidratos" name="carbohidratos" maxlength="9999999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-white-ter">Grasas Totales</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="grasas" name="grasas" maxlength="9999999" min="0" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
+                <div class="popup " id="popup">
+                    <h2 class="title is-4 has-text-white-ter">¿Quieres confirmar tus datos?</h2>
+                    <button class="button is-success" type = "submit" id="submit-button" name="submit-button" onclick="closePopup()">Confirmar</button>
+                    <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+                </div>
+            </div>
+            <div class="column ">
+                <label for="tabla-micro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Micronutrientes</h5></label>
+                <div style="height: 280px; overflow: auto">
+                <table class = "table has-text-white-ter has-background-black-ter" id="tabla-micro">
+                    <colgroup>
+                        <col span="1" style="width: 70%;">
+                        <col span="1" style="width: 30%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="has-text-white-ter">Nombre</th>
+                            <th class="has-text-white-ter">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ceniza</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="ceniza" name="ceniza" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Fibra Total</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="fibra_total" name="fibra_total" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Calcio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="calcio" name="calcio" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Fosforo</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="fosforo" name="fosforo" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Hierro</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="hierro" name="hierro" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Tiamina</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="tiamina" name="tiamina" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Riboflavina</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="riboflavina" name="riboflavina" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Niacina</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="niacina" name="niacina" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Vitamina C</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_c" name="vit_c" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Vitamina A</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_a" name="vit_a" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Acidos Grasos Min.</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasosmin" name="acgrasosmin" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Acidos Grasos Poli.</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasospoli" name="acgrasospoli" maxlength="99999" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Acidos Grasos Sat.</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasossat" name="acgrasossat" maxlength="99999" min="0" required> </td>
+                        </tr>
+                        <tr>
+                            <td>Colesterol</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="colesterol" name="colesterol" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Potasio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="potasio" name="potasio" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Sodio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="sodio" name="sodio" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Zinc</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="zinc" name="zinc" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Magnesio</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="magnesio" name="magnesio" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Vitamina B6</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_b6" name="vit_b6" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Vitamina B12</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_b12" name="vit_b12" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Acido Folico</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acfolico" name="acfolico" maxlength="99999" min="0" required></td>
+                          </tr>
+                          <tr>
+                            <td>Folato Equivalente</td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="folatoeq" name="folatoeq" maxlength="99999" min="0" required></td>
+                          </tr>
+                                                  
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <%- include('../includes/foot.ejs'); %>

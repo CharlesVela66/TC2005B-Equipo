@@ -153,7 +153,7 @@ exports.get_editar = (request, response, next) => {
 
                 Micro.fetchOne(request.params.id)
                     .then(([microData, fieldData]) => {
-                        if (microData.length == 1) {
+                        if (microData.length >= 0) {
                             
                             const micro = new Micro({
                                 ceniza: microData[0].ceniza,
@@ -182,7 +182,7 @@ exports.get_editar = (request, response, next) => {
 
                             Dieta.fetchOne(request.params.id)
                                 .then(([dietaData, fieldData]) => {
-                                    if (dietaData.length === 1) {
+                                    if (dietaData.length >= 0) {
                                         const dieta = new Dieta({
                                             nombre: dietaData[0].nombre_dieta,
                                             id_macro: dietaData[0].id_macro,
@@ -192,7 +192,7 @@ exports.get_editar = (request, response, next) => {
 
                                         DietaAlimento.fetchOne(request.params.id)
                                             .then(([dietaAlimentoData, fieldData]) => {
-                                                if (dietaAlimentoData.length === 1) {
+                                                if (dietaAlimentoData.length >= 0) {
                                                     const dietaAlimento = new DietaAlimento({
                                                         id_dieta: dietaAlimentoData[0].id_dieta,
                                                         nombre: dietaAlimentoData[0].nombre,
@@ -200,7 +200,7 @@ exports.get_editar = (request, response, next) => {
                                                         cantidad: dietaAlimentoData[0].cantidad
                                                     });
 
-                                                    Dieta.fetchAll()
+                                                    Dieta.fetchAll(request.session.nombre)
                                                         .then(([rows, fieldData]) => {
                                                             DietaAlimento.fetchAll()
                                                                 .then(([dietaAlimentoData, fieldData]) => {
@@ -209,7 +209,7 @@ exports.get_editar = (request, response, next) => {
                                                                             Macro.fetchAll()
                                                                             .then(([macroData, fieldData]) => {
                                                                                 response.render('dietas/editar_d', {
-                                                                                    dietas: dietaData,
+                                                                                    dietas: rows,
                                                                                     dietaAlimento: dietaAlimentoData,
                                                                                     macro: macroData,
                                                                                     micro: microData,
