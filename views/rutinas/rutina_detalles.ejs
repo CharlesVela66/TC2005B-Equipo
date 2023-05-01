@@ -1,113 +1,243 @@
 <%- include('../includes/head.ejs'); %>
-
-<div class="container" style="margin-top: 20px;" >
-  <form action="/rutinas/id" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-  <div class="card">
-    <header class="card-header" style="background-color: rgb(31, 134, 134);">
-      <p class="card-header-title has-text-white-ter" style="font-size: 30px;" >
-        <%= nombreRutina %>
-      </p>
-    </header>
-  </div>
-  <div class="box has-background-black-ter">
-    <div style="max-height: 200px; overflow: auto">
-      <p class="has-text-white-ter"><%= rutina[0].descripcion%></p>
-    </div>
-    <br>
-    <div class="columns">
-      <div class="column is-two-thirds">
-        <div class="columns">
-          <div class="column is-half">
-            <p class="has-text-white-ter">Tipo Rutina: <%= rutina[0].tiporutina %> </p>
-          </div>
-          <div class="column is-half">
-            <p class="has-text-white-ter">Frecuencia: <%= rutina[0].frecuencia %> </p>
-          </div>
+  <style>
+    .modal-background {
+  background-color: black;
+  }
+  </style>
+  <% if (rol == "Cliente") { %>
+    <div class="container" style="margin-top: 20px;" >
+      <form action="/rutinas/id" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <div class="card">
+          <header class="card-header" style="background-color: rgb(31, 134, 134);">
+            <p class="card-header-title has-text-white-ter" style="font-size: 30px;" >
+              <%= nombreRutina %>
+            </p>
+          </header>
         </div>
-        <div class="columns">
-          <div class="column">
-            <img src="/uploads/<%= rutina[0].URL_Image_Ejercicios %>" style="max-width: 500px; min-height: 200px; max-height: 250px;">
+        <div class="box has-background-black-ter">
+          <div style="max-height: 200px; overflow: auto">
+            <p class="has-text-white-ter"><%= rutina[0].descripcion%></p>
           </div>
-        </div>
-      </div>
-      <div class="column is-one-third">
-        <div style="max-height: 340px; overflow: auto;">
-          <table class="table has-background-black-ter" style="width: 100%;">
-            <thead>
-              <tr>
-                <th class="has-text-white-ter">Nivel</th>
-                <th class="has-text-white-ter">Recomendado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (let nivel in niveles) { %>
-                <tr>
-                  <td class="has-text-white-ter"><%= nivel %></td>
-                  <td class="has-text-white-ter">
-                    <% if (niveles[nivel]) { %>
-                      <span class="icon has-text-success">
-                        <i class="fas fa-check"></i>
-                      </span>
-                    <% } else { %>
-                      <span class="icon has-text-danger">
-                        <i class="fas fa-times"></i>
-                      </span>
+          <br>
+          <div class="columns">
+            <div class="column is-two-thirds">
+              <div class="columns">
+                <div class="column is-half">
+                  <p class="has-text-white-ter">Tipo Rutina: <%= rutina[0].tiporutina %> </p>
+                </div>
+                <div class="column is-half">
+                  <p class="has-text-white-ter">Frecuencia: <%= rutina[0].frecuencia %> </p>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <img src="/uploads/<%= rutina[0].URL_Image_Ejercicios %>" style="max-width: 500px; min-height: 200px; max-height: 250px;">
+                </div>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div style="max-height: 340px; overflow: auto;">
+                <table class="table has-background-black-ter" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="has-text-white-ter">Nivel</th>
+                      <th class="has-text-white-ter">Recomendado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let nivel in niveles) { %>
+                      <tr>
+                        <td class="has-text-white-ter"><%= nivel %></td>
+                        <td class="has-text-white-ter">
+                          <% if (niveles[nivel]) { %>
+                            <span class="icon has-text-success">
+                              <i class="fas fa-check"></i>
+                            </span>
+                          <% } else { %>
+                            <span class="icon has-text-danger">
+                              <i class="fas fa-times"></i>
+                            </span>
+                          <% } %>
+                        </td>
+                      </tr>
                     <% } %>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>      
-      </div>
-    </div>
-    <br>
-    <div class="table-container">
-      <p class="subtitle is-4 has-text-white-ter">Ejercicios</p>
-      <div style="max-height: 340px; overflow-y: auto;">
-        <table class="table has-background-black-ter" width="100%">
-          <thead>
-            <tr>
-              <th class="has-text-white-ter">Nombre</th>
-              <th class="has-text-white-ter">Descripción</th>
-              <th class="has-text-white-ter">Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (rutina_ejercicio.length > 0) { %>
-              <% for (let rutina_ejercicios of rutina_ejercicio) { %>
+                  </tbody>
+                </table>
+              </div>      
+            </div>
+          </div>
+          <br>
+          <div class="table-container">
+            <p class="subtitle is-4 has-text-white-ter">Ejercicios</p>
+            <div style="max-height: 340px; overflow-y: auto;">
+            <table class="table has-background-black-ter" width="100%">
+              <thead>
                 <tr>
-                  <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion%></td>
-                  <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion_ejercicio%></td>
-                  <td class="has-text-white-ter"> <a class= "yt-video" href="<%= rutina_ejercicios.video_ejercicio%>">Video Demostrativo</a></td>
+                  <th class="has-text-white-ter">Nombre</th>
+                  <th class="has-text-white-ter">Descripción</th>
+                  <th class="has-text-white-ter">Link</th>
                 </tr>
-              <% } %>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                <% if (rutina_ejercicio.length > 0) { %>
+                  <% for (let rutina_ejercicios of rutina_ejercicio) { %>
+                    <tr>
+                      <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion%></td>
+                      <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion_ejercicio%></td>
+                      <td class="has-text-white-ter"> <a class= "yt-video" href="<%= rutina_ejercicios.video_ejercicio%>">Video Demostrativo</a></td>
+                    </tr>
+                  <% } %>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br><br>
+        <div class="buttons">
+          <input class="button is-primary" type="button" value="Seleccionar Rutina" onclick="openPopup()">
+          <div class="popup" id="popup">
+            <h2 class="title is-4 has-text-centered has-text-white-ter">¿Seguro que quieres seleccionar la rutina de <%= rutina[0].nombre%>?</h2>
+            <button class="button is-success" type = "submit">Confirmar</button>
+            <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <br><br>
-    <% if (rol == "Cliente") { %>
-    <div class="buttons">
-      <input class="button is-primary" type="button" value="Seleccionar Rutina" onclick="openPopup()">
-      <div class="popup" id="popup">
-        <h2 class="title is-4 has-text-centered has-text-white-ter">¿Seguro que quieres seleccionar la rutina de <%= rutina[0].nombre%>?</h2>
-        <button class="button is-success" type = "submit">Confirmar</button>
-        <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
-      </div>
-    </form>
     <script>
-    let popup = document.getElementById("popup");
-    function openPopup(){
-      popup.classList.add("open-popup");
-    }
-    function closePopup(){
-      popup.classList.remove("open-popup")
+      let popup = document.getElementById("popup");
+      function openPopup(){
+        popup.classList.add("open-popup");
       }
-      </script>
+      function closePopup(){
+        popup.classList.remove("open-popup")
+        }
+    </script>
   <% } %>
-</div>
+
+  <% if (rol == "Administrador") { %>
+    <div class="container" style="margin-top: 20px;" >
+      <!--<form action="/rutinas/eliminar" method="POST"> enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >-->
+        <div class="card">
+          <header class="card-header" style="background-color: rgb(31, 134, 134);">
+            <p class="card-header-title has-text-white-ter" style="font-size: 30px;" >
+              <%= nombreRutina %>
+            </p>
+          </header>
+        </div>
+        <div class="box has-background-black-ter">
+          <div style="max-height: 200px; overflow: auto">
+            <p class="has-text-white-ter"><%= rutina[0].descripcion%></p>
+          </div>
+          <br>
+          <div class="columns">
+            <div class="column is-two-thirds">
+              <div class="columns">
+                <div class="column is-half">
+                  <p class="has-text-white-ter">Tipo Rutina: <%= rutina[0].tiporutina %> </p>
+                </div>
+                <div class="column is-half">
+                  <p class="has-text-white-ter">Frecuencia: <%= rutina[0].frecuencia %> </p>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <img src="/uploads/<%= rutina[0].URL_Image_Ejercicios %>" style="max-width: 500px; min-height: 200px; max-height: 250px;">
+                </div>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div style="max-height: 340px; overflow: auto;">
+                <table class="table has-background-black-ter" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="has-text-white-ter">Nivel</th>
+                      <th class="has-text-white-ter">Recomendado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let nivel in niveles) { %>
+                      <tr>
+                        <td class="has-text-white-ter"><%= nivel %></td>
+                        <td class="has-text-white-ter">
+                          <% if (niveles[nivel]) { %>
+                            <span class="icon has-text-success">
+                              <i class="fas fa-check"></i>
+                            </span>
+                          <% } else { %>
+                            <span class="icon has-text-danger">
+                              <i class="fas fa-times"></i>
+                            </span>
+                          <% } %>
+                        </td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>      
+            </div>
+          </div>
+          <br>
+          <div class="table-container">
+            <p class="subtitle is-4 has-text-white-ter">Ejercicios</p>
+            <div style="max-height: 340px; overflow-y: auto;">
+            <table class="table has-background-black-ter" width="100%">
+              <thead>
+                <tr>
+                  <th class="has-text-white-ter">Nombre</th>
+                  <th class="has-text-white-ter">Descripción</th>
+                  <th class="has-text-white-ter">Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (rutina_ejercicio.length > 0) { %>
+                  <% for (let rutina_ejercicios of rutina_ejercicio) { %>
+                    <tr>
+                      <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion%></td>
+                      <td class="has-text-white-ter"><%= rutina_ejercicios.descripcion_ejercicio%></td>
+                      <td class="has-text-white-ter"> <a class= "yt-video" href="<%= rutina_ejercicios.video_ejercicio%>">Video Demostrativo</a></td>
+                    </tr>
+                  <% } %>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br><br>
+        <button class="button is-danger has-text-white" onclick="confirmDelete()">Eliminar rutina</button>
+        <div class="modal" id="confirm-modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Eliminar rutina</p>
+              <button class="delete" aria-label="close" onclick="closeModal()"></button>
+            </header>
+            <section class="modal-card-body">
+              <p class="has-text-black">¿Estás seguro que deseas eliminar la rutina?</p>
+            </section>
+            <footer class="modal-card-foot">
+              <form action="/rutinas/eliminar" method="POST"> 
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <input type="hidden" id="id" name="id" value="<%= rutina.id_rutina %>" >
+                <button class="button is-danger" type="submit">Eliminar</button>
+              </form>
+              <button class="button" onclick="closeModal()">Cancelar</button>
+            </footer>
+          </div>
+        </div>
+
+      <!--</form>-->
+    </div>
+    <script>
+      function confirmDelete() {
+        document.getElementById("confirm-modal").classList.add("is-active");
+      }
+      
+      function closeModal() {
+        document.getElementById("confirm-modal").classList.remove("is-active");
+      }
+    </script> 
+  <% } %>    
 
 <%- include('../includes/foot.ejs'); %>

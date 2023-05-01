@@ -90,6 +90,10 @@ module.exports = class Rutina {
         }
     }
 
+    static delete(id_rutina) {
+        return db.execute('CALL eliminar_rutina(?)', [id_rutina]);
+    }    
+
     /*
     async agregarEjercicio(rutinaId, ejercicioId) {
         const connection = await db.getConnection();
