@@ -3,6 +3,17 @@ const Ejercicio= require('../models/ejercicios.model');
 const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
 const Cliente =require('../models/clientes.model');
 
+exports.get_buscar = (request, response, next) => {
+    Rutina.find(request.params.valorA,request.params.valorB,request.params.valorC)
+    .then(([rows, fieldData]) => {
+        response.status(200).json({rows: rows});
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({message: "Internal Server Enrror"});
+    });
+}
+
 exports.explorar_rutinas = (request, response, next) => {
     const mensaje = request.session.mensaje || '';
     if (request.session.mensaje) {

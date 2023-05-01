@@ -33,6 +33,19 @@ module.exports = class Rutina {
         `,[id_cliente, id_rutina])
     }
 
+    static find(tipo, frecuencia, nivel) {
+        return db.execute(`
+            SELECT *
+            FROM rutina r, rutinaniveles n
+            WHERE n.id_rutina = r.id_rutina
+            AND tiporutina Like ?
+            AND frecuencia Like ?
+            AND n.id_nivel Like ?
+            GrOUP BY r.id_rutina
+            ORDER BY r.id_rutina ASC
+        `, [tipo, frecuencia, nivel]);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(usuario) {
         return db.execute(`

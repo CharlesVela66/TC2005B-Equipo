@@ -6,6 +6,8 @@ const hasCreate = require('../util/has-create');
 
 const rutinasController = require('../controllers/rutinas.controller');
 
+router.get('/buscar/:valorA', rutinasController.get_buscar);
+
 router.get('/agregar', hasCreate, rutinasController.nueva_rutina);
 
 router.post('/agregar', hasCreate, rutinasController.post_nueva_rutina);
