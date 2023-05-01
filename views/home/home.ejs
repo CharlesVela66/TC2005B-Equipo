@@ -1,5 +1,7 @@
 <%- include('../includes/head.ejs'); %>
     </div>
+    <head>    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script></head>
     <style>
         html {
             scroll-behavior: smooth;
@@ -221,7 +223,7 @@
         }
 
         .containerrr h3 {
-            font-size: 20px;
+            font-size: 18px;
             color: hsl(0, 0%, 96%);
         }
 
@@ -281,13 +283,23 @@
         }
 
         .azulf {
-            width: 400px;
-            height: 400px;
-            border-radius: 5%;
+            width: 40px;
+            height: 40px;
             margin: 0 0 0 170px;
             position: relative;
             top: -150px;
         }
+
+        #grafico {
+            display: block;
+            margin: 0 auto;
+            background-color: rgba(10, 14, 43, 1);
+            width: 600px;
+            height: 450px;
+            position: relative;
+            top:-50px
+        }
+ 
 
         .azulconn {
             padding: 20px 10px 30px 10px;
@@ -392,7 +404,7 @@
                     conseguir sus objetivos de estética física, rendimiento en el gimnasio y salud.</p>
             </div>
 
-            <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" class="nuestrof">
+            <img src="fitn.jpeg" class="nuestrof">
 
             <div class="nuestroo">
                 <h4 class="subtitle is-2 has-text-white-ter">Nuestra <strong class="has-text-white-ter">visión</strong>
@@ -428,7 +440,65 @@
                     lo que puede llevar a que descarten la práctica del ejercicio. </p>
             </div>
 
-            <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" class="azulf">
+            <canvas id="grafico"></canvas>
+    <script>
+        var totalDietas =  "<%= totalDietas %>";
+        var totalRutinas =  "<%= totalRutinas %>";// Reemplaza este valor con el total de dietas obtenido de tus datos
+        // Reemplaza este valor con el total de rutinas obtenido de tus datos
+
+        var ctx = document.getElementById('grafico').getContext('2d');
+        var grafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Rutinas', 'Dietas'],
+                datasets: [{
+                    label: 'Total',
+                    data: [totalRutinas, totalDietas],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'hsl(0, 0%, 96%)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'hsl(0, 0%, 96%)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'hsl(0, 0%, 96%)'
+                        },
+                         onClick: function() {
+                            return;
+                        }
+                    },
+                    datalabels: {
+                        color: 'hsl(0, 0%, 96%)',
+                        anchor: 'end',
+                        align: 'top'
+                    }
+                }
+            }
+        });
+    </script>
 
         </div>
 
@@ -445,8 +515,8 @@
                     también podrás consultar diversas dietas y rutinas que puedes seguir de acuerdo a tus preferencias y
                     objetivos. </p>
             </div>
-
             <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" class="azulff">
+
 
         </div>
 
@@ -467,33 +537,52 @@
         </svg></div>
 
     <section class="section" id="faq">
+        
         <div class="faq-container">
             <h1 class="title has-text-white-ter">FAQ</h1>
             <div class="faq-question">
-                <h2 class="subtitle is-4 has-text-white-ter">Question 1</h2>
+                <h2 class="subtitle is-4 has-text-white-ter">¿Cómo registro mi bitácora diaria de actividades?</h2>
                 <span class="icon has-text-white-ter">
                     <i class="fas fa-chevron-down"></i>
                 </span>
                 <div class="faq-answer">
-                    <p>Answer to question 1</p>
+                    <p>Al ingresar podra registrar sus actividades diarias, incluyendo la fecha, que hizo, y como se sintio. Tambien podra eliminar y editar estos mismo registros por si desea cambiar algo.</p>
                 </div>
             </div>
             <div class="faq-question">
-                <h2 class="subtitle is-4 has-text-white-ter">Question 2</h2>
+                <h2 class="subtitle is-4 has-text-white-ter">¿Puedo crear y guardar mis propias dietas y rutinas?</h2>
                 <span class="icon has-text-white-ter">
                     <i class="fas fa-chevron-down"></i>
                 </span>
                 <div class="faq-answer">
-                    <p>Answer to question 2</p>
+                    <p>Como nuestro cliente usted no será capaz de crear dietas y rutinas, pero si podra ver todas las dietas y rutinas disponibles en nuestra pagina. Tambien tendra la opción de seleccionarlas como favoritas para que sea mas facil de encontrar las rutinas y dietas que le guste. A la vez podra seleccionar una para seguir continuamente.</p>
                 </div>
             </div>
             <div class="faq-question">
-                <h2 class="subtitle is-4 has-text-white-ter">Question 3</h2>
+                <h2 class="subtitle is-4 has-text-white-ter">¿Es gratuito el uso de la plataforma?</h2>
                 <span class="icon has-text-white-ter">
                     <i class="fas fa-chevron-down"></i>
                 </span>
                 <div class="faq-answer">
-                    <p>Answer to question 3</p>
+                    <p>En la actualidad la plataforma es totalmente gratuita y disponible para quien quiera usarla.</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <h2 class="subtitle is-4 has-text-white-ter">¿Cómo encuentro dietas y rutinas adecuadas para mí?</h2>
+                <span class="icon has-text-white-ter">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="faq-answer">
+                    <p>Le otorgamos a nuestros clientes diferentes opciones para esto. En su perfil podra observar las calorias recomendadas de acuerdo con su peso, altura y objetivo. Ademas desde el apartado de dietas podra filtrarlas de acuerdo a la cantidad de calorias que quiera. Igual podra filtrar las rutinas dependiendo de la frecuencia, nivel y tipo de rutina.</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <h2 class="subtitle is-4 has-text-white-ter">¿Que pasa si ingreso mal algun dato en la sección de medidas?</h2>
+                <span class="icon has-text-white-ter">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="faq-answer">
+                    <p>Va a poder seleccionar el apartado de progreso y abajo podra editar o eliminar cualquier registro que alla hecho a sus medidas.</p>
                 </div>
             </div>
         </div>
@@ -506,33 +595,34 @@
     <div class="containerrr">
         <div class="profile-container">
             <div class="profile-card">
-                <img src="/yo.png" alt="Foto 1" class="profile-photo">
+                <img src="/mafer.jpeg" alt="Foto 3"
+                    class="profile-photo">
+                <h3>María Fernanda Moreno Gómez</h3>
+                <a href="mailto:A01708653@tec.mx">A01708653@tec.mx</a>
+            </div>
+            <div class="profile-card">
+                <img src="uri.jpeg" alt="Foto 2"
+                    class="profile-photo">
+                <h3>Uri Jared Gopar Morales</h3>
+                <a href="mailto:A01709413@tec.mx">A01709413@tec.mx</a>
+            </div>
+            <div class="profile-card">
+                <img src="/yo.png" alt="Foto 3" class="profile-photo">
                 <h3>Diego Perdomo Salcedo</h3>
                 <a href="mailto:A01709150@tec.mx">A01709150@tec.mx</a>
+                
             </div>
             <div class="profile-card">
-                <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" alt="Foto 2"
+                <img src="/carlos.jpeg" alt="Foto 4"
                     class="profile-photo">
-                <h3>Nombre 2</h3>
-                <p>correo2@example.com</p>
+                <h3>Carlos Eduardo Velasco Elenes</h3>
+                <a href="mailto:A01708634@tec.mx">A01708634@tec.mx</a>
             </div>
             <div class="profile-card">
-                <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" alt="Foto 3"
+                <img src="/julio.jpeg" alt="Foto 5"
                     class="profile-photo">
-                <h3>Nombre 3</h3>
-                <p>correo3@example.com</p>
-            </div>
-            <div class="profile-card">
-                <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" alt="Foto 4"
-                    class="profile-photo">
-                <h3>Nombre 4</h3>
-                <p>correo4@example.com</p>
-            </div>
-            <div class="profile-card">
-                <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" alt="Foto 5"
-                    class="profile-photo">
-                <h3>Nombre 5</h3>
-                <p>correo5@example.com</p>
+                <h3>Julio Cesar Perez Rodriguez</h3>
+                <a href="mailto:A01705763@tec.mx">A01705763@tec.mx</a>
             </div>
         </div>
     </div>
@@ -556,6 +646,8 @@
             <p>&copy; 2023 Onyx. All rights reserved.</p>
         </div>
     </footer>
+
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -27,6 +27,13 @@ module.exports = class Rutina {
         `, [id_cliente, id_rutina]);
     }
 
+    static count(){
+        return db.execute (`
+        SELECT COUNT(id_rutina) as "Totalr"
+        FROM rutina
+        `);
+    }
+
     static deleteFavorita(id_cliente, id_rutina) {
         return db.execute(`
             DELETE FROM rutinasfavoritas 
@@ -89,6 +96,10 @@ module.exports = class Rutina {
             return RutinaEjercicio.fetchAll();
         }
     }
+
+    static delete(id_rutina) {
+        return db.execute('CALL eliminar_rutina(?)', [id_rutina]);
+    }    
 
     /*
     async agregarEjercicio(rutinaId, ejercicioId) {

@@ -4,20 +4,35 @@ const Objetivos = require('../models/objetivos.model');
 const Administrador = require('../models/administrador.model');
 const Nivel= require('../models/niveles.model');
 const clientemedicion=require('../models/cliente_medicion.model');
+const Dieta = require('../models/dietas.model');
+const Rutina = require('../models/rutinas.model');
 
 const bcrypt = require('bcryptjs');
 const { request, response } = require('express');
 
 
+
 // Cargamos la interfaz del inicio
-exports.inicio = (request, response, next) => {
+exports.inicio = async (request, response, next) => {
+    // Llama a la función count() del modelo y espera el resultado
+    const resultadoD = await Dieta.count();
+    const resultadoR = await Rutina.count();
+
+  // Extrae el conteo de dietas del resultado
+    const totalDietas = resultadoD[0][0].Totald;
+    const totalRutinas = resultadoR[0][0].Totalr;
+
     response.clearCookie("consultas");
     response.render('home/home', {
         isLoggedIn: request.session.isLoggedIn,
         nombre: request.session.nombre_usuario || '',
         rol: request.session.rol || '',
+        totalDietas: totalDietas,
+        totalRutinas: totalRutinas,
     });
-}
+};
+
+
 // Cargamos la interfaz de iniciar sesion
 exports.iniciar_sesion = (request,response,next) => {
     const mensaje = request.session.mensaje || '';

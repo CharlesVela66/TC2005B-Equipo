@@ -18,6 +18,27 @@ module.exports = class Dieta {
         `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
     }
 
+   static count(){
+        return db.execute (`
+        SELECT COUNT(id_dieta) as "Totald"
+        FROM dieta
+        `);
+    }
+
+    static delete(id_dieta) {
+        return db.execute(`
+        CALL eliminar_dieta(?)
+        `, [id_dieta])
+    }
+     
+    static fetchAlll() {
+        return db.execute(`
+        SELECT *
+        FROM dieta
+        ORDER BY nombre ASC
+    `);
+    }
+
     static find(valor) {
         return db.execute(`
             SELECT *
