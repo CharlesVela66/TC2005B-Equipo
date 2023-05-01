@@ -5,7 +5,7 @@ const Micro = require('../models/micronutrientes.model');
 const Cliente = require('../models/clientes.model');
 
 exports.get_buscar = (request, response, next) => {
-    Dieta.find(request.params.valor)
+    Dieta.find(request.params.valor, request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
         response.status(200).json({dietas: rows});
     })
