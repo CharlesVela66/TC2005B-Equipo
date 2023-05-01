@@ -215,7 +215,8 @@ exports.get_informacion = (request, response, next)=>{
     Nivel.fetchAll()
     .then(([row,fieldData])=>{
     Objetivos.fetchAll()
-        .then(([rows,fieldData])=>{    
+        .then(([rows,fieldData])=>{ 
+            console.log(request.session.id_usuario)
             response.render('home/informacion_personal',{
             objetivos:rows,
             niveles:row,
