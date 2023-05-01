@@ -24,6 +24,13 @@ module.exports = class Dieta {
         FROM dieta
         `);
     }
+
+    static delete(id) {
+        return db.execute(`
+           DELETE FROM dieta
+           WHERE id_dieta = ?
+        `, [id])
+    }
      
     static find(valor) {
         return db.execute(`

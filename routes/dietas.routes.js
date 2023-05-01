@@ -27,4 +27,7 @@ router.get('/editar_d/:id', hasCreate, dietasController.get_editar);
 router.get('/editar_d', hasCreate, dietasController.get_nueva);
 
 router.post('/editar_d', hasCreate, dietasController.post_editar);
+
+router.post('/eliminar', hasCreate,dietasController.eliminar_dieta);
+
 module.exports = router;
