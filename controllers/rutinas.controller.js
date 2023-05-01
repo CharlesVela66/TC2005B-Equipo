@@ -134,7 +134,6 @@ exports.nueva_rutina = (request, response, next) => {
 
 
 exports.post_nueva_rutina = (request, response, next) => {
-    
     const newRutina = new Rutina({
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,

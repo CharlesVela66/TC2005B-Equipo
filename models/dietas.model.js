@@ -4,7 +4,7 @@ module.exports = class Dieta {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nueva_dieta) {
-        this.nombre = nueva_dieta.nombre || "";
+        this.nombre = nueva_dieta.nombre || ""; 
         this.id_macro = nueva_dieta.id_macro || "";
         this.id_micro = nueva_dieta.id_micro || "";
         this.Url_image = nueva_dieta.Url_imagen || "";
