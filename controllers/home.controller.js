@@ -22,9 +22,6 @@ exports.inicio = async (request, response, next) => {
     const totalDietas = resultadoD[0][0].Totald;
     const totalRutinas = resultadoR[0][0].Totalr;
 
-    console.log(totalDietas);
-    console.log(totalRutinas);
-
     response.clearCookie("consultas");
     response.render('home/home', {
         isLoggedIn: request.session.isLoggedIn,

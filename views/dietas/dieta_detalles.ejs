@@ -237,7 +237,18 @@
           </tbody>
         </table>
         <br><br>
-        
+        <form action="/dietas/eliminar" method="POST">
+          <% if (dietas.length > 0){ %>
+          <input class="button is-danger has-text-white-ter" type="button" value="Eliminar dieta" onclick="openPopup()">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+          <input type="hidden" name="id" value="id_dieta">
+          <div class="popup" id="popup">
+          <h2 class="title is-4 has-text-centered has-text-white-ter">¿Seguro que quieres eliminar esta dieta?</h2>
+          <button class="button is-success" type = "submit">Confirmar</button>
+          <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
+          </div>
+          </form>
+          <% } %>
         <% } %>
       </div>
       <div class="column" style="width: 50%; float: right; ">
@@ -327,18 +338,7 @@
   </div>
   </form>
 </div>
-<form action="/dietas/eliminar" method="POST">
-<% if (dietas.length > 0){ %>
-<input class="button is-danger is-rounded" type="button" value="Eliminar" onclick="openPopup()">
-<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-<input type="hidden" name="id" value="id_dieta">
-<div class="popup" id="popup">
-<h2 class="title is-4 has-text-centered has-text-white-ter">¿Seguro que quieres eliminar esta dieta?</h2>
-<button class="button is-success" type = "submit">Confirmar</button>
-<button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
-</div>
-</form>
-<% } %>
+
 <script>
 let popupp = document.getElementById("popup");
 let noti = document.getElementById("notification");

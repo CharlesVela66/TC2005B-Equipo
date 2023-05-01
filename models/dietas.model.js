@@ -27,7 +27,7 @@ module.exports = class Dieta {
 
     static delete(id_dieta) {
         return db.execute(`
-        DELETE FROM dieta WHERE id_dieta = ?
+        CALL eliminar_dieta(?)
         `, [id_dieta])
     }
      
