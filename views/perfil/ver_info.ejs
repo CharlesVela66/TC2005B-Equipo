@@ -1,8 +1,7 @@
 <%- include('../includes/head.ejs'); %>
 
-<h1 class="title is-1" style="color: aliceblue;">Información del Usuario</h1>
+<h1 class='title is-1' style='color: aliceblue;'>Información del Usuario</h1>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
   .card{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -11,10 +10,6 @@
     text-align: center;
     border-top-right-radius: 10%;
     border-top-left-radius: 10%;
-  }
-  .title {
-    color: grey;
-    font-size: 18px;
   }
   button {
     border: none;
@@ -35,17 +30,22 @@
     color: black;
   }
 
+  p {
+    color: aliceblue;
+  }
+
   button:hover, a:hover {
     opacity: 0.7;
   }
 
-  .profile-picture{
-    width: 50%;
+  .profile_picture{
+    width: 250px;
     border-radius: 50%;
     border: 5px solid #272133;
-    box-shadow: 0 10px 50px rgba(31, 93, 240, 0.7)
+    box-shadow: 0 10px 50px rgba(31, 93, 240, 0.7);
+    height: 250px;
   }
-  .insta-followers-wrap {
+  .table_containers_wrap {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -58,13 +58,13 @@
     z-index: 5;
     position: relative;
   }
-  .insta-follow {
+  .table_container {
     width: 35%;
     text-align: center;
     display: block;
     margin: 20px 0;
   }
-  .insta-follow h2 {
+  .table_container h2 {
     color: #3372b5;
     font-size: 18px;
     line-height: 1;
@@ -72,7 +72,7 @@
     margin: 0;
   }
 
-  .insta-follow h2 span {
+  .table_container h2 span {
     color: #bfc0c5;
     font-size: 14px;
     display: block;
@@ -80,31 +80,53 @@
     font-weight: 300;
   }
 
+  .bold_text{
+    font-weight: bold; 
+    color: #3372b5; 
+    padding-left: 50px
+  }
+
+  .submit_button{
+    background-color: rgba(31, 93, 240, 0.7); 
+    color: white; 
+    border: none; 
+    padding: 10px 20px;
+  }
+
+  .title{
+    color: azure;
+    font-size: 18px;
+  }
+
+  .subtitle{
+    color:rgb(184, 201, 241)
+  }
+
 </style>
-<div class="card">
+<div class='card'>
   <br>
-  <img class="profile-picture" src="<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt="Foto de Perfil">
-  <br><br><p class="title is-4" style="color:azure"><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
-  <p class="subtitle is-6" style="color:rgba(184, 201, 241, 0.8)"><%= infoCliente.nombre_usuario %></p>
+  <img class='profile_picture' src="/uploads/<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>"" alt='Foto de Perfil'>
+  <br><br><p class='title is-4'><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
+  <p class='subtitle is-6'><%= infoCliente.nombre_usuario %></p>
   <% if (infoCliente && infoCliente.hasOwnProperty('nombre_obj') && infoCliente.hasOwnProperty('nombre_niv')) { %>
-    <div class="insta-followers-wrap">
-      <div class="insta-follow">
+    <div class='table_containers_wrap'>
+      <div class='table_container'>
         <h2><%= infoCliente.nombre_obj %><span>Objetivo</span></h2>
       </div>
-      <div class="insta-follow">
+      <div class='table_container'>
         <h2><%= infoCliente.nombre_niv %><span>Nivel</span></h2>
       </div>
     </div><br>
   <% } %>  
-  <p class="title" style="color: azure;">Información personal</p>
-  <div class="info" style="text-align:left;">
-    <p style="color: aliceblue;">
-    <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Correo: </span><%= infoCliente.correo %><br>
+  <p class='title'>Información personal</p>
+  <div class='info' style='text-align:left;'>
+    <p>
+    <span class='bold_text'>Correo: </span><%= infoCliente.correo %><br>
     <% if (infoCliente && infoCliente.hasOwnProperty('fecha_nacimiento')) { %>
       <% if (infoCliente.fecha_nacimiento !== null) { %>
-        <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Fecha de nacimiento: </span><%= new Date(infoCliente.fecha_nacimiento).getDate() %>/<%= new Date(infoCliente.fecha_nacimiento).getMonth()+1 %>/<%= new Date(infoCliente.fecha_nacimiento).getFullYear() %><br>
+        <span class='bold_text'>Fecha de nacimiento: </span><%= new Date(infoCliente.fecha_nacimiento).getDate() %>/<%= new Date(infoCliente.fecha_nacimiento).getMonth()+1 %>/<%= new Date(infoCliente.fecha_nacimiento).getFullYear() %><br>
       <% } else if (infoCliente.fecha_nacimiento === null) { %>
-        <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Fecha de nacimiento: </span>Sin especificar<br>
+        <span class='bold_text'>Fecha de nacimiento: </span>Sin especificar<br>
       <% } %>
     <% } %>     
 
@@ -112,27 +134,37 @@
       <% const diffInMs = Date.now() - new Date(infoCliente.fecha_nacimiento) %>
       <% const ageDate = new Date(diffInMs) %>
       <% const age = Math.abs(ageDate.getUTCFullYear() - 1970) %>
-      <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Edad: </span><%= age %> años<br>
+      <span class='bold_text'>Edad: </span><%= age %> años<br>
     <% } %>
 
     <% if (infoCliente.hasOwnProperty('sexo') && infoCliente.sexo !== null) { %>
-      <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Sexo: </span><%= infoCliente.sexo %><br>
+      <span class='bold_text'>Sexo: </span><%= infoCliente.sexo %><br>
     <% } else if (infoCliente.hasOwnProperty('sexo') && infoCliente.sexo === null) { %>
-      <span style="font-weight: bold; color: #3372b5; padding-left: 50px;">Sexo: </span>Prefiero no decir<br>
+      <span class='bold_text'>Sexo: </span>Prefiero no decir<br>
     <% } %>    
+
+    <% if (infoCliente.hasOwnProperty('alturaInic') && infoCliente.alturaInic !== null) { %>
+      <span class='bold_text'>Altura: </span><%= infoCliente.alturaInic%> cm<br>
+    <% } %>       
+
+    <% if (pesoUltimo) { %>
+      <span class='bold_text'>Última medición de peso: </span><%= pesoUltimo %> kg<br>
+    <% } else { %>
+      <span class='bold_text'>Peso inicial: </span><%= infoCliente.pesoInic %> kg<br>
+    <% } %>
+    
+    <% if (pesoUltimo) { %>
+      <span class='bold_text'>Calorías recomendadas: </span><%= Math.round(caloriasRecomendadas) %> kcal<br>
+    <% } %>
     <br>
+    
     </p>
   </div>
   <p>
-    <a href="/perfil/editar_info">
-      <button style="background-color: rgba(31, 93, 240, 0.7); color: white; border: none; padding: 10px 20px; border-radius: 5px;">Editar información</button>
+    <a href='/perfil/editar_info'>
+      <button class='submit_button'>Editar información</button>
     </a>
   </p>
-  <!--
-  <p>
-
-    <button style="background-color: rgba(31, 93, 240, 0.7);">Editar información</button>
-  </p>-->
 </div>
 
 <%- include('../includes/foot.ejs'); %>

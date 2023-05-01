@@ -1,8 +1,10 @@
+
 <%- include('../includes/head.ejs'); %>
 
 <% if (dietas.length > 0) { %>
+
 <div class="container" style="margin-top: 20px;" >
-  <form action="/dietas/hola" method="POST">
+  <form action="/dietas/id" method="POST">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
   <div class="card">
     <header class="card-header" style="background-color: rgb(31, 134, 134);">
@@ -173,5 +175,4 @@
 <% } else { %>
   <h1>No hay detalles para esta dieta</h1>
 <% } %>
-
 <%- include('../includes/foot.ejs'); %>

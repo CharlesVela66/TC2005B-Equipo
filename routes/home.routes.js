@@ -20,4 +20,6 @@ router.get('/cerrar-sesion', homeController.cerrar_sesion)
 
 router.get('/', homeController.inicio);
 
+
+
 module.exports = router;

@@ -209,11 +209,9 @@
             let id_m = 0;
 
             let nombreM = deleteElement.getAttribute('data-nombre')
-            console.log(nombreM);
             medidas.forEach(medida => {               
                 if (medida.tipo == nombreM){
                     id_m= medida.id_medicion;
-                    console.log(id_m);
                 }
             })
 
@@ -249,12 +247,9 @@
     
             let medidaId = document.getElementById("medidaId");
             
-            medidas.forEach(medida => {     
-                console.log(medida.tipo);
-                console.log(cells[1].textContent);      
+            medidas.forEach(medida => {          
                 if (" "+medida.tipo == cells[1].textContent){
                     medidaId.value = medida.id_medicion;
-                    console.log(medidaId.value);
                 }
             })
 
@@ -275,6 +270,21 @@
             row.querySelector('.fa-check').style.display = '';
             row.querySelector('.fa-undo').style.display = '';
         }
+
+        function isDuplicateRecord(fecha, nombre) {
+            const registrosStr = "<%- escape(JSON.stringify(registros)) %>";
+            const registros = JSON.parse(unescape(registrosStr));
+            return registros.some(registro => {
+                const fechaRegistro = registro.fecha;
+                const nombreRegistro = registro.nombre;
+                console.log(fechaRegistro.substring(0, 10));
+                console.log(fecha);
+                console.log(nombreRegistro);
+                console.log(nombre);
+                return fecha === fechaRegistro.substring(0, 10) && nombre === nombreRegistro;
+            });
+}
+
         function submitEditForm(element) {
             const row = element.closest('tr');
             const cells = row.querySelectorAll('th, td');
@@ -287,7 +297,9 @@
                 alert('Completa los campos de fecha y descripción para continuar');
                 return;
             }
-    
+            
+            
+
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/progreso/editar';
@@ -375,9 +387,15 @@
         
         function validateEditForm(fecha, med) {
             if (!fecha || !med) {
-                alert('Por favor, completa los campos de fecha y descripción.');
                 return false;
             }
+
+            const nombre = document.getElementById("name_med").value;
+            if (isDuplicateRecord(fecha, nombre)) {
+                alert("Ya existe un registro para esa parte del cuerpo con esa fecha.");
+                return false;
+            }
+
             return true;
         }
         function setOriginalDataAttributes(element, fecha, med) {
@@ -427,7 +445,7 @@
         filterTable(currentMonth);
     </script>
 <% }  else if (rol == "Administrador") { %>
-    <h1 class="title  is-1 has-text-white-ter"></h1>
+    <h1 class="title  is-1 has-text-white-ter">h</h1>
     <img src = "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
 <% } %>
 <%- include('../includes/foot.ejs'); %>

@@ -38,7 +38,6 @@ exports.post_bitacora = (request,response,next) => {
             // Se crea un nuevo registro de bitacora
             const registro = new Bitacora({
                 id_cliente: rows[0].id_cliente,
-                id_rutina: rows[0].id_rutina,
                 fecha: request.body.fecha,
                 descr_sesion: request.body.descr_sesion,
                 nivel_satisf: request.body.nivel_satisf,
@@ -75,7 +74,6 @@ exports.editar = (request,response,next) => {
             // Se crea un nuevo registro de bitacora
             const registro = new Bitacora({
                 id_cliente: rows[0].id_cliente,
-                id_rutina: rows[0].id_rutina,
                 created_at: created_at,
                 fecha: request.body.edit_fecha,
                 descr_sesion: request.body.edit_descr_sesion,

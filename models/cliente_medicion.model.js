@@ -5,7 +5,7 @@ module.exports = class RegistroMedida {
         this.id_cliente = nueva_medida.id_cliente;
         this.id_medicion = nueva_medida.id_medicion;
         this.fecha = nueva_medida.fecha;
-        this.medida = nueva_medida.medida;
+        this.medida = nueva_medida.medida;  
     }
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
@@ -44,6 +44,19 @@ module.exports = class RegistroMedida {
             AND u.nombre_usuario = ?
             ORDER BY fecha DESC;
         `, [username]);
+    }
+
+    static ultimaMedicionPeso(id_cliente) {
+        return db.execute(`
+            SELECT cm.medida
+            FROM clientemedicion cm, cliente c, medicion m
+            WHERE c.id_cliente=cm.id_cliente
+            AND m.id_medicion = cm.id_medicion
+            AND cm.id_cliente = 21
+            AND cm.id_medicion = 10
+            ORDER BY fecha DESC
+            LIMIT 1;
+        `, [id_cliente]);
     }
 
 }

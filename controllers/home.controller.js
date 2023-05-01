@@ -1,21 +1,41 @@
 const Usuario = require('../models/usuario.model');
 const Cliente = require('../models/clientes.model');
 const Objetivos = require('../models/objetivos.model');
-const Administrador= require('../models/administrador.model');
+const Administrador = require('../models/administrador.model');
 const Nivel= require('../models/niveles.model');
+const clientemedicion=require('../models/cliente_medicion.model');
+const Dieta = require('../models/dietas.model');
+const Rutina = require('../models/rutinas.model');
 
 const bcrypt = require('bcryptjs');
+const { request, response } = require('express');
+
 
 
 // Cargamos la interfaz del inicio
-exports.inicio = (request, response, next) => {
+exports.inicio = async (request, response, next) => {
+    // Llama a la función count() del modelo y espera el resultado
+    const resultadoD = await Dieta.count();
+    const resultadoR = await Rutina.count();
+
+  // Extrae el conteo de dietas del resultado
+    const totalDietas = resultadoD[0][0].Totald;
+    const totalRutinas = resultadoR[0][0].Totalr;
+
+    console.log(totalDietas);
+    console.log(totalRutinas);
+
     response.clearCookie("consultas");
     response.render('home/home', {
         isLoggedIn: request.session.isLoggedIn,
         nombre: request.session.nombre_usuario || '',
         rol: request.session.rol || '',
+        totalDietas: totalDietas,
+        totalRutinas: totalRutinas,
     });
-}
+};
+
+
 // Cargamos la interfaz de iniciar sesion
 exports.iniciar_sesion = (request,response,next) => {
     const mensaje = request.session.mensaje || '';
@@ -111,7 +131,6 @@ exports.registrarse =(request,response, next) =>{
     });
 };
 exports.post_registrarse = (request, response, next)=>{
-    console.log("Comienza el post HOLAA MOTHERFACKAR")
     request.session.flagOne = true;
     request.session.flagTwo = true;
      
@@ -195,10 +214,10 @@ exports.post_registrarse = (request, response, next)=>{
                         .then(([row,fieldData])=>{
                             request.session.mensaje = "Usuario Registrado";   
                             response.redirect('/iniciar-sesion');
-                        }).catch(err=>console(err));
-                    }).catch(err=>console(err));
+                        }).catch(err=>console.error(err));
+                    }).catch(err=>console.error(err));
                 }).catch((error)=>{
-                    console.log(error) 
+                    console.log(error);
                 })
 
         }).catch(error=>{
@@ -245,6 +264,9 @@ exports.post_informacion =(request,response,next)=>{
             fecha_nacimiento:rows[0].fecha_nacimiento,
             alturaInic: rows[0].alturaInic,
             pesoInic: rows[0].pesoInic,
+            pressBanca: rows[0].pressBanca,
+            sentadilla: rows[0].sentadilla,
+            pesoMuerto: rows[0].pesoMuerto,
 
         });
         //Actualizar
@@ -253,6 +275,9 @@ exports.post_informacion =(request,response,next)=>{
         cliente.fecha_nacimiento=request.body.fecha_nacimiento;
         cliente.alturaInic=request.body.alturaInic;
         cliente.pesoInic=request.body.pesoInic;
+        cliente.pressBanca=request.body.pressBanca;
+        cliente.sentadilla=request.body.sentadilla;
+        cliente.pesoMuerto=request.body.pesoMuerto;
         cliente.id_niv=request.body.niv;
 
         return cliente.update();
@@ -260,11 +285,13 @@ exports.post_informacion =(request,response,next)=>{
     })
     .then(([rows,fieldData])=>{
         response.redirect('/home')
-    })        
+    })
+    //borrar        
     .catch((error) => {
         console.log(error);
     });
 };
+
 
 exports.cerrar_sesion = (request, response, next) => {
     request.session.destroy(() => {
