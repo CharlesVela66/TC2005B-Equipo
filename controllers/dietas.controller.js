@@ -92,6 +92,28 @@ exports.seleccionar_dieta =(request,response, next) =>{
 
 }
 
+exports.eliminar_dieta = (request, response, next) => {
+    const id_dieta =request.session.id_dieta;
+    console.log(id_dieta);
+    Dieta.delete(id_dieta)
+    .then(([dieta, fieldData]) => {
+      Dieta.fetchAll(request.session.nombre_usuario)
+      .then(([dietas, fieldData]) => {
+         let mensaje = "Dieta eliminada exitosamente"
+          response.render('dietas/dietas', {
+              dieta: dieta,
+              dietas: dietas,
+              isLoggedIn: request.session.isLoggedIn || false,
+              nombre: request.session.nombre_usuario || '',
+              rol: request.session.rol,
+              mensaje: mensaje
+          });
+  
+      })
+    })
+    .catch(error => console.log(error));
+  }
+
 exports.registrar_dieta_favorita = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente, fieldData]) => {

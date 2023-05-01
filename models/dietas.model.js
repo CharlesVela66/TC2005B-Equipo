@@ -25,13 +25,20 @@ module.exports = class Dieta {
         `);
     }
 
-    static delete(id) {
+    static delete(id_dieta) {
         return db.execute(`
-           DELETE FROM dieta
-           WHERE id_dieta = ?
-        `, [id])
+        DELETE FROM dieta WHERE id_dieta = ?
+        `, [id_dieta])
     }
      
+    static fetchAlll() {
+        return db.execute(`
+        SELECT *
+        FROM dieta
+        ORDER BY nombre ASC
+    `);
+    }
+
     static find(valor) {
         return db.execute(`
             SELECT *
