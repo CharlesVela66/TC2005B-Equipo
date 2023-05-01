@@ -24,7 +24,21 @@ module.exports = class Dieta {
         FROM dieta
         `);
     }
+
+    static delete(id_dieta) {
+        return db.execute(`
+        CALL eliminar_dieta(?)
+        `, [id_dieta])
+    }
      
+    static fetchAlll() {
+        return db.execute(`
+        SELECT *
+        FROM dieta
+        ORDER BY nombre ASC
+    `);
+    }
+
     static find(valor) {
         return db.execute(`
             SELECT *
