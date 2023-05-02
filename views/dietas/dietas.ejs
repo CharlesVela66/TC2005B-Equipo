@@ -62,7 +62,7 @@
     <% } %>
     <h1 class="title is-1 has-text-white-ter">Más Dietas</h1>
     <h2 class="has-text-white-ter is-4">Calorías</h2>
-    <div class="is-small is-rounded is-info select-customizado">
+    <div class="is-small is-rounded is-info select-customizado" id="calorias">
         <select>
             <option selected = "true" disabled="disabled">Elige una opción</option>
             <% for (let i = 1000; i <= 5000; i+=100){ %>
@@ -156,7 +156,7 @@
     }
 
     // Seleccionamos el elemento de nuestro filtro
-    const selectElement = document.querySelector('.select-customizado');
+    const selectElement = document.getElementById('calorias');
     // Le agregamos un evento al filtro, si cambia de valor...
     selectElement.addEventListener('change', (event) => {
         // Adquirimos el valor del evento

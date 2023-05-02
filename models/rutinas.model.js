@@ -50,7 +50,7 @@ module.exports = class Rutina {
             AND tiporutina Like ?
             AND frecuencia Like ?
             AND n.id_nivel Like ?
-            GrOUP BY r.id_rutina
+            GROUP BY r.id_rutina
             ORDER BY r.id_rutina ASC
         `, [tipo, frecuencia, nivel]);
     }

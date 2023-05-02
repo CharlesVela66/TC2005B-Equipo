@@ -254,9 +254,9 @@
             })
 
             const medidaInput = document.createElement('input');
-            medidaInput.type = 'text';
+            medidaInput.type = 'number';
             medidaInput.maxLength = 1000;
-            medidaInput.value = cells[2].textContent;
+            medidaInput.value = parseInt(cells[2].textContent);
             medidaInput.required = true;
             medidaInput.setAttribute('id', 'edit_medida');
             medidaInput.classList.add('input', 'is-info', 'is-small', 'is-rounded');
@@ -292,14 +292,12 @@
             const fecha = document.getElementById('edit_fecha').value;
             const medidaId = document.getElementById('medidaId').value;
             const med = document.getElementById('edit_medida').value;
-    
-            if (!validateEditForm(fecha, med)) {
+            
+            if (!validateEditForm(fecha, med,fecha_ant)) {
                 alert('Completa los campos de fecha y descripción para continuar');
                 return;
             }
-            
-            
-
+    
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/progreso/editar';
@@ -385,17 +383,18 @@
             return `${day}/${month}/${year}`;
         }
         
-        function validateEditForm(fecha, med) {
+        function validateEditForm(fecha, med,fecha_ant) {
             if (!fecha || !med) {
                 return false;
             }
 
-            const nombre = document.getElementById("name_med").value;
-            if (isDuplicateRecord(fecha, nombre)) {
-                alert("Ya existe un registro para esa parte del cuerpo con esa fecha.");
-                return false;
+            if(fecha_ant != fecha){
+                const nombre = document.getElementById("name_med").value;
+                if (isDuplicateRecord(fecha, nombre)) {
+                    alert("Ya existe un registro para esa parte del cuerpo con esa fecha.");
+                    return false;
+                }
             }
-
             return true;
         }
         function setOriginalDataAttributes(element, fecha, med) {
