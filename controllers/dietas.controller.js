@@ -5,7 +5,7 @@ const Micro = require('../models/micronutrientes.model');
 const Cliente = require('../models/clientes.model');
 
 exports.get_buscar = (request, response, next) => {
-    Dieta.find(request.params.valor)
+    Dieta.find(request.params.valor, request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
         response.status(200).json({dietas: rows});
     })
@@ -92,6 +92,28 @@ exports.seleccionar_dieta =(request,response, next) =>{
 
 }
 
+exports.eliminar_dieta = (request, response, next) => {
+    const id_dieta =request.session.id_dieta;
+    console.log(id_dieta);
+    Dieta.delete(id_dieta)
+    .then(([dieta, fieldData]) => {
+      Dieta.fetchAll(request.session.nombre_usuario)
+      .then(([dietas, fieldData]) => {
+         let mensaje = "Dieta eliminada exitosamente"
+          response.render('dietas/dietas', {
+              dieta: dieta,
+              dietas: dietas,
+              isLoggedIn: request.session.isLoggedIn || false,
+              nombre: request.session.nombre_usuario || '',
+              rol: request.session.rol,
+              mensaje: mensaje
+          });
+  
+      })
+    })
+    .catch(error => console.log(error));
+  }
+
 exports.registrar_dieta_favorita = (request, response, next) => {
     Cliente.fetchOne(request.session.nombre_usuario)
     .then(([cliente, fieldData]) => {
@@ -131,7 +153,7 @@ exports.get_editar = (request, response, next) => {
 
                 Micro.fetchOne(request.params.id)
                     .then(([microData, fieldData]) => {
-                        if (microData.length == 1) {
+                        if (microData.length >= 0) {
                             
                             const micro = new Micro({
                                 ceniza: microData[0].ceniza,
@@ -160,7 +182,7 @@ exports.get_editar = (request, response, next) => {
 
                             Dieta.fetchOne(request.params.id)
                                 .then(([dietaData, fieldData]) => {
-                                    if (dietaData.length === 1) {
+                                    if (dietaData.length >= 0) {
                                         const dieta = new Dieta({
                                             nombre: dietaData[0].nombre_dieta,
                                             id_macro: dietaData[0].id_macro,
@@ -170,7 +192,7 @@ exports.get_editar = (request, response, next) => {
 
                                         DietaAlimento.fetchOne(request.params.id)
                                             .then(([dietaAlimentoData, fieldData]) => {
-                                                if (dietaAlimentoData.length === 1) {
+                                                if (dietaAlimentoData.length >= 0) {
                                                     const dietaAlimento = new DietaAlimento({
                                                         id_dieta: dietaAlimentoData[0].id_dieta,
                                                         nombre: dietaAlimentoData[0].nombre,
@@ -178,7 +200,7 @@ exports.get_editar = (request, response, next) => {
                                                         cantidad: dietaAlimentoData[0].cantidad
                                                     });
 
-                                                    Dieta.fetchAll()
+                                                    Dieta.fetchAll(request.session.nombre)
                                                         .then(([rows, fieldData]) => {
                                                             DietaAlimento.fetchAll()
                                                                 .then(([dietaAlimentoData, fieldData]) => {
@@ -187,7 +209,7 @@ exports.get_editar = (request, response, next) => {
                                                                             Macro.fetchAll()
                                                                             .then(([macroData, fieldData]) => {
                                                                                 response.render('dietas/editar_d', {
-                                                                                    dietas: dietaData,
+                                                                                    dietas: rows,
                                                                                     dietaAlimento: dietaAlimentoData,
                                                                                     macro: macroData,
                                                                                     micro: microData,
@@ -355,14 +377,15 @@ exports.post_nueva = (request, response, next) => {
         newMicro.save()
           .then(([micro, fieldData]) => {
             const id_micro = micro.insertId;
-  
+            
+            console.log(request.files.imagen[0].filename);
             const newDieta = new Dieta({
               nombre: request.body.nombre_dieta,
               id_macro: id_macro,
               id_micro: id_micro,
-              Url_image: request.body.imagen
+              Url_image: request.files && request.files.imagen ? request.files.imagen[0].filename : '',
             });
-            
+            console.log(newDieta);
             newDieta.save()
               .then(([dieta, fieldData]) => {
                 const id_dieta = dieta.insertId;

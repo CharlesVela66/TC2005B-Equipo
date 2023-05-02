@@ -4,10 +4,10 @@ module.exports = class Dieta {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nueva_dieta) {
-        this.nombre = nueva_dieta.nombre || "";
+        this.nombre = nueva_dieta.nombre || ""; 
         this.id_macro = nueva_dieta.id_macro || "";
         this.id_micro = nueva_dieta.id_micro || "";
-        this.Url_image = nueva_dieta.Url_imagen || "";
+        this.Url_image = nueva_dieta.Url_image || "";
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
@@ -24,15 +24,39 @@ module.exports = class Dieta {
         FROM dieta
         `);
     }
+
+    static delete(id_dieta) {
+        return db.execute(`
+        CALL eliminar_dieta(?)
+        `, [id_dieta])
+    }
      
-    static find(valor) {
+    static fetchAlll() {
+        return db.execute(`
+        SELECT *
+        FROM dieta
+        ORDER BY nombre ASC
+    `);
+    }
+
+    static find(valor, username) {
         return db.execute(`
             SELECT *
             FROM dieta d, macronutrientes m
             WHERE d.id_macro = m.id_macro
-            AND calorias <= ?
+            AND calorias >= (? - 50)
+            AND calorias <= (? + 49)
+            AND d.id_dieta NOT IN (
+                SELECT d.id_dieta
+                FROM dieta d, dietasfavoritas df, cliente c, usuario u, macronutrientes m
+                WHERE d.id_macro = m.id_macro
+                AND d.id_dieta = df.id_dieta
+                AND df.id_cliente = c.id_cliente
+                AND c.id_usuario = u.id_usuario
+                AND u.nombre_usuario = ?
+            )
             ORDER BY calorias DESC
-        `, [valor]);
+        `, [valor, valor, username]);
     }
 
     static saveFavorita(id_cliente, id_dieta) {

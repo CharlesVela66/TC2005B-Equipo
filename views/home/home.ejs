@@ -404,7 +404,7 @@
                     conseguir sus objetivos de estética física, rendimiento en el gimnasio y salud.</p>
             </div>
 
-            <img src="https://img.freepik.com/vector-premium/icono-salud_795598-618.jpg" class="nuestrof">
+            <img src="fitn.jpeg" class="nuestrof">
 
             <div class="nuestroo">
                 <h4 class="subtitle is-2 has-text-white-ter">Nuestra <strong class="has-text-white-ter">visión</strong>
@@ -442,8 +442,8 @@
 
             <canvas id="grafico"></canvas>
     <script>
-        var totalDietas =  <%= totalDietas %>;
-        var totalRutinas =  <%= totalRutinas %>;// Reemplaza este valor con el total de dietas obtenido de tus datos
+        var totalDietas =  "<%= totalDietas %>";
+        var totalRutinas =  "<%= totalRutinas %>";// Reemplaza este valor con el total de dietas obtenido de tus datos
         // Reemplaza este valor con el total de rutinas obtenido de tus datos
 
         var ctx = document.getElementById('grafico').getContext('2d');
@@ -537,33 +537,52 @@
         </svg></div>
 
     <section class="section" id="faq">
+        
         <div class="faq-container">
             <h1 class="title has-text-white-ter">FAQ</h1>
             <div class="faq-question">
-                <h2 class="subtitle is-4 has-text-white-ter">Question 1</h2>
+                <h2 class="subtitle is-4 has-text-white-ter">¿Cómo registro mi bitácora diaria de actividades?</h2>
                 <span class="icon has-text-white-ter">
                     <i class="fas fa-chevron-down"></i>
                 </span>
                 <div class="faq-answer">
-                    <p>Answer to question 1</p>
+                    <p>Al ingresar podra registrar sus actividades diarias, incluyendo la fecha, que hizo, y como se sintio. Tambien podra eliminar y editar estos mismo registros por si desea cambiar algo.</p>
                 </div>
             </div>
             <div class="faq-question">
-                <h2 class="subtitle is-4 has-text-white-ter">Question 2</h2>
+                <h2 class="subtitle is-4 has-text-white-ter">¿Puedo crear y guardar mis propias dietas y rutinas?</h2>
                 <span class="icon has-text-white-ter">
                     <i class="fas fa-chevron-down"></i>
                 </span>
                 <div class="faq-answer">
-                    <p>Answer to question 2</p>
+                    <p>Como nuestro cliente usted no será capaz de crear dietas y rutinas, pero si podra ver todas las dietas y rutinas disponibles en nuestra pagina. Tambien tendra la opción de seleccionarlas como favoritas para que sea mas facil de encontrar las rutinas y dietas que le guste. A la vez podra seleccionar una para seguir continuamente.</p>
                 </div>
             </div>
             <div class="faq-question">
-                <h2 class="subtitle is-4 has-text-white-ter">Question 3</h2>
+                <h2 class="subtitle is-4 has-text-white-ter">¿Es gratuito el uso de la plataforma?</h2>
                 <span class="icon has-text-white-ter">
                     <i class="fas fa-chevron-down"></i>
                 </span>
                 <div class="faq-answer">
-                    <p>Answer to question 3</p>
+                    <p>En la actualidad la plataforma es totalmente gratuita y disponible para quien quiera usarla.</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <h2 class="subtitle is-4 has-text-white-ter">¿Cómo encuentro dietas y rutinas adecuadas para mí?</h2>
+                <span class="icon has-text-white-ter">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="faq-answer">
+                    <p>Le otorgamos a nuestros clientes diferentes opciones para esto. En su perfil podra observar las calorias recomendadas de acuerdo con su peso, altura y objetivo. Ademas desde el apartado de dietas podra filtrarlas de acuerdo a la cantidad de calorias que quiera. Igual podra filtrar las rutinas dependiendo de la frecuencia, nivel y tipo de rutina.</p>
+                </div>
+            </div>
+            <div class="faq-question">
+                <h2 class="subtitle is-4 has-text-white-ter">¿Que pasa si ingreso mal algun dato en la sección de medidas?</h2>
+                <span class="icon has-text-white-ter">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="faq-answer">
+                    <p>Va a poder seleccionar el apartado de progreso y abajo podra editar o eliminar cualquier registro que alla hecho a sus medidas.</p>
                 </div>
             </div>
         </div>

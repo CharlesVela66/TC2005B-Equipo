@@ -18,7 +18,7 @@ router.get('/agregar_ejercicios', hasCreate,ejerciciosController.get_ejercicios)
 
 router.post('/agregar_ejercicios',hasCreate, ejerciciosController.post_ejercicios)
 
-router.get('/:id',hasCreate, ejerciciosController.visualizar);
+router.get('/:id',hasCreate, ejerciciosController.visualizar); //1 Clic en un ejercicio
 
 router.post('/eliminar', hasCreate,ejerciciosController.eliminar_ejercicios);
 
