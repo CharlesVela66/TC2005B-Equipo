@@ -179,18 +179,17 @@
     const selectElementTipo = document.getElementById('tipo');
     const selectElementFrec = document.getElementById('frecuencia');
     const selectElementNivel = document.getElementById('nivel');
+    
     // Le agregamos un evento al filtro, si cambia de valor...
     selectElementTipo.addEventListener('change', (event) => {
         // Adquirimos el valor del evento
-        let selectedTipo = event.target.value;
-        let selectFrec = document.getElementById('frecuenciaSelect').value;
-        console.log(selectFrec);
-        let selectNivel = document.getElementById('nivelSelect').value;
-        console.log(selectNivel);
         
+        let selectedTipo = event.target.value;
+        let sFrec = document.getElementById('frecuenciaSelect').value;
+        let sNivel = document.getElementById('nivelSelect').value;
 
         // Obtenemos las dietas que cumplan con el criterio mandandole una petición asíncrona
-        fetch('/rutinas/buscar/' + selectedTipo, {
+        fetch('/rutinas/buscar/' + selectedTipo + '?frecuencia=' + sFrec + '&nivel=' + sNivel, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -222,11 +221,6 @@
                 newHTML += '<div class="columns">';
             }
             counter++;
-
-            // Aquí va el código HTML para cada tarjeta de dieta, utilizando la variable dieta
-            // y reemplazando los valores necesarios (id_dieta, Url_image, nombre, calorias)
-            // Puedes copiar el bloque de código HTML correspondiente y sustituir los valores con
-            // interpolación de cadenas (template literals) usando `${dieta.atributo}`
 
             newHTML += `
             <div class="column is-3">
