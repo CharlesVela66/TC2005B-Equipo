@@ -236,7 +236,8 @@ exports.get_informacion = (request, response, next)=>{
             niveles:row,
             isLoggedIn: request.session.isLoggedIn || false,
             rol: request.session.rol || '',
-            nombre:request.session.nombre_usuario || '',       
+            nombre:request.session.nombre_usuario || '',
+            showNavbar: false,       
             })
         })
     })

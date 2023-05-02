@@ -178,7 +178,10 @@
 </head>
 <body>
   <!--Creacion de iconos-->
-  <% if ( isLoggedIn){ %>
+  
+  <% var showNavbar = typeof showNavbar !== 'undefined' ? showNavbar : true; %>
+  <% if (showNavbar) { %>
+  <% if ( showNavbar && isLoggedIn){ %>
     <% if (rol == "Cliente") { %>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
@@ -390,5 +393,6 @@
             </div>
           </div>
         </nav>
+          <% } %>
           <% } %>
     <div class="container">
