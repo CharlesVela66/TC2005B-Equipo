@@ -1,6 +1,6 @@
 <%- include('../includes/head.ejs'); %>
 <h1 class="title has-text-white-ter">Editar Dieta</h1>
-<form action="/dietas/editar_d" method="POST" autocomplete="off" id="dieta-f" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
+<form action="/dietas/editar" method="POST" autocomplete="off" id="dieta-f" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
     <input type="hidden" name="id" value="<%= dieta.id_dieta %>" >
     <div class="columns">

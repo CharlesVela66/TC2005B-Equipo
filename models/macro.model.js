@@ -24,12 +24,13 @@ module.exports = class Macro {
 
     }
 
-    static fetchAll() {
+    static fetchAll(id_dieta) {
         return db.execute(`
         SELECT * from macronutrientes where id_macro = (SELECT id_macro
             FROM dieta
             WHERE id_dieta=?)
-        `);
+        `, [id_dieta]);
     }
+    
 
 }

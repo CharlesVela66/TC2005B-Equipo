@@ -23,4 +23,14 @@ module.exports = class Dieta_Alimento{
         ,[id])
     }
 
+    static fetchAll(){
+        return db.execute(
+            `
+            SELECT *
+            FROM dietasalimentos
+            ORDER BY nombre ASC
+        `
+        ,)
+    }
+
 }

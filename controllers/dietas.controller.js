@@ -179,7 +179,7 @@ exports.get_editar = (request, response, next) => {
                                 acfolico: microData[0].acfolico,
                                 folatoeq: microData[0].folatoeq
                             });
-
+                           
                             Dieta.fetchOne(request.params.id)
                                 .then(([dietaData, fieldData]) => {
                                     if (dietaData.length >= 0) {
@@ -200,13 +200,13 @@ exports.get_editar = (request, response, next) => {
                                                         cantidad: dietaAlimentoData[0].cantidad
                                                     });
 
-                                                    Dieta.fetchAll(request.session.nombre)
+                                                    Dieta.fetchAll(request.session.nombre_usuario)
                                                         .then(([rows, fieldData]) => {
-                                                            DietaAlimento.fetchAll()
+                                                            DietaAlimento.fetchAll(request.params.id)
                                                                 .then(([dietaAlimentoData, fieldData]) => {
-                                                                    Micro.fetchAll()
+                                                                    Micro.fetchAll(request.params.id)
                                                                         .then(([microData, fieldData]) => {
-                                                                            Macro.fetchAll()
+                                                                            Macro.fetchAll(request.params.id)
                                                                             .then(([macroData, fieldData]) => {
                                                                                 response.render('dietas/editar_d', {
                                                                                     dietas: rows,
