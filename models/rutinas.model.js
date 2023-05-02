@@ -8,7 +8,7 @@ module.exports = class Rutina {
         this.tiporutina = nueva_rutina.tiporutina || "";
         this.descripcion = nueva_rutina.descripcion || "";
         this.frecuencia = nueva_rutina.frecuencia || "",
-        this.URL_Image= nueva_rutina.URL_Image || "";
+        this.URL_Image = nueva_rutina.URL_Image || "";
         this.URL_Image_Ejercicios = nueva_rutina.URL_Image_Ejercicios || "";
     }
 
@@ -40,6 +40,19 @@ module.exports = class Rutina {
             WHERE rutinasfavoritas.id_cliente = ?
             AND rutinasfavoritas.id_rutina = ?
         `,[id_cliente, id_rutina])
+    }
+
+    static find(tipo, frecuencia, nivel) {
+        return db.execute(`
+            SELECT *
+            FROM rutina r, rutinaniveles n
+            WHERE n.id_rutina = r.id_rutina
+            AND tiporutina Like ?
+            AND frecuencia Like ?
+            AND n.id_nivel Like ?
+            GROUP BY r.id_rutina
+            ORDER BY r.id_rutina ASC
+        `, [tipo, frecuencia, nivel]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.

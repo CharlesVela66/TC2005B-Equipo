@@ -10,6 +10,11 @@
         background-color: rgb(20, 20, 20) !important;
         color:rgb(31, 93, 240)
       }
+      .navbar-item.has-dropdown.is-hoverable a.navbar-item:hover,
+.navbar-item.has-dropdown.is-hoverable a.navbar-item.is-active {
+  background-color: rgb(20, 20, 20) !important;
+  color:rgb(31, 93, 240);
+}
       .card {
         background-color: rgb(58, 58, 58);
         height:100%;
@@ -172,7 +177,11 @@
     </style>
 </head>
 <body>
-  <% if ( isLoggedIn){ %>
+  <!--Creacion de iconos-->
+  
+  <% var showNavbar = typeof showNavbar !== 'undefined' ? showNavbar : true; %>
+  <% if (showNavbar) { %>
+  <% if ( showNavbar && isLoggedIn){ %>
     <% if (rol == "Cliente") { %>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
@@ -225,9 +234,15 @@
         
                 <div class="navbar-dropdown">
                   <a class="navbar-item " href="/medidas">
+                    <span class="material-symbols-outlined">
+                      library_add
+                      </span>
                     Registrar medidas
                   </a>
                   <a class="navbar-item" href="/progreso">
+                    <span class="material-symbols-outlined">
+                      monitoring
+                      </span>
                   Progreso
                 </a>
                </div>
@@ -275,11 +290,14 @@
                 <div class="navbar-dropdown ">
                   <a class="navbar-item" href="/dietas/agregar">
                     <span class="material-symbols-outlined">
-                      monitor_weight_gain
+                      library_add
                       </span>
-                    Agregar dietas
+                      Agregar dietas
                   </a>
                   <a class="navbar-item" href="/dietas">
+                    <span class="material-symbols-outlined">
+                      reorder
+                      </span>
                     Todas las dietas
                   </a>
                 </div>
@@ -296,11 +314,14 @@
                 <div class="navbar-dropdown">
                   <a class="navbar-item " href = "/rutinas/agregar">
                     <span class="material-symbols-outlined">
-                      monitor_weight_gain
+                      library_add
                       </span>
                     Agregar rutinas
                   </a>
                   <a class="navbar-item" href="/rutinas">
+                    <span class="material-symbols-outlined">
+                      reorder
+                      </span>
                     Todas las rutinas
                   </a>
                 </div>
@@ -315,9 +336,15 @@
                 </a>
                 <div class="navbar-dropdown">
                   <a class="navbar-item " href = "/ejercicios/agregar_ejercicios">
+                    <span class="material-symbols-outlined">
+                      library_add
+                      </span>
                     Agregar ejercicios
                   </a>
                   <a class="navbar-item" href="/ejercicios">
+                    <span class="material-symbols-outlined">
+                      reorder
+                      </span>
                     Todos los ejercicios
                   </a>
                 </div>
@@ -366,5 +393,6 @@
             </div>
           </div>
         </nav>
+          <% } %>
           <% } %>
     <div class="container">

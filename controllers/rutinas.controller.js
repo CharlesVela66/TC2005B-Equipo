@@ -4,6 +4,20 @@ const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
 const RutinaNivel = require('../models/rutina_nivel.model');
 const Cliente =require('../models/clientes.model');
 
+exports.get_buscar = (request, response, next) => {
+    const frecuencia = request.query.frecuencia;
+    const nivel = request.query.nivel;
+
+    Rutina.find(request.params.valor, frecuencia, nivel)
+    .then(([rows, fieldData]) => {
+        response.status(200).json({rutinas: rows});
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({message: "Internal Server Enrror"});
+    });
+}
+
 exports.explorar_rutinas = (request, response, next) => {
     const mensaje = request.session.mensaje || '';
     if (request.session.mensaje) {
@@ -138,13 +152,13 @@ exports.nueva_rutina = (request, response, next) => {
 
 
 exports.post_nueva_rutina = (request, response, next) => {
-    
+    console.log(request.files);
     const newRutina = new Rutina({
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,
       frecuencia: request.body.frecuencia,
       tiporutina: request.body.tiporutina,
-      UURL_Image: request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
+      URL_Image: request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
       URL_Image_Ejercicios: request.files['file'] && request.files['file'][0] ? request.files['file'][0].filename : ''
     });
   
