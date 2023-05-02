@@ -138,12 +138,13 @@ exports.nueva_rutina = (request, response, next) => {
 
 
 exports.post_nueva_rutina = (request, response, next) => {
+    console.log(request.files);
     const newRutina = new Rutina({
       nombre: request.body.nombre_rutina,
       descripcion: request.body.descripcion,
       frecuencia: request.body.frecuencia,
       tiporutina: request.body.tiporutina,
-      UURL_Image: request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
+      URL_Image: request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '',
       URL_Image_Ejercicios: request.files['file'] && request.files['file'][0] ? request.files['file'][0].filename : ''
     });
   

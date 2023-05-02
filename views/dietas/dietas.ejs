@@ -3,8 +3,6 @@
 
 <% if (rol == 'Cliente') { %>
 
-<!--Insertar filtro por calorías-->
-
 <h1 class = "title is-1 has-text-white-ter">Dietas Favoritas</h1>
 <% if (dietasFav.length > 0) { %>
     <form action="/dietas/eliminar_favs" method="POST" autocomplete="off">
@@ -27,7 +25,7 @@
                             </a>
                         </div>
                         <figure class="image is-4by3">
-                            <a href="/dietas/<%= dietaFav.id_dieta %>"><img src="<%= dietaFav.Url_image %>"
+                            <a href="/dietas/<%= dietaFav.id_dieta %>"><img src="/uploads/<%= dietaFav.Url_image %>"
                                     alt="Placeholder image"></a>
                         </figure>
                     </div>
@@ -91,7 +89,7 @@
                                         </a>
                                     </div>
                                     <figure class="image is-4by3">
-                                        <a href="/dietas/<%= dieta.id_dieta %>"><img src="<%= dieta.Url_image %>"
+                                        <a href="/dietas/<%= dieta.id_dieta %>"><img src="/uploads/<%= dieta.Url_image %>"
                                                 alt="Placeholder image"></a>
                                     </figure>
                                 </div>
@@ -173,7 +171,7 @@
                             <div class="card " data-id="<%= dieta.id_dieta %>">
                                 <div class="card-image">
                                     <figure class="image is-4by3">
-                                        <a href="/dietas/<%= dieta.id_dieta %>"><img src="<%= dieta.Url_image %>"
+                                        <a href="/dietas/<%= dieta.id_dieta %>"><img src="/uploads/<%= dieta.Url_image %>"
                                                 alt="Placeholder image"></a>
                                     </figure>
                                 </div>

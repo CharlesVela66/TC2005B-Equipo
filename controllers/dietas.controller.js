@@ -377,14 +377,15 @@ exports.post_nueva = (request, response, next) => {
         newMicro.save()
           .then(([micro, fieldData]) => {
             const id_micro = micro.insertId;
-  
+            
+            console.log(request.files.imagen[0].filename);
             const newDieta = new Dieta({
               nombre: request.body.nombre_dieta,
               id_macro: id_macro,
               id_micro: id_micro,
-              Url_image: request.body.imagen
+              Url_image: request.files && request.files.imagen ? request.files.imagen[0].filename : '',
             });
-            
+            console.log(newDieta);
             newDieta.save()
               .then(([dieta, fieldData]) => {
                 const id_dieta = dieta.insertId;

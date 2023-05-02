@@ -8,7 +8,7 @@ module.exports = class Rutina {
         this.tiporutina = nueva_rutina.tiporutina || "";
         this.descripcion = nueva_rutina.descripcion || "";
         this.frecuencia = nueva_rutina.frecuencia || "",
-        this.URL_Image= nueva_rutina.URL_Image || "";
+        this.URL_Image = nueva_rutina.URL_Image || "";
         this.URL_Image_Ejercicios = nueva_rutina.URL_Image_Ejercicios || "";
     }
 
