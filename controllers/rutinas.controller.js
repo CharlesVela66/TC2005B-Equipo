@@ -5,8 +5,10 @@ const RutinaNivel = require('../models/rutina_nivel.model');
 const Cliente =require('../models/clientes.model');
 
 exports.get_buscar = (request, response, next) => {
-    console.log(request.body.frecuenciaSelect);
-    Rutina.find(request.params.valor, request.body.frecuenciaSelect, request.body.nivelSelect)
+    const frecuencia = request.query.frecuencia;
+    const nivel = request.query.nivel;
+
+    Rutina.find(request.params.valor, frecuencia, nivel)
     .then(([rows, fieldData]) => {
         response.status(200).json({rutinas: rows});
     })
