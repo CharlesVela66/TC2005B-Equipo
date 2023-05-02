@@ -97,17 +97,14 @@ module.exports = class Rutina {
         }
     }
 
-    static delete(id_rutina) {
-        return db.execute('CALL eliminar_rutina(?)', [id_rutina]);
-    }    
 
-    /*
-    async agregarEjercicio(rutinaId, ejercicioId) {
-        const connection = await db.getConnection();
-        await connection.query('CALL agregarEjercicioARutina(?, ?)', [rutinaId, ejercicioId]);
-        connection.release();
-    },
+    //Stored procedures
+    static addExerciseToRoutine(rutina_id, ejercicio_id) {
+        return db.execute('CALL agregar_ejercicio_rutina(?, ?)', [rutina_id, ejercicio_id]);
+    } 
 
-    async agregarEjercicio(id_rutina, ejercicio_id)*/
-
+    static removeExerciseFromRoutine(rutina_id, ejercicio_id) {
+        return db.execute('CALL eliminar_ejercicio_rutina(?, ?)', [rutina_id, ejercicio_id]);
+    }
+      
 }

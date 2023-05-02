@@ -160,7 +160,7 @@ exports.post_editarPerfil = async (request, response, next) => {
     const alturaInic = parseFloat(request.body.alturaInic);
     const id_obj = parseInt(request.body.objetivo);
     const id_niv = parseInt(request.body.nivelFisico);
-    const foto_perfil = request.file ? request.file.filename : '';
+    const foto_perfil = request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '';
 
     const [usuarios, fieldData] = await Usuario.fetchOne(nombre_usuario);
     if (usuarios.length > 0) {
