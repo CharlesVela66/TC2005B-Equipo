@@ -54,12 +54,12 @@
 
                 <div class="column">
                     <label class="label">Nombre(s)</label>
-                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="nombre" id="nombre" class="input" type="text" maxlength="30" pattern="[a-zA-Z]{2,}" title="Ingrese un nombre válido con 3 letras y sin números" value="<%= usuarioData ? usuarioData.nombre : '' %>" placeholder="Escribe tu(s) nombre(s)">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="nombre" id="nombre" class="input" type="text" maxlength="30" pattern="^([a-zA-ZÀ-ÿ]+\s?)*[a-zA-ZÀ-ÿ]{2,}$" title="Ingrese un nombre válido con 3 letras y sin números" value="<%= usuarioData ? usuarioData.nombre : '' %>" placeholder="Escribe tu(s) nombre(s)">
                 </div>
 
                 <div class="column">
                     <label class="label">Apellido(s)</label>
-                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" name="apellido" id="apellido" class="input" type="text" maxlength="30" pattern="[a-zA-Z]{2,}" title="Ingrese un apellido mayor a 2 letras y sin números" value="<%= usuarioData ? usuarioData.apellido : '' %>" placeholder="Escribe tu(s) apellido(s)">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" name="apellido" id="apellido" class="input" type="text" maxlength="30" pattern="^([a-zA-ZÀ-ÿ]+\s?)*[a-zA-ZÀ-ÿ]{2,}$" title="Ingrese un apellido mayor a 2 letras y sin números" value="<%= usuarioData ? usuarioData.apellido : '' %>" placeholder="Escribe tu(s) apellido(s)">
                 </div>
 
                 <div class="column">
