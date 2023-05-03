@@ -467,8 +467,6 @@ exports.post_nueva = (request, response, next) => {
             newMicro.save()
                 .then(([micro, fieldData]) => {
                     const id_micro = micro.insertId;
-
-                    console.log(request.files.imagen[0].filename);
                     const newDieta = new Dieta({
                         nombre: request.body.nombre_dieta,
                         id_macro: id_macro,
