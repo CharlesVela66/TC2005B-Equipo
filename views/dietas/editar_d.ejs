@@ -1,47 +1,66 @@
 <%- include('../includes/head.ejs'); %>
 <h1 class="title is-1 has-text-white-ter has-text-centered">Editar Dietas</h1>
 <br>
-<form action="/dietas/editar" method="POST" autocomplete="off" id="dieta-form" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
-    <input type="hidden" name="id" value="<%= dieta.id_dieta %>" >
+<form action="/dietas/editar_d" method="POST" autocomplete="off" id="dieta-form" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-
+    <input type="hidden" id="id_dieta"name="id_dieta" value="<%= dieta.id_dieta %>" >
     <div class="columns">
         <div class="column">
             <div class="aligned" style="display: block; margin: 0 auto; width: 70%;">
-                <label for = "nombre_dieta"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Nombre</h5></label>
-                <input class = "input is-rounded has-text-white-ter" type = "text" id="nombre_dieta" name = "nombre_dieta" value="<%= dieta.nombre_dieta %>" size="25" maxlength="25" value="<%= dieta.nombre_dieta %>" required>
+                <label for="nombre_dieta"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Nombre</h5></label>
+                <input class="input is-rounded has-text-white-ter" type="text" id="nombre_dieta" name="nombre_dieta" value="<%= dieta.nombre %>" size="25" maxlength="25" required>
             </div>
         </div>
         <div class="column">
-            <label for = "imagen"><h5 class="subtitle is-5 has-text-white-ter">Imagen</h5></label>
-            <input type="file" id="imagen" name="imagen" >
+            <label for="Url_image"><h5 class="subtitle is-5 has-text-white-ter">Imagen</h5></label>
+            <input type="file" id="Url_image" name="Url_image"  value="<%= dieta.Url_image %>" onchange="updateImage(this)">
+            <div id="image-container">
+                <img id="image-preview" src="<%= dieta.Url_image %>" alt="Imagen de la dieta" style="max-width: 100%;"/>
+            </div>
         </div>
     </div>
     <br>
+    
+    <input type="hidden" id="medida" name="medida" value="<%= dietaAlimento.medida %>" >
+    <input type="hidden" id="cantidad" name="cantidad" value="<%= dietaAlimento.cantidad %>" >
     <div class="container">
-                <div style="max-height: 250px; overflow: auto">
-                <table class = "table has-text-white-ter has-background-black-ter is-fullwidth" id="tabla-alimentos">
-                    <button type="button" id="addRowBtn" class="custom-button">
-                        <i class="fas fa-plus has-text-white-ter"></i>
-                    </button>
-                    <colgroup>
-                        <col span="1" style="width: 40%;">
-                        <col span="1" style="width: 35%;">
-                        <col span="1" style="width: 25%;">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th class="has-text-white-ter">Nombre</th>
-                            <th class="has-text-white-ter">Medida</th>
-                            <th class="has-text-white-ter">Cantidades</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <div style="max-height: 250px; overflow: auto">
+            <table class="table has-text-white-ter has-background-black-ter is-fullwidth" id="tabla-alimentos">
+               
+                <button type="button" id="addRowBtn" class="custom-button">
+                    <i class="fas fa-plus has-text-white-ter"></i>
+                </button>
+                <colgroup>
+                    <col span="1" style="width: 40%;">
+                    <col span="1" style="width: 35%;">
+                    <col span="1" style="width: 25%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="has-text-white-ter">Nombre</th>
+                        <th class="has-text-white-ter">Medida</th>
+                        <th class="has-text-white-ter">Cantidades</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% dietaAlimentos.forEach(dietaAlimento => { %>
 
-                    </tbody>
-                </table>
-                </div>
+                
+                        <input class="input is-small is-rounded" type="text" id="nombre_alimento" name="nombre_alimento" required value= "<%= dietaAlimento.nombre%>">';
+                        <input class="input is-small is-rounded" type="text" id="medida_alimento" name="medida_alimento" required value= "<%= dietaAlimento.medida%>">';
+                        <input class="input is-small is-rounded" type="number" id="cantidad_alimento" name="cantidad_alimento" min="0" max="999" required value= "<%= dietaAlimento.cantidad%>">';
+                        <i class="fas fa-times has-text-white-ter"></i>';
+                
+            
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+      
+       
+        
         <br>
+        <input type="hidden" id="id_macro" name="id_macro" value="<%= dieta.id_macro%>">
         <div class="columns">
             <div class="column" >
                 <label for="tabla-macro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Macronutrientes</h5></label>
@@ -59,25 +78,26 @@
                     <tbody>
                         <tr>
                             <td class="has-text-white-ter">Calorías</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="calorias" name="calorias"  maxlength="9999999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="calorias" name="calorias" value="<%= macro.calorias %>" maxlength="9999999" min="0" required></td>
                         </tr>
                         <tr>
                             <td class="has-text-white-ter">Proteínas</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="proteinas" name="proteinas" maxlength="9999999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="proteinas" name="proteinas" value="<%= macro.proteinas %>" maxlength="9999999" min="0" required></td>
                         </tr>
                         <tr>
                             <td class="has-text-white-ter">Carbohidratos</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="carbohidratos" name="carbohidratos" maxlength="9999999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="carbohidratos" name="carbohidratos" value="<%= macro.carbohidratos%>"maxlength="9999999" min="0" required></td>
                         </tr>
                         <tr>
                             <td class="has-text-white-ter">Grasas Totales</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="grasas" name="grasas" maxlength="9999999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="grasas" name="grasas" value="<%= macro.grasas %>" maxlength="9999999" min="0" required></td>
                         </tr>
                     </tbody>
                 </table>
                 <input class="button is-rounded is-success" type="submit" value="Actualizar"> 
               
             </div>
+            <input type="hidden" id="id_micro" name="id_micro" value="<%= dieta.id_micro%>">
             <div class="column ">
                 <label for="tabla-micro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Micronutrientes</h5></label>
                 <div style="height: 280px; overflow: auto">
@@ -95,91 +115,91 @@
                     <tbody>
                         <tr>
                             <td>Ceniza</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="ceniza" name="ceniza" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="ceniza" name="ceniza" value="<%= micro.ceniza %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Fibra Total</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="fibra_total" name="fibra_total" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="fibra_total" name="fibra_total"  value="<%= micro.fibra_total %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Calcio</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="calcio" name="calcio" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="calcio" name="calcio"  value="<%= micro.calcio %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Fosforo</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="fosforo" name="fosforo" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="fosforo" name="fosforo" value="<%= micro.fosforo %>"  maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Hierro</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="hierro" name="hierro" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="hierro" name="hierro"  value="<%= micro.hierro %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Tiamina</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="tiamina" name="tiamina" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="tiamina" name="tiamina"  value="<%= micro.tiamina %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Riboflavina</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="riboflavina" name="riboflavina" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="riboflavina" name="riboflavina"  value="<%= micro.riboflavina %>"  maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Niacina</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="niacina" name="niacina" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="niacina" name="niacina"  value="<%= micro.niacina %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Vitamina C</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_c" name="vit_c" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_c" name="vit_c"  value="<%= micro.vit_c %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Vitamina A</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_a" name="vit_a" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_a" name="vit_a"  value="<%= micro.vit_a %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Acidos Grasos Min.</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasosmin" name="acgrasosmin" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasosmin" name="acgrasosmin"  value="<%= micro.acgrasosmin %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Acidos Grasos Poli.</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasospoli" name="acgrasospoli" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasospoli" name="acgrasospoli"  value="<%= micro.acgrasospoli %>" maxlength="99999" min="0" required></td>
                         </tr>
                         <tr>
                             <td>Acidos Grasos Sat.</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasossat" name="acgrasossat" maxlength="99999" min="0" required> </td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acgrasossat" name="acgrasossat"  value="<%= micro.acgrasossat %>"  maxlength="99999" min="0" required> </td>
                         </tr>
                         <tr>
                             <td>Colesterol</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="colesterol" name="colesterol" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="colesterol" name="colesterol"  value="<%= micro.colesterol %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Potasio</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="potasio" name="potasio" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="potasio" name="potasio"  value="<%= micro.potasio %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Sodio</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="sodio" name="sodio" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="sodio" name="sodio"  value="<%= micro.sodio %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Zinc</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="zinc" name="zinc" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="zinc" name="zinc"  value="<%= micro.zinc %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Magnesio</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="magnesio" name="magnesio" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="magnesio" name="magnesio"  value="<%= micro.magnesio %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Vitamina B6</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_b6" name="vit_b6" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_b6" name="vit_b6"  value="<%= micro.vit_b6 %>"  maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Vitamina B12</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_b12" name="vit_b12" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="vit_b12" name="vit_b12"  value="<%= micro.vit_b12 %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Acido Folico</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="acfolico" name="acfolico" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="acfolico" name="acfolico"  value="<%= micro.acfolico %>" maxlength="99999" min="0" required></td>
                           </tr>
                           <tr>
                             <td>Folato Equivalente</td>
-                            <td><input class="input is-small is-rounded" type="number" step="1" id="folatoeq" name="folatoeq" maxlength="99999" min="0" required></td>
+                            <td><input class="input is-small is-rounded" type="number" step="1" id="folatoeq" name="folatoeq"  value="<%= micro.folatoeq %>" maxlength="99999" min="0" required></td>
                           </tr>
                                                   
                     </tbody>
@@ -190,6 +210,19 @@
     </div>
 </form>
 <script>
+    function updateImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
     const popup = document.getElementById("popup");
     const nombreDieta = document.getElementById('nombre_dieta');
     const dietasStr = "<%- escape(JSON.stringify(dietas)) %>";
@@ -222,6 +255,10 @@
 
         return true;
     }
+
+
+
+
     function addRow() {
         const table = document.getElementById("tabla-alimentos");
         const newRow = table.insertRow(-1);
@@ -230,14 +267,18 @@
         const cell3 = newRow.insertCell(2);
         const cell4 = newRow.insertCell(3);
 
-        cell1.innerHTML = '<input class="input is-small is-rounded" type="text" id="nombre_alimento" name="nombre_alimento" required placeholder= "Nombre del alimento">';
-        cell2.innerHTML = '<input class="input is-small is-rounded" type="text" id="medida_alimento" name="medida_alimento" required placeholder= "Medida (Gramos, Miligramos, Piezas, Onzas)">';
-        cell3.innerHTML = '<input class="input is-small is-rounded" type="number" id="cantidad_alimento" name="cantidad_alimento" min="0" max="999" required placeholder= "Número de porciones">';
+        cell1.innerHTML = '<input class="input is-small is-rounded" type="text" id="nombre_alimento" name="nombre_alimento" required value= "<%= dietaAlimento.nombre%>">';
+        cell2.innerHTML = '<input class="input is-small is-rounded" type="text" id="medida_alimento" name="medida_alimento" required value= "<%= dietaAlimento.medida%>">';
+        cell3.innerHTML = '<input class="input is-small is-rounded" type="number" id="cantidad_alimento" name="cantidad_alimento" min="0" max="999" required value= "<%= dietaAlimento.cantidad%>">';
         cell4.innerHTML = '<i class="fas fa-times has-text-white-ter"></i>';
 
         cell4.addEventListener("click", function() {
             table.deleteRow(newRow.rowIndex);
+
+           
+
         });
+      
     }
 
 
