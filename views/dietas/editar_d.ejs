@@ -2,8 +2,8 @@
 <h1 class="title is-1 has-text-white-ter has-text-centered">Editar Dietas</h1>
 <br>
 <form action="/dietas/editar_d" method="POST" autocomplete="off" id="dieta-form" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
-    <input type="hidden" name="id" value="<%= dieta.id_dieta %>" >
     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+    <input type="hidden" id="id_dieta"name="id_dieta" value="<%= dieta.id_dieta %>" >
     <div class="columns">
         <div class="column">
             <div class="aligned" style="display: block; margin: 0 auto; width: 70%;">
@@ -12,8 +12,8 @@
             </div>
         </div>
         <div class="column">
-            <label for="imagen"><h5 class="subtitle is-5 has-text-white-ter">Imagen</h5></label>
-            <input type="file" id="imagen" name="imagen"  value="<%= dieta.Url_image %>" onchange="updateImage(this)">
+            <label for="Url_image"><h5 class="subtitle is-5 has-text-white-ter">Imagen</h5></label>
+            <input type="file" id="Url_image" name="Url_image"  value="<%= dieta.Url_image %>" onchange="updateImage(this)">
             <div id="image-container">
                 <img id="image-preview" src="<%= dieta.Url_image %>" alt="Imagen de la dieta" style="max-width: 100%;"/>
             </div>
@@ -21,6 +21,8 @@
     </div>
     <br>
     
+    <input type="hidden" id="medida" name="medida" value="<%= dietaAlimento.medida %>" >
+    <input type="hidden" id="cantidad" name="cantidad" value="<%= dietaAlimento.cantidad %>" >
     <div class="container">
         <div style="max-height: 250px; overflow: auto">
             <table class="table has-text-white-ter has-background-black-ter is-fullwidth" id="tabla-alimentos">
@@ -58,6 +60,7 @@
        
         
         <br>
+        <input type="hidden" id="id_macro" name="id_macro" value="<%= dieta.id_macro%>">
         <div class="columns">
             <div class="column" >
                 <label for="tabla-macro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Macronutrientes</h5></label>
@@ -94,6 +97,7 @@
                 <input class="button is-rounded is-success" type="submit" value="Actualizar"> 
               
             </div>
+            <input type="hidden" id="id_micro" name="id_micro" value="<%= dieta.id_micro%>">
             <div class="column ">
                 <label for="tabla-micro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Micronutrientes</h5></label>
                 <div style="height: 280px; overflow: auto">

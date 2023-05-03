@@ -2,7 +2,7 @@ const db = require('../util/database');
 
 module.exports = class Macro {
     constructor(nuevo_macro_dieta) {
-        this.id_macro = nuevo_macro_dieta.id_macro || 60;
+        this.id_macro = nuevo_macro_dieta.id_macro || 0;
         this.calorias = nuevo_macro_dieta.calorias || 0;
         this.proteinas = nuevo_macro_dieta.proteinas || 0;
         this.carbohidratos = nuevo_macro_dieta.carbohidratos || 0;
@@ -26,7 +26,7 @@ module.exports = class Macro {
     static fetchOne(id) {
         return db.execute(
             `
-            SELECT calorias, proteinas, carbohidratos, grasas from macronutrientes where id_macro = (SELECT id_macro
+            SELECT * from macronutrientes where id_macro = (SELECT id_macro
                 FROM dieta
                 WHERE id_dieta=?)
         `, [id])

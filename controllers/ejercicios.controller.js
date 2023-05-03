@@ -53,7 +53,7 @@ function validarYoutubeUrl(url) {
                 descripcion: ejercicios_consulta[0].descripcion,
                 video_ejercicio: ejercicios_consulta[0].video_ejercicio,
             });
-            console.log(request.params.id)
+           
             
             Ejercicio.fetchAll()
             .then(([rows, fieldData]) => {
@@ -69,7 +69,7 @@ function validarYoutubeUrl(url) {
                   });
                 })
             }).catch(error => console.log(error));
-            console.log(request.params.id)
+
         } else {
             return response.redirect('/ejercicios/editar');
         }

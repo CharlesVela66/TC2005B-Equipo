@@ -3,6 +3,7 @@ const db= require('../util/database');
 module.exports = class Dieta_Alimento{
     constructor(nuevo_dietaAlimento){
         this.id_dieta = nuevo_dietaAlimento.id_dieta || '';
+        this.id_dietaalimento = nuevo_dietaAlimento.id_dietaalimento || '';
         this.nombre = nuevo_dietaAlimento.nombre || '';
         this.medida = nuevo_dietaAlimento.medida || '';
         this.cantidad = nuevo_dietaAlimento.cantidad || 0;
@@ -16,8 +17,8 @@ module.exports = class Dieta_Alimento{
 
     update() {
         return db.execute(`
-        UPDATE dietasalimentos SET nombre=?, medida=?, cantidad=?], WHERE id_dieta=?
-        `, [this.nombre, this.medida, this.cantidad, this.id_dieta]);
+            UPDATE dietasalimentos SET nombre=?, medida=?, cantidad=? WHERE id_dietaalimento = ? AND id_dieta = ?
+        `, [this.nombre, this.medida, this.cantidad, this.id_dietaalimento, this.id_dieta]);
     }
     static fetchOne(id){
         return db.execute(
