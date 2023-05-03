@@ -14,7 +14,7 @@ module.exports = class Dieta {
     save() {
         return db.execute(`
             INSERT INTO dieta(nombre id_macro, id_micro, Url_image)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?)
         `, [this.nombre,this.id_macro, this.id_micro, this.Url_image]);
     }
 
