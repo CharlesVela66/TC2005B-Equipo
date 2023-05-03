@@ -112,6 +112,11 @@ module.exports = class Rutina {
 
 
     //Stored procedures
+
+    static delete(id_rutina) {
+        return db.execute('CALL eliminar_rutina(?)', [id_rutina]);
+    }
+    
     static addExerciseToRoutine(rutina_id, ejercicio_id) {
         return db.execute('CALL agregar_ejercicio_rutina(?, ?)', [rutina_id, ejercicio_id]);
     } 
