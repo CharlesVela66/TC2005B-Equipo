@@ -13,9 +13,9 @@ module.exports = class Dieta {
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-            INSERT INTO dieta(nombre, id_macro, id_micro, Url_image)
-            VALUES (?, ?, ?, ?)
-        `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
+            INSERT INTO dieta(nombre id_macro, id_micro, Url_image)
+            VALUES (?, ?, ?, ?, ?)
+        `, [this.nombre,this.id_macro, this.id_micro, this.Url_image]);
     }
 
     update() {
@@ -115,7 +115,7 @@ module.exports = class Dieta {
 
    static fetchAllFavoritas(usuario) {
     return db.execute(`
-    SELECT d.nombre, d.tipo_dieta, d.id_dieta, d.Url_image, m.calorias
+    SELECT d.nombre, d.id_dieta, d.Url_image, m.calorias
     FROM dieta d, dietasfavoritas df, cliente c, usuario u, macronutrientes m
     WHERE d.id_macro = m.id_macro
     AND d.id_dieta = df.id_dieta
