@@ -13,7 +13,7 @@ module.exports = class Dieta {
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(`
-            INSERT INTO dieta(nombre id_macro, id_micro, Url_image)
+            INSERT INTO dieta(nombre, id_macro, id_micro, Url_image)
             VALUES (?, ?, ?, ?)
         `, [this.nombre,this.id_macro, this.id_micro, this.Url_image]);
     }
