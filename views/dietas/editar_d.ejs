@@ -1,13 +1,15 @@
 <%- include('../includes/head.ejs'); %>
-<h1 class="title has-text-white-ter">Editar Dieta</h1>
-<form action="/dietas/editar" method="POST" autocomplete="off" id="dieta-f" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+<h1 class="title is-1 has-text-white-ter has-text-centered">Editar Dietas</h1>
+<br>
+<form action="/dietas/editar" method="POST" autocomplete="off" id="dieta-form" enctype="multipart/form-data" onsubmit="prepareFormData(event)">
     <input type="hidden" name="id" value="<%= dieta.id_dieta %>" >
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
     <div class="columns">
         <div class="column">
             <div class="aligned" style="display: block; margin: 0 auto; width: 70%;">
                 <label for = "nombre_dieta"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Nombre</h5></label>
-                <input class = "input is-rounded has-text-white-ter" type = "text" id="nombre_dieta" name = "nombre_dieta" size="25" maxlength="25" placeholder="Nombre de la dieta" required>
+                <input class = "input is-rounded has-text-white-ter" type = "text" id="nombre_dieta" name = "nombre_dieta" value="<%= dieta.nombre_dieta %>" size="25" maxlength="25" value="<%= dieta.nombre_dieta %>" required>
             </div>
         </div>
         <div class="column">
@@ -73,12 +75,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <input class="button is-rounded is-info" type="button" value="Guardar" onclick="openPopup()">
-                <div class="popup " id="popup">
-                    <h2 class="title is-4 has-text-white-ter">¿Quieres confirmar tus datos?</h2>
-                    <button class="button is-success" type = "submit" id="submit-button" name="submit-button" onclick="closePopup()">Confirmar</button>
-                    <button class="button is-danger" type="button" onclick="closePopup()">Cancelar</button>
-                </div>
+                <input class="button is-rounded is-success" type="submit" value="Actualizar"> 
+              
             </div>
             <div class="column ">
                 <label for="tabla-micro"><h5 class="subtitle is-5 has-text-white-ter has-text-centered">Micronutrientes</h5></label>
@@ -191,4 +189,87 @@
         </div>
     </div>
 </form>
+<script>
+    const popup = document.getElementById("popup");
+    const nombreDieta = document.getElementById('nombre_dieta');
+    const dietasStr = "<%- escape(JSON.stringify(dietas)) %>";
+    const dietas = JSON.parse(unescape(dietasStr));
+
+ 
+
+    console.log(dietas);
+  
+
+    function openPopup() {
+        if (!dietaYaExiste() && tablaAlimentosValida()) {
+            popup.classList.add("open-popup");
+        }
+    }
+
+    function closePopup() {
+        popup.classList.remove("open-popup");
+    }
+
+
+    function tablaAlimentosValida() {
+        const tablaAlimentos = document.getElementById("tabla-alimentos");
+        const filas = tablaAlimentos.rows.length;
+
+        if (filas <= 1) {
+            alert('La tabla de alimentos debe tener al menos una fila además del encabezado.');
+            return false;
+        }
+
+        return true;
+    }
+    function addRow() {
+        const table = document.getElementById("tabla-alimentos");
+        const newRow = table.insertRow(-1);
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+
+        cell1.innerHTML = '<input class="input is-small is-rounded" type="text" id="nombre_alimento" name="nombre_alimento" required placeholder= "Nombre del alimento">';
+        cell2.innerHTML = '<input class="input is-small is-rounded" type="text" id="medida_alimento" name="medida_alimento" required placeholder= "Medida (Gramos, Miligramos, Piezas, Onzas)">';
+        cell3.innerHTML = '<input class="input is-small is-rounded" type="number" id="cantidad_alimento" name="cantidad_alimento" min="0" max="999" required placeholder= "Número de porciones">';
+        cell4.innerHTML = '<i class="fas fa-times has-text-white-ter"></i>';
+
+        cell4.addEventListener("click", function() {
+            table.deleteRow(newRow.rowIndex);
+        });
+    }
+
+
+    document.getElementById("addRowBtn").addEventListener("click", addRow);
+
+    function prepareFormData(event) {
+        const form = event.target;
+        const alimentosTable = document.getElementById('tabla-alimentos');
+
+        function addHiddenField(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            form.appendChild(input);
+        }
+
+        function processTableRows(table, prefix) {
+            const rows = table.rows;
+            for (let i = 1; i < rows.length; i++) { 
+                const cells = rows[i].cells;
+                for (let j = 0; j < cells.length; j++) {
+                    const input = cells[j].querySelector('input');
+                    if (input) {
+                        addHiddenField(prefix + '[' + i + '][' + input.name + ']', input.value);
+                    }
+                }
+            }
+        }
+
+        processTableRows(alimentosTable, 'alimentos');        
+    }
+
+</script>
 <%- include('../includes/foot.ejs'); %>

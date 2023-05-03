@@ -33,6 +33,19 @@ module.exports = class Micronutrientes {
         `, [this.ceniza, this.fibra_total, this.calcio, this.fosforo, this.hierro, this.tiamina, this.riboflavina, this.niacina, this.vit_c, this.vit_a, this.acgrasosmin, this.acgrasospoli, this.acgrasossat, this.colesterol, this.potasio, this.sodio, this.zinc,this.magnesio, this.vit_b6, this.vit_b12, this.acfolico, this.folatoeq]);
     }
 
+    update() {
+        return db.execute(`UPDATE micronutrientes
+        SET ceniza=?, fibra_total=?, calcio=?, fosforo=?, 
+        hierro=?, tiamina=?, riboflavina=?, niacina=?, vit_c=?, vit_a=?, 
+        acgrasosmin=?, acgrasospoli=?, acgrasossat=?, colesterol=?, potasio=?, 
+        sodio=?, zinc=?, magnesio=?, vit_b6=?, vit_b12=?, acfolico=?, folatoeq=? WHERE id_micro=?` 
+        ,[this.ceniza, this.fibra_total, this.calcio, this.fosforo, 
+            this.hierro, this.tiamina, this.riboflavina, this.niacina, 
+            this.vit_c, this.vit_a, this.acgrasosmin, this.acgrasospoli, 
+            this.acgrasossat, this.colesterol, this.potasio, this.sodio, 
+            this.zinc,this.magnesio, this.vit_b6, this.vit_b12, this.acfolico, this.folatoeq]);
+    } 
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(id_dieta) {
         return db.execute(`

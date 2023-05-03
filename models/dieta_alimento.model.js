@@ -13,6 +13,12 @@ module.exports = class Dieta_Alimento{
             VALUES (?, ?, ?, ?)
         `, [this.id_dieta, this.nombre, this.medida, this.cantidad]);
     }
+
+    update() {
+        return db.execute(`
+        UPDATE dietasalimentos SET nombre=?, medida=?, cantidad=?], WHERE id_dieta=?
+        `, [this.nombre, this.medida, this.cantidad]);
+    }
     static fetchOne(id){
         return db.execute(
             `
