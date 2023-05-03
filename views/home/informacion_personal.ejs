@@ -56,7 +56,6 @@
                         <div class="control">
                             <div class="select is-link">
                             <select required style="background-color: #242424; color: antiquewhite;" name="obj" id="obj">
-                                <option disabled selected>Selecciona una opción</option>
                                 <% for(let objetivo of objetivos){ %>
                                     <option value="<%=objetivo.id_obj %>">
                                         <%=objetivo.nombre_obj %>
@@ -71,7 +70,6 @@
                         <div class="control">
                             <div class="select is-link">
                                 <select required style="background-color: #242424; color: antiquewhite;" id="sexo" name="sexo">
-                                    <option disabled selected>Selecciona una opción</option>
                                     <option>M</option>
                                     <option>F</option>
                                 </select>
@@ -115,7 +113,6 @@
                         <div class="control">
                         <div class="select is-link">
                             <select  required name="niv" id="niv" style="background-color: #242424; color: antiquewhite;" >
-                                <option disabled selected>Selecciona una opción</option>
                                 <% for(let nivelfisico of niveles){ %>
                                     <option value="<%=nivelfisico.id_niv %>">
                                         <%=nivelfisico.nombre_niv %>
