@@ -43,8 +43,6 @@ module.exports = class RutinaNivel {
         `, [id_rutina]
         );
     }
-
-
     
     static fetch(id_rutina){
         if (id_rutina){
@@ -53,4 +51,7 @@ module.exports = class RutinaNivel {
             return RegistroRutina.fetchAll();
         }
     }
+
+    //Stored procedures
+    
 }

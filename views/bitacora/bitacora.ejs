@@ -11,7 +11,7 @@
 
     <form action="/home" method="POST" autocomplete="off">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    <div style="max-height: 340px; overflow: auto">
+    <div style="max-height: 260px; overflow: auto">
     <table id="table-bitacora"class = "table has-text-white-ter has-background-black-ter" style="width: 100%;">
         <colgroup>
             <col span="1" style="width: 10%;">
@@ -103,6 +103,35 @@
 
 <script>
     const csrfToken = '<%= csrfToken %>';
+
+    const selectButton = document.getElementById('nivel_satisf');
+    const notification = document.createElement('div');
+    notification.classList.add('notification', 'has-background-info-dark', 'has-text-white-ter', 'notification-custom', 'is-fade');
+    notification.innerHTML = 'Simbología: <br>1. Muy mal <br>2. Mal <br>3. Más o Menos <br>4. Bien <br>5. Muy bien';
+    notification.style.position = 'absolute';
+    notification.style.width = '20%';
+    notification.style.left = '85%';
+    notification.style.top = '25%';
+    notification.style.transform = 'translate(-50%, -50%)'; 
+
+    let timeoutId;
+
+    selectButton.addEventListener('click', function() {
+    // Cancelar cualquier temporizador existente
+    clearTimeout(timeoutId);
+        
+    // Mostrar notificación
+    document.body.appendChild(notification);
+
+    // Programar la desaparición de la notificación después de 5 segundos
+    timeoutId = setTimeout(function() {
+        notification.remove();
+    }, 5000);
+    });
+
+
+
+
 
     function openPopup(popupId, deleteElement = null) {
         const popup = document.getElementById(popupId);

@@ -18,6 +18,12 @@ module.exports = class Dieta {
         `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
     }
 
+    update() {
+        return db.execute(`
+        UPDATE dieta SET nombre=?, id_macro=?, id_micro=?, Url_image=?, WHERE id_dieta=?
+        `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
+    }
+
    static count(){
         return db.execute (`
         SELECT COUNT(id_dieta) as "Totald"
@@ -93,7 +99,7 @@ module.exports = class Dieta {
 
     static fetchOne(id){
         return db.execute(`
-        SELECT id_dieta,nombre, tipo_dieta
+        SELECT *
         FROM dieta
         WHERE id_dieta =?
         `,[id]);

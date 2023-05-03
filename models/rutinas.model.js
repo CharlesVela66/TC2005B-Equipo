@@ -42,6 +42,19 @@ module.exports = class Rutina {
         `,[id_cliente, id_rutina])
     }
 
+    static find(tipo, frecuencia, nivel) {
+        return db.execute(`
+            SELECT *
+            FROM rutina r, rutinaniveles n
+            WHERE n.id_rutina = r.id_rutina
+            AND tiporutina Like ?
+            AND frecuencia Like ?
+            AND n.id_nivel Like ?
+            GROUP BY r.id_rutina
+            ORDER BY r.id_rutina ASC
+        `, [tipo, frecuencia, nivel]);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll(usuario) {
         return db.execute(`
@@ -97,17 +110,19 @@ module.exports = class Rutina {
         }
     }
 
+
+    //Stored procedures
+
     static delete(id_rutina) {
         return db.execute('CALL eliminar_rutina(?)', [id_rutina]);
-    }    
+    }
+    
+    static addExerciseToRoutine(rutina_id, ejercicio_id) {
+        return db.execute('CALL agregar_ejercicio_rutina(?, ?)', [rutina_id, ejercicio_id]);
+    } 
 
-    /*
-    async agregarEjercicio(rutinaId, ejercicioId) {
-        const connection = await db.getConnection();
-        await connection.query('CALL agregarEjercicioARutina(?, ?)', [rutinaId, ejercicioId]);
-        connection.release();
-    },
-
-    async agregarEjercicio(id_rutina, ejercicio_id)*/
-
+    static removeExerciseFromRoutine(rutina_id, ejercicio_id) {
+        return db.execute('CALL eliminar_ejercicio_rutina(?, ?)', [rutina_id, ejercicio_id]);
+    }
+      
 }

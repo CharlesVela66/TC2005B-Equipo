@@ -18,11 +18,11 @@ router.post('/eliminar_favs', dietasController.eliminar_dieta_favorita);
 
 router.get('/', dietasController.explorar_dietas);
 
-router.get('/editar_d/:id', hasCreate, dietasController.get_nueva);
-
-router.post('/editar_d/:id', hasCreate, dietasController.post_editar);
-
 router.post('/eliminar', hasCreate,dietasController.eliminar_dieta);
+
+router.get('/editar_d', hasCreate, dietasController.get_nueva);
+
+router.post('/editar_d', hasCreate, dietasController.post_editar);
 
 router.get('/editar_d/:id', hasCreate, dietasController.get_editar);
 

@@ -44,13 +44,16 @@ module.exports = class RegistroRutina {
         );
     }
 
-
-    
     static fetch(id_rutina){
         if (id_rutina){
             return RegistroRutina.fetchOne(id_rutina);
         } else {
             return RegistroRutina.fetchAll();
         }
+    }
+
+    //Stored procedures
+    static addRoutineExercise(id_rutina, id_ejercicio){
+
     }
 }

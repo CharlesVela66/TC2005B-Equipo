@@ -10,20 +10,16 @@ const ClienteMedicion = require('../models/cliente_medicion.model');
 exports.ver_perfil = (request, response, next) => {
   Cliente.fetchOne(request.session.nombre_usuario)
     .then(([clientes, fieldData]) => {
-      let dietasRows = new Array;
-      let rutinasRows = new Array;
-      Dieta.fetchAllFavoritas(request.session.nombre_usuario)
-        .then(([rows, fieldData]) => {
-          dietasRows.push(rows);
-          Rutina.fetchAllFavoritas(request.session.nombre_usuario)
-            .then(([rows, fieldData]) => {
-              rutinasRows.push(rows);
-              console.log(rutinasRows[0]);
-              console.log(dietasRows[0]);
+      const dieta = clientes[0].id_dieta || 0;
+      const rutina = clientes[0].id_rutina || 0;
+      Dieta.fetchOne(dieta)
+        .then(([dieta, fieldData]) => {
+          Rutina.fetchOne(rutina)
+            .then(([rutina, fieldData]) => {
               response.render('perfil/perfil', {
                 infoCliente: clientes[0],
-                dieta: dietasRows[0],
-                rutina: rutinasRows[0],
+                dieta: dieta[0],
+                rutina: rutina[0],
                 isLoggedIn: request.session.isLoggedIn || false,
                 nombre: request.session.nombre_usuario || '',
                 rol: request.session.rol,
@@ -160,7 +156,7 @@ exports.post_editarPerfil = async (request, response, next) => {
     const alturaInic = parseFloat(request.body.alturaInic);
     const id_obj = parseInt(request.body.objetivo);
     const id_niv = parseInt(request.body.nivelFisico);
-    const foto_perfil = request.file ? request.file.filename : '';
+    const foto_perfil = request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '';
 
     const [usuarios, fieldData] = await Usuario.fetchOne(nombre_usuario);
     if (usuarios.length > 0) {

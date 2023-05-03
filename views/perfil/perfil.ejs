@@ -5,14 +5,14 @@
         <div class = "card">
             <div class="card-image">
                 <figure class="image">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Foto de perfil">
+                    <img src="/uploads/<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt='Foto de Perfil'>
                 </figure>
             </div>
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">
                         <figure class="image is-48x48">
-                            <img src=https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Placeholder image">
+                            <img src="/uploads/<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt='Foto de Perfil'>
                         </figure>
                     </div>
                     <div class="media-content">
@@ -26,12 +26,14 @@
             </div>
         </div>
     </div>
-    <% if (dieta.length != 0) {%>
+    <% if (dieta) {%>
     <div class = "column is-4">
         <div class="card">
             <div class="card-image">
                 <figure class="image is-4by3">
-                    <img src="https://www.iocir.com/wp-content/uploads/2020/10/diet-food-PUD4BCL.jpg" alt="Placeholder image">
+                    <a href="/dietas/<%= dieta.id_dieta %>">
+                        <img src="/uploads/<%= dieta.Url_image %>" alt="Placeholder image">
+                    </a>
                 </figure>
             </div>
             <div class="card-content">
@@ -42,37 +44,38 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4 has-text-white-ter"><%= dieta[0].nombre %></p>
-                        <p class="subtitle is-6 has-text-white-ter"><%= dieta[0].tipo_dieta %></p>
+                        <p class="title is-4 has-text-white-ter"><%= dieta.nombre %></p>
+                        <p class="subtitle is-6 has-text-white-ter"><%= dieta.tipo_dieta %></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <% } if (rutina.length != 0) {%>
-    <div class = "column is-4">
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="https://fnsi.com.mx/wp-content/uploads/2020/06/GYM-17-1024x731.jpg" alt="Placeholder image" >
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://cdn-icons-png.flaticon.com/512/1518/1518886.png" alt="Placeholder image">
-                        </figure>
-                    </div>
-                    <div class="media-content">
-                        <p class="title is-4 has-text-white-ter"><%= rutina[0].nombre %></p>
-                        <p class="subtitle is-6 has-text-white-ter"><%= rutina[0].tiporutina %></p>
+    <% } if (rutina) {%>
+        <div class = "column is-4">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <a href="/rutinas/<%= rutina.id_rutina %>">
+                            <img src="/uploads/<%= rutina.URL_Image %>" alt="Placeholder image">
+                        </a>
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1518/1518886.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4 has-text-white-ter"><%= rutina.nombreRutina %></p>
+                            <p class="subtitle is-6 has-text-white-ter"><%= rutina.tiporutina %></p>
+                        </div>
                     </div>
                 </div>
-            
             </div>
         </div>
-    </div>
     <% } %>
 </div>
 <div class="buttons">

@@ -10,7 +10,7 @@ module.exports = class Usuario {
         this.nombre_usuario = nuevo_usuario.nombre_usuario;
         this.correo = nuevo_usuario.correo;
         this.contrasena = nuevo_usuario.contrasena ;
-        this.foto_perfil = nuevo_usuario.foto_perfil || null;
+        this.foto_perfil = nuevo_usuario.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541';
     }
 
     save() {

@@ -4,6 +4,20 @@ const RutinaEjercicio= require ('../models/rutina_ejercicio.model');
 const RutinaNivel = require('../models/rutina_nivel.model');
 const Cliente =require('../models/clientes.model');
 
+exports.get_buscar = (request, response, next) => {
+    const frecuencia = request.query.frecuencia;
+    const nivel = request.query.nivel;
+
+    Rutina.find(request.params.valor, frecuencia, nivel)
+    .then(([rows, fieldData]) => {
+        response.status(200).json({rutinas: rows});
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({message: "Internal Server Enrror"});
+    });
+}
+
 exports.explorar_rutinas = (request, response, next) => {
     const mensaje = request.session.mensaje || '';
     if (request.session.mensaje) {
