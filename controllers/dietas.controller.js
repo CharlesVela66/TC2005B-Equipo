@@ -141,15 +141,18 @@ exports.eliminar_dieta_favorita = (request, response, next) => {
 }
 
 exports.get_editar = (request, response, next) => {
+  
     Macro.fetchOne(request.params.id)
         .then(([macroData, fieldData]) => {
             if (macroData.length == 1) {
                 const macro = new Macro({
+                                   
                     calorias: macroData[0].calorias,
                     proteinas: macroData[0].proteinas,
                     carbohidratos: macroData[0].carbohidratos,
                     grasas: macroData[0].grasas
-                });
+                });  
+                
 
                 Micro.fetchOne(request.params.id)
                     .then(([microData, fieldData]) => {
@@ -178,27 +181,39 @@ exports.get_editar = (request, response, next) => {
                                 vit_b12: microData[0].vit_b12,
                                 acfolico: microData[0].acfolico,
                                 folatoeq: microData[0].folatoeq
-                            });
+                            }); console.log(request.params.id)
 
                             Dieta.fetchOne(request.params.id)
                                 .then(([dietaData, fieldData]) => {
                                     if (dietaData.length >= 0) {
                                         const dieta = new Dieta({
-                                            nombre: dietaData[0].nombre_dieta,
+                                            nombre: dietaData[0].nombre,
                                             id_macro: dietaData[0].id_macro,
                                             id_micro: dietaData[0].id_micro,
                                             Url_image: dietaData[0].Url_image,
-                                        });
+                                        }); 
+                                        
 
-                                        DietaAlimento.fetchOne(request.params.id)
+                                        DietaAlimento.fetchAlll(request.params.id)
                                             .then(([dietaAlimentoData, fieldData]) => {
                                                 if (dietaAlimentoData.length >= 0) {
-                                                    const dietaAlimento = new DietaAlimento({
-                                                        id_dieta: dietaAlimentoData[0].id_dieta,
-                                                        nombre: dietaAlimentoData[0].nombre,
-                                                        medida: dietaAlimentoData[0].medida,
-                                                        cantidad: dietaAlimentoData[0].cantidad
-                                                    });
+                                                    let dietaAlimentos = [];
+
+                                                        dietaAlimentoData.forEach(data => {
+                                                            const dietaAlimento = new DietaAlimento({
+                                                                nombre: data.nombre,
+                                                                medida: data.medida,
+                                                                cantidad: data.cantidad
+                                                            });
+
+                                                            console.log(`DietaAlimento - Nombre: ${dietaAlimento.nombre}, Medida: ${dietaAlimento.medida}, Cantidad: ${dietaAlimento.cantidad}`);
+
+                                                            dietaAlimentos.push(dietaAlimento);
+                                                        });
+                                                        
+                                                    
+                                                    
+                                                    
 
                                                     Dieta.fetchAll(request.session.nombre_usuario)
                                                         .then(([rows, fieldData]) => {
@@ -210,6 +225,7 @@ exports.get_editar = (request, response, next) => {
                                                                                 .then(([macroData, fieldData]) => {
                                                                                     response.render('dietas/editar_d', {
                                                                                         dietas: rows,
+                                                                                        dietaAlimentos: dietaAlimentos,
                                                                                         dietaAlimento: dietaAlimentoData,
                                                                                         macro: macroData,
                                                                                         micro: microData,
@@ -217,10 +233,12 @@ exports.get_editar = (request, response, next) => {
                                                                                         nombre: request.session.nombre_usuario || '',
                                                                                         rol: request.session.rol,
                                                                                         dieta: dieta,
-                                                                                        dietaAlimento: dietaAlimento,
+                                                                                        
                                                                                         micro: micro,
                                                                                         macro: macro,
-                                                                                    });
+                                                                                       
+                                                                                    }); 
+                                                                                    
                                                                                 })
                                                                                 .catch(error => console.log(error));
                                                                         })
@@ -253,156 +271,52 @@ exports.get_editar = (request, response, next) => {
 
 
 
-exports.post_editar = (request, response, next) => {
-    const macroId = request.params.id_macro;
-    const calorias = request.body.calorias;
-    const proteinas = request.body.proteinas;
-    const carbohidratos = request.body.carbohidratos;
-    const grasas = request.body.grasas;
-    Macro.fetchOne(macroId)
-        .then(([macroData, fieldData]) => {
-            if (macroData.length == 1) {
-                const updatedMacro = new Macro({
-                    id_macro: macroId,
-                    calorias: calorias,
-                    proteinas: proteinas,
-                    carbohidratos: carbohidratos,
-                    grasas: grasas,
-                });
-                updatedMacro.update()
-                    .then(([rows, fieldData]) => {
-                        request.session.mensaje = "Los macros fueron actualizados exitosamente.";
+exports.post_editar = (req, res, next) => {
+    const {
+        calorias, proteinas, carbohidratos, grasas, id_micro,
+        ceniza, fibra_total, calcio, fosforo, hierro, tiamina, riboflavina, niacina, vit_c, vit_a,
+        acgrasosmin, acgrasospoli, acgrasossat, colesterol, potasio, sodio, zinc, magnesio,
+        vit_b6, vit_b12, acfolico, folatoeq, nombre_dieta, id_macro, Url_image, alimentos,
+        nombre_alimento, medida, cantidad
+    } = req.body;
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        request.session.mensaje = "Error al actualizar los macros.";
-                        response.redirect('/dietas');
-                    });
-                const microId = request.params.id_micro;
-                const ceniza = request.body.ceniza;
-                const fibra_total = request.body.fibra_total;
-                const calcio = request.body.calcio;
-                const fosforo = request.body.fosforo;
-                const hierro = request.body.hierro;
-                const tiamina = request.body.tiamina;
-                const riboflavina = request.body.riboflavina;
-                const niacina = request.body.niacina;
-                const vit_c = request.body.vit_c;
-                const vit_a = request.body.vit_a;
-                const acgrasosmin = request.body.acgrasosmin;
-                const acgrasospoli = request.body.acgrasospoli;
-                const acgrasossat = request.body.acgrasossat;
-                const colesterol = request.body.colesterol;
-                const potasio = request.body.potasio;
-                const sodio = request.body.sodio;
-                const zinc = request.body.zinc;
-                const magnesio = request.body.magnesio;
-                const vit_b6 = request.body.vit_b6;
-                const vit_b12 = request.body.vit_b12;
-                const acfolico = request.body.acfolico;
-                const folatoeq = request.body.folatoeq;
-                Micro.fetchOne(microId)
-                    .then(([microData, fieldData]) => {
-                        if (microData.length >= 0) {
-                            const updatedMicro = new Micro({
-                                id_micro: microId,
-                                ceniza: ceniza,
-                                fibra_total: fibra_total,
-                                calcio: calcio,
-                                fosforo: fosforo,
-                                hierro: hierro,
-                                tiamina: tiamina,
-                                riboflavina: riboflavina,
-                                niacina: niacina,
-                                vit_c: vit_c,
-                                vit_a: vit_a,
-                                acgrasosmin: acgrasosmin,
-                                acgrasospoli: acgrasospoli,
-                                acgrasossat: acgrasossat,
-                                colesterol: colesterol,
-                                potasio: potasio,
-                                sodio: sodio,
-                                zinc: zinc,
-                                magnesio: magnesio,
-                                vit_b6: vit_b6,
-                                vit_b12: vit_b12,
-                                acfolico: acfolico,
-                                folatoeq: folatoeq,
-                            });
-                            updatedMicro.update()
-                                .then(([rows, fieldData]) => {
-                                    request.session.mensaje = "Los micros fueron actualizados exitosamente.";
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                    request.session.mensaje = "Error al actualizar los micros.";
-                                    response.redirect('/dietas');
-                                });
-                            const dietaId = request.params.id;
-                            const nombre = request.body.nombre_dieta;
-                            const id_macro = macroId;
-                            const id_micro = microId;
-                            const Url_image = request.body.id_macro;
-
-                            Dieta.fetchOne(dietaId)
-                                .then(([dietaData, fieldData]) => {
-                                    if (dietaData.length == 1) {
-                                        const updatedDieta = new Dieta({
-                                            id_dieta: dietaId,
-                                            nombre: nombre,
-                                            id_macro: id_macro,
-                                            id_micro: id_micro,
-                                            Url_image: Url_image,
-                                        });
-                                        updatedDieta.update()
-                                            .then(([rows, fieldData]) => {
-                                                request.session.mensaje = "La dieta fue actualizada exitosamente.";
-                                            })
-                                            .catch((error) => {
-                                                console.log(error);
-                                                request.session.mensaje = "Error al actualizar la dieta.";
-                                                response.redirect('/dietas');
-                                            });
-                                            const alimentos = request.body.alimentos;
-                            
-                                        const nombreali = request.body.nombre_alimento;
-                                        const medida = request.body.medida;
-                                        const cantidad = request.body.medida;
-                                        DietaAlimento.fetchOne(dietaId)
-                                        
-                                            .then(([dietaAlimentoData, fieldData]) => {
-                                                if (dietaAlimentoData.length >= 0) {
-                                                    const updatedDietaAlimento = new DietaAlimento({
-                                                        id_dieta: dietaId,
-                                                        nombre: nombreali,
-                                                        medida: medida,
-                                                        cantidad: cantidad,
-                                                    });
-                                                    updatedDietaAlimento.update()
-                                                        .then(([rows, fieldData]) => {
-                                                            request.session.mensaje = "Los alimentos fueron actualizados exitosamente.";
-                                                        })
-                                                        .catch((error) => {
-                                                            console.log(error);
-                                                            request.session.mensaje = "Error al actualizar los alimentos.";
-                                                            response.redirect('/dietas');
-                                                        });
-                                                }
-                                            })
-
-                                        
-                                            .then(() => {
-                                                response.redirect('/dietas/dietas');
-                                            })
-                                            .catch(error => console.log(error));
-                                    }
-                                })
-                        }
-                    })
-            }
+    const updatedMacro = new Macro({ calorias, proteinas, carbohidratos, grasas });
+   
+    console.log(updatedMacro);
+    updatedMacro.update()
+        .then(() => {
+            req.session.message = "Macros updated successfully.";
+            const updatedMicro = new Micro({
+                id_micro, ceniza, fibra_total, calcio, fosforo, hierro, tiamina, riboflavina, niacina,
+                vit_c, vit_a, acgrasosmin, acgrasospoli, acgrasossat, colesterol, potasio, sodio,
+                zinc, magnesio, vit_b6, vit_b12, acfolico, folatoeq
+            });
+            console.log(updatedMicro);
+            updatedMicro.update();
         })
+        .then(() => {
+            req.session.message = "Micros updated successfully.";
+            const updatedDieta = new Dieta({ id_dieta: req.params.id, nombre: nombre_dieta, id_macro, id_micro, Url_image });
+            console.log(updatedDieta);
+            updatedDieta.update();
+        })
+        .then(() => {
+            req.session.message = "Diet updated successfully.";
+            const updatedDietaAlimento = new DietaAlimento({ id_dieta: req.params.id, nombre: nombre_alimento, medida, cantidad });
+
+            updatedDietaAlimento.update();
+        })
+        .then(() => {
+            req.session.message = "Foods updated successfully.";
+            res.redirect('/dietas/dietas');
+        })
+        .catch(error => {
+            console.log(error);
+            req.session.message = "Error updating data.";
+            res.redirect('/dietas');
+        });
 };
+
 
 
 

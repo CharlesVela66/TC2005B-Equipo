@@ -42,7 +42,7 @@ function validarYoutubeUrl(url) {
 
  exports.get_editar = (request, response, next) => {
 
-    Ejercicio.fetchOne(request.params.id)
+    Ejercicio.fetchOne(request.params.id)       
     .then(([ejercicios_consulta, fieldData]) => {
       console.log(ejercicios_consulta);
         if (ejercicios_consulta.length == 1) {
@@ -53,6 +53,8 @@ function validarYoutubeUrl(url) {
                 descripcion: ejercicios_consulta[0].descripcion,
                 video_ejercicio: ejercicios_consulta[0].video_ejercicio,
             });
+            console.log(request.params.id)
+            
             Ejercicio.fetchAll()
             .then(([rows, fieldData]) => {
               RutinaEjercicio.fetchAlll(ejercicios_consulta[0].id_ejercicio)
@@ -67,7 +69,7 @@ function validarYoutubeUrl(url) {
                   });
                 })
             }).catch(error => console.log(error));
-
+            console.log(request.params.id)
         } else {
             return response.redirect('/ejercicios/editar');
         }

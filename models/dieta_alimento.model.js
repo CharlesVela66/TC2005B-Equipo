@@ -17,7 +17,7 @@ module.exports = class Dieta_Alimento{
     update() {
         return db.execute(`
         UPDATE dietasalimentos SET nombre=?, medida=?, cantidad=?], WHERE id_dieta=?
-        `, [this.nombre, this.medida, this.cantidad]);
+        `, [this.nombre, this.medida, this.cantidad, this.id_dieta]);
     }
     static fetchOne(id){
         return db.execute(
@@ -29,12 +29,24 @@ module.exports = class Dieta_Alimento{
         ,[id])
     }
 
+    static fetchAlll(id){
+        return db.execute(
+            `
+            SELECT *
+            FROM dietasalimentos
+            WHERE id_dieta = ?
+           
+            `,
+            [id]
+        );
+    }
+
     static fetchAll(){
         return db.execute(
             `
             SELECT *
             FROM dietasalimentos
-            ORDER BY nombre ASC
+            
         `
         ,)
     }

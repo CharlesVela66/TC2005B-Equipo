@@ -2,6 +2,7 @@ const db = require('../util/database');
 
 module.exports = class Micronutrientes {
     constructor(nuevo_micronutrientes){
+        this.id_micro = nuevo_micronutrientes.id_micro || 1;
         this.ceniza = nuevo_micronutrientes.ceniza || 0;
         this.fibra_total = nuevo_micronutrientes.fibra_total || 0;
         this.calcio = nuevo_micronutrientes.calcio || 0;
@@ -38,22 +39,24 @@ module.exports = class Micronutrientes {
         SET ceniza=?, fibra_total=?, calcio=?, fosforo=?, 
         hierro=?, tiamina=?, riboflavina=?, niacina=?, vit_c=?, vit_a=?, 
         acgrasosmin=?, acgrasospoli=?, acgrasossat=?, colesterol=?, potasio=?, 
-        sodio=?, zinc=?, magnesio=?, vit_b6=?, vit_b12=?, acfolico=?, folatoeq=? WHERE id_micro=?` 
+        sodio=?, zinc=?, magnesio=?, vit_b6=?, vit_b12=?, acfolico=?, folatoeq=? WHERE id_micro = (SELECT id_micro
+            FROM dieta
+            WHERE id_dieta=?)`
         ,[this.ceniza, this.fibra_total, this.calcio, this.fosforo, 
             this.hierro, this.tiamina, this.riboflavina, this.niacina, 
             this.vit_c, this.vit_a, this.acgrasosmin, this.acgrasospoli, 
             this.acgrasossat, this.colesterol, this.potasio, this.sodio, 
-            this.zinc,this.magnesio, this.vit_b6, this.vit_b12, this.acfolico, this.folatoeq]);
-    } 
+            this.zinc,this.magnesio, this.vit_b6, this.vit_b12, this.acfolico, this.folatoeq, this.id_micro]);
+    }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
-    static fetchAll(id_dieta) {
+    static fetchAll(id) {
         return db.execute(`
             SELECT * from micronutrientes where id_micro = (SELECT id_micro
                 FROM dieta
                 WHERE id_dieta=?)
             `,
-            [id_dieta] // Pass the id_dieta parameter as an array
+            [id] // Pass the id_dieta parameter as an array
         );
     }
     static fetchOne(id) {
