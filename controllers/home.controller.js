@@ -267,16 +267,16 @@ exports.post_informacion =(request,response,next)=>{
             pesoMuerto: rows[0].pesoMuerto,
 
         });
-        //Actualizar
-        cliente.id_obj=request.body.obj;
-        cliente.sexo=request.body.sexo;
+        //Actualizar      
         cliente.fecha_nacimiento=request.body.fecha_nacimiento;
         cliente.alturaInic=request.body.alturaInic;
         cliente.pesoInic=request.body.pesoInic;
+        cliente.id_obj=request.body.obj;  
+        cliente.sexo=request.body.sexo;
+        cliente.id_niv=request.body.niv;
         cliente.pressBanca=request.body.pressBanca;
         cliente.sentadilla=request.body.sentadilla;
         cliente.pesoMuerto=request.body.pesoMuerto;
-        cliente.id_niv=request.body.niv;
 
         return cliente.update();
 
