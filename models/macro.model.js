@@ -14,6 +14,13 @@ module.exports = class Macro {
             VALUES (?, ?, ?, ?)
         `, [this.calorias, this.proteinas, this.carbohidratos, this.grasas])
     }
+
+    update() {
+        return db.execute(`
+        UPDATE macronutrientes SET calorias=?, proteinas=?, carbohidratos=?, grasas=?, WHERE id_macro=?
+        `, [this.calorias, this.proteinas, this.carbohidratos, this.grasas]);
+    }
+
     static fetchOne(id) {
         return db.execute(
             `
@@ -24,12 +31,13 @@ module.exports = class Macro {
 
     }
 
-    static fetchAll() {
+    static fetchAll(id_dieta) {
         return db.execute(`
         SELECT * from macronutrientes where id_macro = (SELECT id_macro
             FROM dieta
             WHERE id_dieta=?)
-        `);
+        `, [id_dieta]);
     }
+    
 
 }
