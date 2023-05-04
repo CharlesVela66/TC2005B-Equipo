@@ -8,7 +8,7 @@ exports.get_buscar = (request, response, next) => {
     const frecuencia = request.query.frecuencia;
     const nivel = request.query.nivel;
 
-    Rutina.find(request.params.valor, frecuencia, nivel)
+    Rutina.find(request.params.valor, frecuencia, nivel, request.session.nombre_usuario)
     .then(([rows, fieldData]) => {
         response.status(200).json({rutinas: rows});
     })

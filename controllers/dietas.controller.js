@@ -7,6 +7,7 @@ const Cliente = require('../models/clientes.model');
 exports.get_buscar = (request, response, next) => {
     Dieta.find(request.params.valor, request.session.nombre_usuario)
         .then(([rows, fieldData]) => {
+            console.log(rows);
             response.status(200).json({ dietas: rows });
         })
         .catch(error => {

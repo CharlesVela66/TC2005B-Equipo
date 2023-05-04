@@ -42,7 +42,7 @@ module.exports = class Rutina {
         `,[id_cliente, id_rutina])
     }
 
-    static find(tipo, frecuencia, nivel) {
+    static find(tipo, frecuencia, nivel, username) {
         return db.execute(`
             SELECT *
             FROM rutina r, rutinaniveles n
@@ -50,9 +50,17 @@ module.exports = class Rutina {
             AND tiporutina Like ?
             AND frecuencia Like ?
             AND n.id_nivel Like ?
+            AND r.id_rutina NOT IN (
+                SELECT r.id_rutina
+                FROM rutina r, rutinasfavoritas rf, cliente c, usuario u
+                WHERE r.id_rutina = rf.id_rutina
+                AND rf.id_cliente = c.id_cliente
+                AND c.id_usuario = u.id_usuario
+                AND u.nombre_usuario = ?
+            )
             GROUP BY r.id_rutina
             ORDER BY r.id_rutina ASC
-        `, [tipo, frecuencia, nivel]);
+        `, [tipo, frecuencia, nivel, username]);
     }
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
