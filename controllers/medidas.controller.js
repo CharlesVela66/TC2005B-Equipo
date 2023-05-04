@@ -46,7 +46,7 @@ exports.registrar_medida = (request, response, next) => {
             Promise.all(savePromises)
             .then(() => {
                 console.log('Todos los registros guardados');
-                response.redirect('/home');
+                response.redirect('/progreso');
             })
             .catch((error) => {console.log(error)});
         })
