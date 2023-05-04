@@ -105,8 +105,11 @@
 </style>
 <div class='card'>
   <br>
-  <img class='profile_picture' src="/uploads/<%= infoCliente.foto_perfil || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' %>" alt='Foto de Perfil'>
-  <br><br><p class='title is-4'><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
+  <% if (infoCliente.foto_perfil == 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?2015032720354' || !infoCliente.foto_perfil) {%>
+    <img class= 'profile_picture'src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?2015032720354" alt='Foto de Perfil'>
+<% } else {%>
+    <img class= 'profile_picture'src="/uploads/<%= infoCliente.foto_perfil  %>" alt='Foto de Perfil'>
+<% } %>  <br><br><p class='title is-4'><%= infoCliente.nombre %> <%= infoCliente.apellido %></p>
   <p class='subtitle is-6'><%= infoCliente.nombre_usuario %></p>
   <% if (infoCliente && infoCliente.hasOwnProperty('nombre_obj') && infoCliente.hasOwnProperty('nombre_niv')) { %>
     <div class='table_containers_wrap'>
