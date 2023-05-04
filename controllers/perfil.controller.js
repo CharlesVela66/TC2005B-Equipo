@@ -32,6 +32,7 @@ exports.ver_perfil = (request, response, next) => {
 }
 
 exports.verCliente = (request, response, next) => {
+  console.log('ESTE ES EL NOMBRE DE USUARIO', request.session.nombre_usuario);
   Cliente.fetchOne(request.session.nombre_usuario)
     .then(([clientes, fieldData]) => {
       const id_cliente = clientes[0].id_cliente;
