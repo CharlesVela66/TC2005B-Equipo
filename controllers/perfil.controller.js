@@ -222,38 +222,64 @@ exports.post_editarPerfil = async (request, response, next) => {
 };
 
 // Ruta para mostrar la vista de edición del perfil de administrador
-exports.get_editarPerfilAdmin = (request, response, next) => {
-  // Obtener los datos del usuario administrador desde la base de datos
-  Usuario.fetchOne(request.session.nombre_usuario)
-    .then(([rows]) => {
-      // Renderizar la vista con los datos del usuario administrador
-      response.render('admin/editar-info', {
-        pageTitle: 'Editar perfil administrador',
-        usuario: rows[0],
-        isLoggedIn: request.session.isLoggedIn || false,
-        nombre: request.session.nombre_usuario || '',
-        rol: request.session.rol,
-      });
-    })
-    .catch((err) => console.log(err));
+exports.get_editarPerfilAdmin = async (request, response, next) => {
+  try {
+    const [usuarios, usuariosFieldData] = await Usuario.fetchOne(request.session.nombre_usuario);
+
+    response.render('admin/editar-info', {
+      pageTitle: 'Editar perfil administrador',
+      usuario: usuarios[0],
+      isLoggedIn: request.session.isLoggedIn || false,
+      nombre: request.session.nombre_usuario || '',
+      rol: request.session.rol,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-// Ruta para procesar los datos editados del perfil de administrador
-exports.post_editarPerfilAdmin = (request, response, next) => {
-  // Obtener los datos del usuario administrador desde la base de datos
-  Usuario.fetchOne(request.session.nombre_usuario)
-    .then(([rows]) => {
-      // Actualizar los datos del usuario administrador
-      rows[0].nombre = request.body.nombre;
-      rows[0].apellido = request.body.apellido;
-      rows[0].foto_perfil = request.body.foto_perfil;
+// Ruta para actualizar el nombre y apellido del perfil de administrador
+// Controlador para actualizar la información del perfil de administrador
+exports.post_editarPerfilAdmin = async (request, response, next) => {
+  try {
+    const nombre_usuario = request.session.nombre_usuario;
+    const nombre = request.body.nombre;
+    const apellido = request.body.apellido;
+    const foto_perfil = request.files['imagen'] && request.files['imagen'][0] ? request.files['imagen'][0].filename : '';
 
-      // Guardar los cambios en la base de datos
-      return rows[0].save();
-    })
-    .then(() => {
-      // Redireccionar a la página de perfil del administrador
-      response.redirect('/ver-info');
-    })
-    .catch((err) => console.log(err));
+    // Verificar si el usuario existe en la base de datos
+    const [usuarios, fieldData] = await Usuario.fetchOne(nombre_usuario);
+
+    if (usuarios.length > 0) {
+      const usuario = usuarios[0];
+
+      // Comprobar si se realizó algún cambio en los datos del usuario
+      const cambiosRealizados =
+        usuario.nombre !== nombre ||
+        usuario.apellido !== apellido ||
+        foto_perfil !== '';
+
+      // Actualizar la información del usuario en la base de datos
+      const updatedUsuario = new Usuario({
+        id_usuario: usuario.id_usuario,
+        nombre_usuario: usuario.nombre_usuario,
+        nombre: nombre,
+        apellido: apellido,
+        foto_perfil: foto_perfil || usuario.foto_perfil,
+      });
+      
+      await updatedUsuario.updateUsuarioData();
+
+      if (cambiosRealizados) {
+        request.session.mensaje = 'Los cambios se han añadido correctamente';
+      }
+
+      response.redirect('/perfil/ver-info');
+    } else {
+      throw new Error('Usuario no encontrado');
+    }
+  } catch (error) {
+    console.log(error);
+    response.redirect('/admin/editar-info');
+  }
 };
