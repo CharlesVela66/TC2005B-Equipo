@@ -72,22 +72,17 @@ exports.post_iniciar_sesion = (request, response, next) => {
                         //borrar si no jala
                         request.session.id_usuario = rows[0].id_usuario;
                         //borrar si no jala
-                        console.log(request.session.rol)
-                        console.log(rows[0].id_usuario)
                         Cliente.getObjetivo(rows[0].id_usuario)
                             .then(([objetivo,fieldData])=>{
                                 console.log("objetivo.length:", objetivo.length);
                                 console.log("consultaRol[0].nombre:", consultaRol[0].nombre);
                                     if (objetivo.length > 0 && consultaRol[0].nombre == "Cliente") {
-                                        console.log("buu")
-                                        console.log(objetivo)
                                         request.session.objetivo=objetivo[0].id_obj
                                         response.redirect("/home")
                                     }else if(consultaRol[0].nombre=="Administrador") {
                                         response.redirect("/home")
                                     }else if(consultaRol[0].nombre== "Cliente"){
                                         response.redirect("/informacion")
-                                        console.log("Entre en el redirect aunque tenga objetivo XD")
                                     }
                         // Guardamos el rol en una variable de sesion
                         // Redireccionamos al usuario a la bitacora (esto lo tendriamos que cambiar si el usuario es o no un cliente)
@@ -209,7 +204,7 @@ exports.post_registrarse = (request, response, next)=>{
                         });
                         cliente.save()
                         .then(([row,fieldData])=>{
-                            request.session.mensaje = "Usuario Registrado";   
+                            request.session.mensaje ="Usuario registrado exitosamente";   
                             response.redirect('/iniciar-sesion');
                         }).catch(err=>console.error(err));
                     }).catch(err=>console.error(err));
@@ -267,16 +262,16 @@ exports.post_informacion =(request,response,next)=>{
             pesoMuerto: rows[0].pesoMuerto,
 
         });
-        //Actualizar
-        cliente.id_obj=request.body.obj;
-        cliente.sexo=request.body.sexo;
+        //Actualizar      
         cliente.fecha_nacimiento=request.body.fecha_nacimiento;
         cliente.alturaInic=request.body.alturaInic;
         cliente.pesoInic=request.body.pesoInic;
+        cliente.id_obj=request.body.obj;  
+        cliente.sexo=request.body.sexo;
+        cliente.id_niv=request.body.niv;
         cliente.pressBanca=request.body.pressBanca;
         cliente.sentadilla=request.body.sentadilla;
         cliente.pesoMuerto=request.body.pesoMuerto;
-        cliente.id_niv=request.body.niv;
 
         return cliente.update();
 

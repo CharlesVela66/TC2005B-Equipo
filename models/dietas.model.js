@@ -4,6 +4,7 @@ module.exports = class Dieta {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
     constructor(nueva_dieta) {
+        this.id_dieta = nueva_dieta.id_dieta || "";
         this.nombre = nueva_dieta.nombre || ""; 
         this.id_macro = nueva_dieta.id_macro || "";
         this.id_micro = nueva_dieta.id_micro || "";
@@ -20,8 +21,8 @@ module.exports = class Dieta {
 
     update() {
         return db.execute(`
-        UPDATE dieta SET nombre=?, id_macro=?, id_micro=?, Url_image=?, WHERE id_dieta=?
-        `, [this.nombre, this.id_macro, this.id_micro, this.Url_image]);
+        UPDATE dieta SET nombre=?, id_macro=?, id_micro=?, Url_image=? WHERE id_dieta=?
+        `, [this.nombre, this.id_macro, this.id_micro, this.Url_image, this.id_dieta]);
     }
 
    static count(){

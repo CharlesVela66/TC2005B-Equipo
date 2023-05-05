@@ -64,7 +64,7 @@
 
                 <div class="column">
                     <label class="label">Username</label>
-                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="nombre_usuario" id="nombre_usuario" maxlength="40"  pattern="[a-zA-Z0-9]{4,}" title="Ingrese nombre de Usuario minimo de 4 letras y sin caracteres especiales" class="input" value="<%= usuarioData ? usuarioData.nombre_usuario : '' %>" type="text" placeholder="Nombre de Usuario">
+                    <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="nombre_usuario" id="nombre_usuario" maxlength="40"  pattern="^[a-zA-Z0-9_-]{4,}$" title="Ingrese nombre de Usuario minimo de 4 letras y sin caracteres especiales" class="input" value="<%= usuarioData ? usuarioData.nombre_usuario : '' %>" type="text" placeholder="Nombre de Usuario">
                 </div>
 
                 <div class="column">
@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="column">
-                    <label class="label">Confirmar Password</label>
+                    <label class="label">Confirm Password</label>
                     <input style="border: 1.5px solid rgba(31, 93, 240, 0.7);" required name="confirmar_contrasena" id="confirmar_contrasena" maxlength="400" class="input" type="password" placeholder="********">
                 </div>
 

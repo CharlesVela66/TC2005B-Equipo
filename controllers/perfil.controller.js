@@ -32,6 +32,7 @@ exports.ver_perfil = (request, response, next) => {
 }
 
 exports.verCliente = (request, response, next) => {
+  console.log('ESTE ES EL NOMBRE DE USUARIO', request.session.nombre_usuario);
   Cliente.fetchOne(request.session.nombre_usuario)
     .then(([clientes, fieldData]) => {
       const id_cliente = clientes[0].id_cliente;
@@ -49,6 +50,7 @@ exports.verCliente = (request, response, next) => {
           } else if (sexo === 'F') {
             gmb = 9.99 * peso + 6.25 * clientes[0].alturaInic - 4.92 * getAge(clientes[0].fecha_nacimiento) - 161;
           }
+          console.log(gmb);
 
           // Obtener nivel físico del cliente
           const id_niv = clientes[0].id_niv;
@@ -66,8 +68,12 @@ exports.verCliente = (request, response, next) => {
               const ta = gmb * 0.1;
               console.log(ta);
 
+              //Cálculo del gasto energético total (GET)
+              const get = gmb + af + ta;
+              console.log(get);
+
               // Cálculo de las calorías recomendadas según el objetivo del cliente
-              let caloriasRecomendadas = gmb;
+              let caloriasRecomendadas = get;
               const id_obj = clientes[0].id_obj;
               if (id_obj === 1) {
                 caloriasRecomendadas -= 500;
