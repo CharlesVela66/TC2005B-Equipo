@@ -204,7 +204,7 @@ exports.post_registrarse = (request, response, next)=>{
                         });
                         cliente.save()
                         .then(([row,fieldData])=>{
-                            request.session.mensaje = "Usuario Registrado";   
+                            request.session.mensaje ="Usuario registrado exitosamente";   
                             response.redirect('/iniciar-sesion');
                         }).catch(err=>console.error(err));
                     }).catch(err=>console.error(err));
